@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+
+    <title>WXG的小站</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,
+            maximum-scale=1">
+
+    <link type="text/css" rel="stylesheet" href="/syntaxhighlighter/styles/shCore.css">
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/webfonts/ptserif/main.css">
+    <script src="/js/jquery.min.js"></script>
+    <script src="/js/script.js"></script>
+    <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=default"></script>
+    <script type="text/javascript" src="/syntaxhighlighter/scripts/shCore.js"></script>
+    <script type="text/javascript" src="/syntaxhighlighter/scripts/shBrushCpp.js"></script>
+    <script type="text/javascript" src="/syntaxhighlighter/scripts/shBrushPython.js"></script>
+    <script type="text/javascript" src="/syntaxhighlighter/scripts/shBrushPerl.js"></script>
+
+    <script type="text/javascript">
+        SyntaxHighlighter.all();
+    </script>
+    <style>
+        .syntaxhighlighter table {
+            font-size: 14px !important;
+            overflow: hidden !important;
+            /* background-color: aliceblue !important; */
+        }
+    </style>
+</head>
+
+<body>
+    <div id="container">
+        <header id="header">
+            <div id="header-outer" class="outer">
+                <div id="header-inner" class="inner">
+                    <a id="main-nav-toggle" class="nav-icon" href="javascript:;"></a>
+                    <a id="logo" class="logo" href="/"></a>
+                    <nav id="main-nav">
+                    </nav>
+                    <nav id="sub-nav">
+                        <div id="search-form-wrap">
+                            <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form">
+                                <input type="search" name="q" class="search-form-input" placeholder="Search"><button
+                                    type="submit" class="search-form-submit">&#xF002;</button><input type="hidden"
+                                    name="sitesearch" value="http://wxgg.cc"></form>
+                        </div>
+                    </nav>
+                </div>
+            </div>
+        </header>
+        <section id="main" class="outer">
+
+            <article id="{article-id}" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+
+        <header class="article-header">
+            <h1 itemprop="name">
+                <a class="article-title" href="/blogs/2018/04/统计学习方法札记.html">统计学习方法札记</a>
+            </h1>
+        </header>
+
+        <div class="article-meta">
+            <a href="/blogs/2018/04/统计学习方法札记.html" class="article-date">
+                <time itemprop="datePublished">2018年04月</time>
+            </a>
+        </div>
+
+        <div class="article-entry" itemprop="articleBody">
+            <p>最近抽时间补看了下李航的《统计学习方法》，这本书很薄，但是内容还是很全的，虽然还没看完也没看透有些算法的具体学习过程，这里先作个札记，在总结的同时也先把坑都挖好，后面用到的时候再回来看。</p>
+<p><strong>更新</strong>，最近根据吴恩达的机器学习视频受到启发，希望能对基本的ML方法作一些简单实现，欢迎访问我的github项目。</p>
+<ul><li><a href="https://github.com/sharixos/sharix-ml">sharix-ml</a></li>
+<li><a href="https://github.com/sharixos/sharix-ml/tree/master/example">实例地址</a></li>
+</ul>
+<h2><a data-uk-modal="{target:'#category-id'}">统计学习方法概论</a></h2>
+
+<p>统计学习方法其实就是学习已有的大量数据（输入空间）用模型来总结出规律（特征空间），并对未知类似事件做出预测（输出空间）的一个过程（不知道自己的这个理解有没有问题）。主要的问题包括分类问题和回归问题，核心的步骤其实就是：模型+策略+算法=方法。</p>
+
+        </div>
+
+    </div>
+
+</article><article id="{article-id}" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+
+        <header class="article-header">
+            <h1 itemprop="name">
+                <a class="article-title" href="/blogs/2018/04/Tensorflow-8之可视化工具Tensorboard.html">Tensorflow-8之可视化工具Tensorboard</a>
+            </h1>
+        </header>
+
+        <div class="article-meta">
+            <a href="/blogs/2018/04/Tensorflow-8之可视化工具Tensorboard.html" class="article-date">
+                <time itemprop="datePublished">2018年04月</time>
+            </a>
+        </div>
+
+        <div class="article-entry" itemprop="articleBody">
+            <p>Tensorboard是一个用于可视化和理解tensorflow训练过程的一个web工具，可以通过保存tensorflow在训练过程中的graph的信息，然后利用tensorboard进行可视化，并在浏览器中显示出来。一般在安装tensorflow的过程中会默认安装tensorboard，可以在github上找到tensorboard的源码。</p>
+<p><a href="https://github.com/tensorflow/tensorboard">github tensorboard</a></p>
+<img src="http://www.sharix.site/static/img/tensorflow/tensorflow7_2.png" alt="">
+<p>本文主要以tensorflow提供的MNIST例子来进行了解tensorboard的使用</p>
+<h2><a data-uk-modal="{target:'#category-id'}">tf.summary API介绍</a></h2>
+
+<p>对于tensorboard而言，用于其可视化的数据是利用tensorflow在训练过程中保存下来的一些event信息，可以利用tensorflow的<code>summary API</code>来进行收集。比如MNIST利用cnn来训练的例子，这个例子主要是训练一个卷积神经网络cnn来识别MNIST数据中的像素点，我们需要记录学习率和目标函数的变化，就可以使用<code>tf.summary.scalar</code>操作来收集信息，可以获得如<code>学习率</code>和<code>损失函数</code>等信息。</p>
+
+        </div>
+
+    </div>
+
+</article><article id="{article-id}" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+
+        <header class="article-header">
+            <h1 itemprop="name">
+                <a class="article-title" href="/blogs/2018/03/Tensorflow之计算图及OP节点.html">Tensorflow之计算图及OP节点</a>
+            </h1>
+        </header>
+
+        <div class="article-meta">
+            <a href="/blogs/2018/03/Tensorflow之计算图及OP节点.html" class="article-date">
+                <time itemprop="datePublished">2018年03月</time>
+            </a>
+        </div>
+
+        <div class="article-entry" itemprop="articleBody">
+            <p>计算图graph就是节点与边的集合，是一个有向无环图（DAG）按照DAG图的拓扑排序依次执行OP运算，若存在多个度为0的节点可以进行并发运算</p>
+<img src="https://upload-images.jianshu.io/upload_images/2254249-41f78682c2a03ef1.png" alt="">
+<h2><a data-uk-modal="{target:'#category-id'}">计算图graph从python传到底层C++</a></h2>
+
+<p>之前提到过会话Session初始化到其父类BaseSession初始化时，若graph为空会调用默认图</p>
+<pre class="brush: python;">
+#tensorflow/python/client/session.py
+#class BaseSession(SessionInterface):
+if graph is None:
+  self._graph = ops.get_default_graph()
+</pre>
+<p>之后调用<code>get_default_graph</code>函数并进一步调用<code>_default_graph_stack.get_default()</code>，而这里的<code>_default_graph_stack</code>被实例化为一个<code>_DefaultGraphStack</code>对象 <code>_default_graph_stack = _DefaultGraphStack()</code>在其父类<code>_DefaultStack</code>初始化可以看到</p>
+
+        </div>
+
+    </div>
+
+</article><article id="{article-id}" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+
+        <header class="article-header">
+            <h1 itemprop="name">
+                <a class="article-title" href="/blogs/2018/03/Tensorflow之简介及系统架构.html">Tensorflow之简介及系统架构</a>
+            </h1>
+        </header>
+
+        <div class="article-meta">
+            <a href="/blogs/2018/03/Tensorflow之简介及系统架构.html" class="article-date">
+                <time itemprop="datePublished">2018年03月</time>
+            </a>
+        </div>
+
+        <div class="article-entry" itemprop="articleBody">
+            <p>Tensorflow 是由谷歌开源的人工智能学习系统，Tensor意即张量表示多维数组，flow意味着基于数据流图的计算，支持异构设备分布式计算，它能够在各个平台上自动运行模型，从手机、单个CPU / GPU到成百上千GPU卡组成的分布式系统。TensorFlow支持CNN、RNN和LSTM算法，可应用于语音识别，自然语言理解，计算机视觉，广告等等。tensorflow官网： https://www.tensorflow.org （可能需要VPN访问）</p>
+<p>使用的系统: Ubuntu16.04</p>
+<p>python版本：python2.7</p>
+<p>中文社区介绍了多种安装方式，包括针对不同系统，使用源码或直接使用pip安装，或者使用docker。这里使用最简单的安装方式，中文社区提供了使用GPU版本的安装方式，这里暂时仅使用CPU版本的安装</p>
+<pre class="brush: ;">
+pip install https://storage.googleapis.com/tensorflow/linux/cpu/tensorflow-0.5.0-cp27-none-linux_x86_64.whl
+</pre>
+
+        </div>
+
+    </div>
+
+</article><article id="{article-id}" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+
+        <header class="article-header">
+            <h1 itemprop="name">
+                <a class="article-title" href="/blogs/2018/03/Tensorflow-7之建模及高级API Estimators.html">Tensorflow-7之建模及高级API Estimators</a>
+            </h1>
+        </header>
+
+        <div class="article-meta">
+            <a href="/blogs/2018/03/Tensorflow-7之建模及高级API Estimators.html" class="article-date">
+                <time itemprop="datePublished">2018年03月</time>
+            </a>
+        </div>
+
+        <div class="article-entry" itemprop="articleBody">
+            <p>本文主要通过官网实例花的分类来了解tensorflow建模过程，在github上tensorflow提供了很多model模可供学习。对于花的分类实例需要安装<code>pandas</code>，这是一个Python的数据处理库，可以直接处理csv格式文件。tensorflow实现了keras机器学习库，在这个实例中也被用到。</p>
+<p>可按如下步骤进行该实例的运行，并能看到取得了很好的分类效果，之后看看具体的建模训练及评测过程。</p>
+<pre class="brush: shell;">
+$pip install pandas
+$git clone https://github.com/tensorflow/models
+$cd models/samples/core/get_started/
+$python premade_estimator.py
+</pre>
+<h3><a data-uk-modal="{target:'#category-id'}">准备数据</a></h3>
+
+<p>本例使用的是csv格式的数据，可以使用<code>pandas</code>进行处理，如下为train的部分数据，从中可以看出来第一行主要是提供相关信息，比如数据行数等，可以在<code>read_csv</code>函数中说明header=0表示第一行为header，数据从第二行开始。</p>
+
+        </div>
+
+    </div>
+
+</article><article id="{article-id}" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+
+        <header class="article-header">
+            <h1 itemprop="name">
+                <a class="article-title" href="/blogs/2018/03/Tensorflow-4之利用SWIG连接前端多语言环境与后端CC++.html">Tensorflow-4之利用SWIG连接前端多语言环境与后端CC++</a>
+            </h1>
+        </header>
+
+        <div class="article-meta">
+            <a href="/blogs/2018/03/Tensorflow-4之利用SWIG连接前端多语言环境与后端CC++.html" class="article-date">
+                <time itemprop="datePublished">2018年03月</time>
+            </a>
+        </div>
+
+        <div class="article-entry" itemprop="articleBody">
+            <p>Tensorflow 源码中python API和底层c/c++之间的关联主要是靠 <code>SWIG</code> 来完成的，这是一个用于把C/C++集成到其他语言中的编译器。本文主要介绍swig以及tensorflow如何利用swig关联前后端，另外主要介绍了一下Session的生命周期。</p>
+<p>http://www.swig.org/</p>
+<h2><a data-uk-modal="{target:'#category-id'}">SWIG实例之python调用C</a></h2>
+
+<p>首先准备C语言函数</p>
+<pre class="brush: c++;">
+/* File : example.c */
+#include < time.h>
+double My_variable = 3.0;
+
+int fact(int n) {
+    if (n < = 1) return 1;
+    else return n*fact(n-1);
+}
+int my_mod(int x, int y) {
+    return (x%y);
+}
+char *get_time()
+{
+    time_t ltime;
+    time(& ltime);
+    return ctime(& ltime);
+}
+</pre>
+
+        </div>
+
+    </div>
+
+</article><article id="{article-id}" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+
+        <header class="article-header">
+            <h1 itemprop="name">
+                <a class="article-title" href="/blogs/2018/03/Elfen论文复现.html">Elfen论文复现</a>
+            </h1>
+        </header>
+
+        <div class="article-meta">
+            <a href="/blogs/2018/03/Elfen论文复现.html" class="article-date">
+                <time itemprop="datePublished">2018年03月</time>
+            </a>
+        </div>
+
+        <div class="article-entry" itemprop="articleBody">
+            <p>由于作者使用的是Lucene的开源代码以及另外一个Lucene性能测试的开源项目代码，而Lucene的代码会经常更新，幸好对应的性能测试代码也会对应更新，性能测试代码： https://github.com/mikemccand/luceneutil</p>
+<p>准备作者的ELFEN代码以及作者的Luceneutil代码，从github上可得到 https://github.com/yangxi</p>
+<p>然后根据作者的说明进行实验,<strong>准备实验数据</strong>，wiki的英文数据，利用如下</p>
+<pre class="brush: perl;">
+# Usage
+#1. Download the wikipedia data
+python src/python/setup.py -download
+</pre>
+<p><strong>准备Lucene引擎</strong>，clone最新的Lucene代码，并用ant编译，如下Apache的源码下载时容易掉线，用github上的镜像就不会出现下载掉线的问题</p>
+<pre class="brush: perl;">
+#2. Build the Lucene
+"cd ../; git clone git://git.apache.org/lucene-solr.git trunk;"
+"cd trunk; git checkout -b new_branch ceb66d34c0a6f840ec195f6da85e323de5e9a04d"
+"cd ./lucene; ant compile-test"
+</pre>
+
+        </div>
+
+    </div>
+
+</article><article id="{article-id}" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+
+        <header class="article-header">
+            <h1 itemprop="name">
+                <a class="article-title" href="/blogs/2018/03/Computer-Performance-Microscopy-with-SHIM.html">Computer-Performance-Microscopy-with-SHIM</a>
+            </h1>
+        </header>
+
+        <div class="article-meta">
+            <a href="/blogs/2018/03/Computer-Performance-Microscopy-with-SHIM.html" class="article-date">
+                <time itemprop="datePublished">2018年03月</time>
+            </a>
+        </div>
+
+        <div class="article-entry" itemprop="articleBody">
+            <p>文章主要是关于细粒度高频率观测程序性能，作者yangxi，<a href="https://github.com/yangxi/SHIM">文章和实验代码</a>均可以在github上找到 。一般的程序性能观测采样是采用的linux的perf模块，但是perf只能观测较为宏观的程序性能参数，如果进行高频度的观测，观测程序就会对被观测程序进行影响，而这篇文章中的shim正是为解决这个问题而存在的。而shim之所以能在elfen论文中被使用也正是因为其高频度的准确观测程序数据，这一点使得其能够高频度观测到cpu空闲的区间，进而被elfen所用。</p>
+<p>实验代码主要包括两个部分，一个是一个linux内核模块ppid_module，另一个是shim的核心代码。文章中的实验数据是对一个java模拟器进行性能观测，这里我仅对ppid_module和shim的两个简单使用例子进行说明。</p>
+<h2><a data-uk-modal="{target:'#category-id'}">ppid 内核模块</a></h2>
+
+<p>这个模块的主要作用是任何时候显示哪个线程跑在哪个cpu上，主要方式是允许一个用户程序映射一段无cache的连续物理内存缓冲区，ppid主要的工作在初始化和映射，以及一个额外的在内核中schedule处被调用的一个回调函数</p>
+
+        </div>
+
+    </div>
+
+</article><nav id="page-nav"><a class="extend prev" rel="prev" href="/page/3/">&laquo; Prev</a>
+<a class="page-number" href="/">1</a>
+<a class="page-number" href="/page/2/">2</a>
+<a class="page-number" href="/page/3/">3</a>
+<span class="page-number current">4</span><a class="page-number" href="/page/5/">5</a>
+<a class="page-number" href="/page/6/">6</a>
+<a class="extend next" rel="next" href="/page/5/">Next &raquo;</a>
+</nav>
+
+        </section>
+        <footer id="footer">
+
+            <div class="outer">
+                <div id="footer-info" class="inner">
+                    &copy; 2019 Wang Xingang.&nbsp; Powered by <a href="https://github.com/wxggg/libevent-cpp"
+                        target="_blank">libevent-cpp</a>, theme by <a href="http://github.com/ppoffice">PPOffice</a>
+                </div>
+            </div>
+        </footer>
+
+
+    </div>
+</body>
+
+</html>

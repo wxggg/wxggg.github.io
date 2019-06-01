@@ -1,0 +1,334 @@
+MFC也就是Microsoft Foundation Class之前一直都是Windows平台软件开发的主要软件框架（Application Framework）， 随着新技术的不断产生，MFC也渐渐消失在主流开发者的眼中。诚然，MFC设计的晦涩确实是其一大弊端，正如《深入浅出MFC》的作者侯杰所提到的很多敌视者将MFC这个Application Framework视作Minotaur（希腊神话中的牛头怪，会吃掉迷失在迷宫中的人），但是考虑到MFC设计的时间，其很多设计思想其实很有意思，《深入浅出MFC》中所提到的MFC设计的六大关键技术在现在可能已经有了更好的实现方式，比如说运行时类型识别RTTI，MFC设计之初C++还没有引入运行时类型识别，所以对于此MFC便设计了一套专门的宏以及相应的数据结构进行处理，在今天看来，这着实很麻烦，因为现在C++的特性早已经可以直接进行运行时类型的识别以及转换了。无论怎样，相对于直接调用Windows的api进行界面程序的实现，MFC程序确实是有着相当大的进步，虽然这种进步在当今看来早已落伍，但是MFC作为一个Application Framework的设计思想却值得进行探究。
+
+# MFC运行时类型识别RTTI
+
+在讨论MFC对于RTTI的支持之前，先看看MFC的一些基本类，从CObject派生出CCmdTarget，CCmdTarget再派生出CWinThread、CWnd以及CDocument类分别对应几种不同的功能，CWinThread和CWinApp主要关注应用程序的初始化以及生命周期，而CWnd则负责窗口的创建于产生，CDocument类负责MFC程序数据的磁盘存储。MFC作为一个应用框架，在用户使用其进行程序的设计时需要实现自己的CWinApp以及CFrameWnd等，当然这些VC/VS也是可以直接生成的，这诚然为用户省略了大量的精力，但也使得用户对于底层的实现一头雾水，甚至当之后引入各种宏定义的时候就真的仿佛置身迷宫。
+```c++
+/**
+* CObject
+* |__ CCmdTarget
+*		|__ CWinThread
+*		|	|__ CWinApp
+*		|		|__ CMyWinApp
+*		|__ CWnd
+*		|	|__ CView
+*		|	|	|__ CMyView
+*		|	|__ CFrameWnd
+*		|		|__ CMyFrameWnd
+*		|__ CDocument
+*				|__ CMyDoc
+*/
+```
+所谓运行时类型识别也就是需要在程序执行的时候能够直接识别一个对象所属的类型，或者一个指针是指向何种类型的对象，这样一个功能在现在的C++中可以直接进行引入 typeinfo ，然后使用typeid(p)就可以直接获取其类型信息。对于没有如此功能的MFC而言，要实现这样的功能需要引入数据结构将上述所有MFC类型进行组织，MFC使用链表进行这个运行时信息的组织，而将链表的节点定义为CRuntimeClass，用来保存MFC的各个类型在运行时的信息，包括类名、对象大小等信息，另外设计一个pFirstClass作为链表的头结点，而pBaseClass则指向当前类的基类，链表的组织是靠pNextClass来链接。
+
+```c++
+struct CRuntimeClass
+{
+	// Attributes
+	LPCSTR m_lpszClassName;
+	int m_nObjectSize;
+	UINT m_wSchema; // schema number of the loaded class
+	CObject* (PASCAL* m_pfnCreateObject)(); // NULL => abstract class
+	CRuntimeClass* m_pBaseClass;
+	static CRuntimeClass* pFirstClass;
+	CRuntimeClass* m_pNextClass;       // linked list of registered classes
+//	const AFX_CLASSINIT* m_pClassInit;
+};
+```
+
+有了这样的结构就比较清楚了其实，只要能够在每一个MFC的类中都设置一个CRuntimeClass就可以在运行时根据对象来动态查看当前类的信息，当然同时还得进行链表的构建。可以通过如下的方式在每一个类中都加入一个CRuntimeClass成员变量，同时在实现中也需要对于static成员变量进行初始化，还需要写出GetRuntimeClass的实现函数。这里需要注意的是对于链表的构建包括两个部分，一个是将当前CRuntimeClass节点加入到链表中，这里MFC使用一个结构体AFX_CLASSINIT来进行操作，但在源码中其实又发现了一个同名的AFX_CLASSINIT函数，这个其实是结构体的构造函数，没错与类相同的是结构体其实也是可以有构造函数的，而这个构造函数的功能就是将当前的CRuntimeClass节点插入到以pFirstClass为头结点的头部，这里其实使用了一个技巧就是创建一个static AFX_CLASSINIT _init_CView，这个结构体其实并没有什么用，创建它的目的就是为了调用其构造函数对当前类的CRuntimeClass进行初始化。另外一部分是将pBaseClass指向当前类的基类。
+```c++
+class CView : public CWnd
+{
+public:
+        static CRuntimeClass classCView;
+        virtual CRuntimeClass* GetRuntimeClass() const;
+        ...
+};
+
+// in implementation file
+static char _lpszCView[] = "CView";
+CRuntimeClass CView::classCView = {
+        _lpszCView, sizeof(CView), 0xFFFF, NULL,
+                &CWnd::classCWnd, NULL };
+static AFX_CLASSINIT _init_CView(&CView::classCView);
+CRuntimeClass* CView::GetRuntimeClass() const
+        { return &CView::classCView; }
+
+
+AFX_CLASSINIT::AFX_CLASSINIT(CRuntimeClass* pNewClass)
+{
+	pNewClass->m_pNextClass = CRuntimeClass::pFirstClass;
+	CRuntimeClass::pFirstClass = pNewClass;
+}
+```
+但是MFC并没有这样进行处理，而是将上述添加的内容使用一个DECLARE_DYNAMIC的宏定义来处理，这样做的好处当然是减少了代码量，但是其实也使得MFC代码更加晦涩。但是其实比对上下两份代码可以直观的看出所谓的这几个宏定义也只是看起来复杂，真正做的事情都是变量替换的工作，只不过针对不同的类修改对应的类名以及父类名就行了。
+```c++
+#define RUNTIME_CLASS(class_name)((CRuntimeClass*)(&class_name::class##class_name))
+
+#define DECLARE_DYNAMIC(class_name) \
+public: \
+	static CRuntimeClass class##class_name; \
+	virtual CRuntimeClass* GetRuntimeClass() const;
+
+#define IMPLEMENT_RUNTIMECLASS(class_name, base_class_name, wSchema, pfnNew) \
+	static char _lpsz##class_name[]=#class_name;\
+	CRuntimeClass class_name::class##class_name={_lpsz##class_name,sizeof(class_name),wSchema,pfnNew,RUNTIME_CLASS(base_class_name),NULL};\
+	static AFX_CLASSINIT _init_##class_name(RUNTIME_CLASS(class_name));\
+	CRuntimeClass* class_name::GetRuntimeClass() const { return RUNTIME_CLASS(class_name); }
+
+
+#define IMPLEMENT_DYNAMIC(class_name, base_class_name) \
+	IMPLEMENT_RUNTIMECLASS(class_name, base_class_name, 0xFFFF, NULL)
+```
+有了这些数据结构，各个类型初始化的时候就会自动将各自的CRuntimeClass成员变量指针加入到链表中，组成一张覆盖所有MFC类的网，唯一需要注意的就是链表的尾节点也就是CObject需要单独进行处理，因为其不存在父类。现在只需要在CObject类中加入如下的类型判断函数就可以动态的进行MFC运行时类型识别了。这里为什么是沿着父类往上进循环查找呢，因为我们希望判断只要pClass是当前类型或者当前类型的父类型的指针都满足IsKindOf。
+```c++
+BOOL CObject::IsKindOf(const CRuntimeClass* pClass)const
+{
+	CRuntimeClass* pClassThis = GetRuntimeClass();
+	while (pClassThis != NULL)
+	{
+		if (pClassThis == pClass)
+		{
+			return TRUE;
+		}
+		pClassThis = pClassThis->m_pBaseClass;
+	}
+	return FALSE;
+}
+```
+
+# 运行时动态创建
+
+动态创建一个类的实例主要就是在获得类名的情况下来进行动态的创建，这不同于直接new一个对象，因为直接new一个对象的话在编译的时候其实就已经确定了要new的是哪一个对象，而动态创建则需要在程序执行的时候根据用户输入的类名或者说程序获得的类名来相应地进行动态的创建该实例。为什么需要有这样的功能呢，道理很简单，比如对于一个绘图程序，在绘制了直线、圆等不同的实例之后将其保存到文件中，当再次打开这个格式的文件的时候会读取到相应的类名，然后根据对应的类名来创建相应实例，这样才能够恢复之前的工作状态，这就需要运行时动态创建了。
+
+先看看MFC是如何实现动态创建了，之前提到MFC已经用CRuntimeClass来把各个类型织成了一张网，现在其实是可以利用这张网中的节点来直接进行字符串的匹配，这样就可以直接确定应该动态创建哪一个MFC类型了。当然，需要为每一个MFC类型实现一下动态创建的函数CreateObject，这个函数的功能其实就是new一个本类型的对象。
+```c++
+#define DECLARE_DYNCREATE(class_name)\
+	DECLARE_DYNAMIC(class_name)\
+	static CObject* PASCAL CreateObject();
+
+#define IMPLEMENT_DYNCREATE(class_name,base_class_name)\
+	CObject* PASCAL class_name::CreateObject(){return new class_name;}\
+	IMPLEMENT_RUNTIMECLASS(class_name,base_class_name,0xFFFF,class_name::CreateObject)
+
+struct CRuntimeClass
+{
+	// Attributes
+	LPCSTR m_lpszClassName;
+	int m_nObjectSize;
+	UINT m_wSchema; // schema number of the loaded class
+	CObject* (PASCAL* m_pfnCreateObject)(); // NULL => abstract class
+
+	// Operations
+	CObject* CreateObject();
+	static CRuntimeClass* PASCAL Load();
+
+
+	CRuntimeClass* m_pBaseClass;
+	static CRuntimeClass* pFirstClass;
+	CRuntimeClass* m_pNextClass;       // linked list of registered classes
+//	const AFX_CLASSINIT* m_pClassInit;
+};
+```
+MFC希望能够根据CRuntimeClass来进行MFC类的动态创建，因而在CRuntimeClass结构体中含有一个CreateObject的成员函数以及名为m_pfnCreateObject的函数指针，这个函数指针在如上宏定义IMPLEMENT_DYNCREATE的时候是被初始化为class_name::CreateObject的，也就是每个类型对应的自己的CreateObject，功能就是new一个自己类型的对象。
+
+```c++
+CObject* CRuntimeClass::CreateObject()
+{
+	if (m_pfnCreateObject == NULL)
+	{
+		TRACE1("Error: Trying to create object which is not "
+			"DECLARE_DYNCREATE \nor DECLARE_SERIAL: %hs.\n",
+			m_lpszClassName);
+		return NULL;
+	}
+
+	CObject* pObject = NULL;
+	pObject = (*m_pfnCreateObject)();
+
+	return pObject;
+}
+
+CRuntimeClass* PASCAL CRuntimeClass::Load()
+{
+	char szClassName[64];
+	CRuntimeClass* pClass;
+
+	std::cout << "please enter a class name...?";
+	std::cin >> szClassName;
+
+	for (pClass = pFirstClass; pClass != NULL; pClass = pClass->m_pNextClass)
+	{
+		if (strcmp(szClassName, pClass->m_lpszClassName) == 0)
+			return pClass;
+	}
+
+	TRACE1("Error: Class not found:%s\n", szClassName);
+	return NULL;
+}
+
+CRuntimeClass* pClassRef;
+CObject* pOb;
+if ((pClassRef = CRuntimeClass::Load()) == NULL)
+    break;
+pOb = pClassRef->CreateObject();
+```
+MFC对于动态创建的过程依赖于之前实现的类型链表以及CRuntimeClass结构，如果考虑到简化这一过程，我们之前已经提到对于RTTI时没必要像MFC这样做的，C++的特性就已经支持了，所以我们希望尽量不要使用CRuntimeClass，但是C++其实是并不支持动态创建的，如果要模拟动态创建还是需要一个数据结构来记录各个类名以及其对应的CreateObject，这种方式其实有点类似设计模式中的工厂模式，可以使用更高效的数据结构map来进行类名信息的记录。
+```c++
+    static void RegisterClass(const char *className, NewInstancePt np)
+    {
+        dynCreateMap[className] = np;
+    }
+private:
+    static std::map<std::string, NewInstancePt> dynCreateMap;
+```
+使用map能够进行类名和create的对应，但是还有一个关键的问题在于如何在程序执行之前就能够建立起这个map，也就是说在程序开始执行的时候就需要完成map的构建，可能有的会考虑直接在类的构造函数中初始化不就行了，这显然是不行的，首先有的类并不是一开始就会被实例化，甚至有的类根本就不会被实例化，而有的类又会被多次实例化，使用类的构造函数的方式肯定是不行的。考虑到需要在最开始的时候就进行初始化，类似于mfc中使用一个静态的结构体AFX_CLASSINIT的构造函数来初始化，可以使用一个静态的Register类来初始化，在Register构造函数执行的时候调用RegisterClass来完成类名和create函数的映射，这里为每一个mfc类都设置一个辅助类class class_name##Register，目的是初始化这个类中的`static Register reg`。
+```c++
+class Register
+{
+public:
+    Register(const char *className, NewInstancePt np)
+    {
+        CObjectFactory::RegisterClass(className, np);
+    }
+};
+
+#define REGISTER_CLASS(class_name) \
+class class_name##Register { \
+public: \
+	static void * NewInstance() { return new class_name; } \
+private: \
+	static Register reg; \
+}; \
+Register class_name##Register::reg(#class_name, class_name##Register::NewInstance);
+```
+
+# 消息映射机制
+
+Windows程序依靠消息机制来进行程序的控制以及与用户的交互，对于最开始的Windows程序设计而言，使用一个switch/case进行消息的处理是最一般的方法，而对于MFC应用框架而言，需要考虑的事情就比较麻烦，MFC中的CView和CFrameWnd都继承自CWnd，分别都可以产生不同的消息，对于CView而言，一般会产生最普通的Windows消息如WM_PAINT，而对于CFrameWnd而言则会产生来自菜单的命令消息，MFC对于这两种不同的消息分别采用不同的处理方式，对于普通的WM消息而言，从产生该消息的类往其父类逐个进行消息的处理，而对于Command消息则是可以进行横向流动的。MFC中将Windows消息表示为如下结构，
+```c++
+typedef void(CCmdTarget::*AFX_PMSG)(void);
+struct AFX_MSGMAP_ENTRY
+{
+	UINT nMessage;   // windows message
+	UINT nCode;      // control code or WM_NOTIFY code
+	UINT nID;        // control ID (or 0 for windows messages)
+	UINT nLastID;    // used for entries specifying a range of control id's
+	UINT nSig;       // signature type (action) or pointer to message #
+	AFX_PMSG pfn;    // routine to call (or special value)
+};
+```
+对于Windows的消息来说，最重要主要就是消息的种类，是WM消息还是command消息，还有就是消息的ID以及处理函数，这几点确定了之后就能够确定如何对消息进行处理。MFC中的实现方式是采用一个AFX_MSGMAP结构来组织这个消息映射，结构体中一个单位用来指向基类的消息映射，而另外一个单位保存的是当前类的消息处理的首地址指针，对于每一个MFC类型都会包含一个消息映射，也就是AFX_MSGMAP，同时也会初始化一个_messageEntries来保存当前类的消息处理。
+```c++
+struct AFX_MSGMAP
+{
+	AFX_MSGMAP* pBaseMessageMap;
+	AFX_MSGMAP_ENTRY* lpEntries;
+};
+
+#define DECLARE_MESSAGE_MAP() \
+	static AFX_MSGMAP_ENTRY _messageEntries[];\
+	static AFX_MSGMAP messageMap;\
+	virtual AFX_MSGMAP* GetMessageMap() const;
+
+#define BEGIN_MESSAGE_MAP(theClass, baseClass) \
+	AFX_MSGMAP* theClass::GetMessageMap() const { return &theClass::messageMap; } \
+	AFX_MSGMAP theClass::messageMap=\
+	{&(baseClass::messageMap),(AFX_MSGMAP_ENTRY*) &(theClass::_messageEntries)};\
+	AFX_MSGMAP_ENTRY theClass::_messageEntries[] =  \
+	{
+
+#define ON_COMMAND(id,memberFxn){WM_COMMAND,0,(WORD)id,(WORD)id,AfxSig_vv,(AFX_PMSG)memberFxn},
+
+#define END_MESSAGE_MAP() \
+		{0, 0, 0, 0, AfxSig_end, (AFX_PMSG)0 } \
+	};
+```
+唯一要注意的就是ON_COMMAND宏用来增加消息映射以及其对应的处理函数，这几个宏的定义结构决定了ON_COMMAND必须在BEGIN_MESSAGE_MAP和END_MESSAGE_MAP的中间，目的就是为了对_messageEntries进行初始化。这种结构的一个缺点就是只能在这个位置进行消息处理的添加，显得不够灵活。如果希望能够在程序执行过程中进行消息处理的动态添加和删除，那么至少需要改变mfc这种固定的消息处理添加结构。主要要改变的其实就是lpEntries，mfc采用的方式是一个静态数组，这样一旦程序编译执行消息处理的这个静态数组就不允许添加新的条目了，将其修改为一个vector，这样就能够进行动态的添加。
+```c++
+struct AFX_MSGMAP
+{
+    AFX_MSGMAP* pBaseMessageMap;
+    std::vector<AFX_MSGMAP_ENTRY> * pMessageEntries;
+};
+
+#define DECLARE_MESSAGE_MAP() \
+	static AFX_MSGMAP messageMap;\
+	static std::vector<AFX_MSGMAP_ENTRY> messageEntries; \
+	virtual AFX_MSGMAP* GetMessageMap() const;
+
+
+#define IMPLEMENT_MESSAGE_MAP(theClass, baseClass) \
+	AFX_MSGMAP* theClass::GetMessageMap() const { return &theClass::messageMap; } \
+	std::vector<AFX_MSGMAP_ENTRY> theClass::messageEntries = {{0, 0, 0, 0, AfxSig_end, 0 }}; \
+	AFX_MSGMAP theClass::messageMap = {&(baseClass::messageMap), &(theClass::messageEntries)};
+
+
+#define ON_COMMAND(id,memberFxn){WM_COMMAND,0,(int)id,(int)id,AfxSig_vv,(AFX_PMSG)memberFxn}
+```
+类似于MFC的做法，分别在DECLARE_MESSAGE_MAP和IMPLEMENT_MESSAGE_MAP宏中进行函数以及静态成员变量的初始化，这里给每一个类的messageEntries向量都先添加一个初始化的{0, 0, 0, 0, 0, 0 }作为终止标志，这样与之前不同的是现在可以动态的添加消息处理了，只需要通过GetMessageMap函数获得消息映射的指针，然后获得消息处理的vector就能够进行添加了。
+```c++
+mfc::AFX_MSGMAP* pMessageMap = pMyFrame->GetMessageMap();
+pMessageMap->pMessageEntries->push_back(ON_COMMAND(Tools::getId("CWnd"), 0));
+```
+
+# Command Routing命令绕行
+
+当然现在只是建立起普通的WM消息的传递网络，也就是当前类与其父类之间的消息传递网络，但是要知道MFC中的`command`消息是可以进行横向传递的，也就是没有继承关系之间的类也能够进行command消息的传递。对于命令的绕行其实也没有什么复杂的技术可言，主要就是对Windows的WM消息和Command消息分别进行摊派，使得WM消息能够直接从当前类往父类进行传递，而Command消息能够进行类间的传递，当最初的消息进入到CWnd类的如下WindowProc处理函数之后，会进行判断消息是否为Command消息，如果是的话就会调用CWnd类的OnCommand消息，会继续调用OnCmdMsg消息。
+```c++
+// belong to class CWnd
+int WindowProc(int nMsg, int wParam, int lParam) {
+
+	if (nMsg == WM_COMMAND)
+	{
+		if (OnCommand(wParam, lParam))
+			return 1;
+		else
+			return DefWindowProc(nMsg, wParam, lParam);
+	}
+	wm_proc(GetMessageMap());
+	return 0;
+}
+
+int OnCommand(int wParam, int lParam) {
+	return OnCmdMsg(0, 0);
+}
+```
+对于OnComand和OnCmdMsg而言，主要弄清楚其函数以及类间继承关系即可，比如对于*OnCmdMsg*最早在类CCmdTarget中声明为virtual虚函数，意味着当有子类实现该函数的时候会调用子类的*OnCmdMsg*函数，需要注意的是只有当当前的this指针指向的是子类对象如当前的CFrameWnd的时候才会调用CFrameWnd的OnCmdMsg和OnCommand，也就是虚函数的特性，当前this指针指向什么对象，如果该对象重写了该虚函数，那么就调用该对象的虚函数。命令消息主要在CFrameWnd中完成向其它类的传递，这也符合界面程序的一般规则，因为一般来说菜单项属于CFrameWnd的范畴，而来自菜单的命令又需要能够对如CView和CDocument在内的对象进行处理，从而有了CFrameWnd中的OnCmdMsg进行Command消息的派发。
+```c++
+void main() {
+	AfxWndProc(0, WM_COMMAND, 1, 2, pMyFrame);
+}
+/**
+ * CCmdTarget: virtual OnCmdMsg => wm_proc
+ **begin=>**CWnd: OnCommand => OnCmdMsg [will be CFrameWnd:OnCmdMsg]
+ * 			CFrameWnd: OnCmdMsg => pView->OnCmdMsg
+ * 					 			=> CWnd::OnCmdMsg
+ * 								=> pApp->OnCmdMsg
+ * 			CView: OnCmdMsg => CWnd::OnCmdMsg
+ * 							=> pDocument->OnCmdMsg
+ * 			CDocument: OnCmdMsg => CCmdTarget::OnCmdMsg
+ */
+
+// belong to CFrameWnd
+virtual int OnCmdMsg(int nID, int nCode) {
+	CView *pView = GetActiveView();
+
+	if (pView->OnCmdMsg(nID, nCode)) return 1;
+
+	if (CWnd::OnCmdMsg(nID, nCode)) return 1;
+
+	CWinApp *pApp = AfxGetApp();
+	if (pApp->OnCmdMsg(nID, nCode)) return 1;
+
+	return 0;
+}
+```
+
+## 小结
+
+MFC设计的初衷是希望能够利用VC++平台进行可视化模块化的组件程序设计，但是这种看起来对用户友好的方式实际上使得整个架构显得捉摸不清，比如说用户很难看清楚BEGIN_MESSAGE_MAP和宏`END_MESSAGE_MAP`之间的ON_COMMAND之间到底发生了什么，实际上这一段宏定义无非就是在当前类的消息处理数组中加入了一个消息和处理函数对应关系的条目。这样的痛点还有很多，如果能够把宏定义中隐藏的这些操作以api的方式提供给用户应该是要看起来更清楚一些的。当然，MFC的设计受限于其产生的年代，能够用短短的几个宏定义就能够将MFC类库串联成一整个网络，并在其上实现消息及命令的传递，这些地方还是很值得思考的。
+
+* 参考《深入浅出MFC第三章》
+* 示例代码： https://github.com/sharixos/mfc-simulator

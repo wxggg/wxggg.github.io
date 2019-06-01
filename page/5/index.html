@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+
+    <title>WXG的小站</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,
+            maximum-scale=1">
+
+    <link type="text/css" rel="stylesheet" href="/syntaxhighlighter/styles/shCore.css">
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/webfonts/ptserif/main.css">
+    <script src="/js/jquery.min.js"></script>
+    <script src="/js/script.js"></script>
+    <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=default"></script>
+    <script type="text/javascript" src="/syntaxhighlighter/scripts/shCore.js"></script>
+    <script type="text/javascript" src="/syntaxhighlighter/scripts/shBrushCpp.js"></script>
+    <script type="text/javascript" src="/syntaxhighlighter/scripts/shBrushPython.js"></script>
+    <script type="text/javascript" src="/syntaxhighlighter/scripts/shBrushPerl.js"></script>
+
+    <script type="text/javascript">
+        SyntaxHighlighter.all();
+    </script>
+    <style>
+        .syntaxhighlighter table {
+            font-size: 14px !important;
+            overflow: hidden !important;
+            /* background-color: aliceblue !important; */
+        }
+    </style>
+</head>
+
+<body>
+    <div id="container">
+        <header id="header">
+            <div id="header-outer" class="outer">
+                <div id="header-inner" class="inner">
+                    <a id="main-nav-toggle" class="nav-icon" href="javascript:;"></a>
+                    <a id="logo" class="logo" href="/"></a>
+                    <nav id="main-nav">
+                    </nav>
+                    <nav id="sub-nav">
+                        <div id="search-form-wrap">
+                            <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form">
+                                <input type="search" name="q" class="search-form-input" placeholder="Search"><button
+                                    type="submit" class="search-form-submit">&#xF002;</button><input type="hidden"
+                                    name="sitesearch" value="http://wxgg.cc"></form>
+                        </div>
+                    </nav>
+                </div>
+            </div>
+        </header>
+        <section id="main" class="outer">
+
+            <article id="{article-id}" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+
+        <header class="article-header">
+            <h1 itemprop="name">
+                <a class="article-title" href="/blogs/2018/00-sharix/sharix-3-process-and-thread.html">sharix-3-process-and-thread</a>
+            </h1>
+        </header>
+
+        <div class="article-meta">
+            <a href="/blogs/2018/00-sharix/sharix-3-process-and-thread.html" class="article-date">
+                <time itemprop="datePublished">2018年00-sharix月</time>
+            </a>
+        </div>
+
+        <div class="article-entry" itemprop="articleBody">
+            <p>The task switch method in sharix is software switch, so it is mainly about context switch and the change of the register value and there's nothing about TSS segments at the first time. When it is time to add the user process model in sharix, the TSS will be needed because we need it to change the esp0 and ss0 to change the privilege from ring3 to ring0.</p>
+<h2><a data-uk-modal="{target:'#category-id'}">init process structure</a></h2>
+
+<pre class="brush: c;">
+// process's state in his life cycle
+enum proc_state {
+    PROC_UNINIT = 0,  // uninitialized
+    PROC_SLEEPING,    // sleeping
+    PROC_RUNNABLE,    // runnable(maybe running)
+    PROC_ZOMBIE,      // almost dead, and wait parent proc to reclaim his resource
+};
+struct proc_struct {
+  enum proc_state state;
+  int pid;
+  uintptr_t kstack;               // kernel stack
+  struct proc_struct *parent;
+  struct mm_struct *mm;
+  struct context context;
+  struct trapframe *tf;
+  uintptr_t cr3;                  // address of PDT
+  list_entry_t list_link;
+};
+</pre>
+
+        </div>
+
+    </div>
+
+</article><article id="{article-id}" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+
+        <header class="article-header">
+            <h1 itemprop="name">
+                <a class="article-title" href="/blogs/2018/00-sharix/sharix-2-memory-management.html">sharix-2-memory-management</a>
+            </h1>
+        </header>
+
+        <div class="article-meta">
+            <a href="/blogs/2018/00-sharix/sharix-2-memory-management.html" class="article-date">
+                <time itemprop="datePublished">2018年00-sharix月</time>
+            </a>
+        </div>
+
+        <div class="article-entry" itemprop="articleBody">
+            <p>As we have mentioned before, the sharix os kernel part has been divided to several segment, which combines just like a big and complex program. And then we will come with memory paging and virtual memory.</p>
+<h2><a data-uk-modal="{target:'#category-id'}">memory management</a></h2>
+
+<p>To probe the real physical memory,we use a struct E820 to store the memory information and this can be stored in 16bit mode and with help of bios interruption.</p>
+<pre class="brush: c;">
+struct e820map
+{
+	int nr_map;
+	struct
+	{
+		uint64_t addr;
+		uint64_t size;
+		uint32_t type;
+	}map[E820MAX];
+};
+</pre>
+
+        </div>
+
+    </div>
+
+</article><article id="{article-id}" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+
+        <header class="article-header">
+            <h1 itemprop="name">
+                <a class="article-title" href="/blogs/2018/00-sharix/sharix-1-boot-a-simple-os.html">sharix-1-boot-a-simple-os</a>
+            </h1>
+        </header>
+
+        <div class="article-meta">
+            <a href="/blogs/2018/00-sharix/sharix-1-boot-a-simple-os.html" class="article-date">
+                <time itemprop="datePublished">2018年00-sharix月</time>
+            </a>
+        </div>
+
+        <div class="article-entry" itemprop="articleBody">
+            <p>Sharix has the meaning of sharing, which means it is for everyone to learn and improve. The sharix os is mainly based on the <code>ucore os</code> of the tsinghua university, you can find it on github. So what i am doing is mainly about adding a graphical subsystem to it, and also makes some part of ucore as simple as possible.</p>
+<p>I will keep updating sharix os, and if you are interested in sharix, welcome to update it together. For now, the main purpose is to realize a simple desktop and window, and to realize terminal and text editing, maybe also realize the windows message mechanism.</p>
+
+        </div>
+
+    </div>
+
+</article><article id="{article-id}" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+
+        <header class="article-header">
+            <h1 itemprop="name">
+                <a class="article-title" href="/blogs/2018/00-linux/Linux-profiling-with-performance-counters.html">Linux-profiling-with-performance-counters</a>
+            </h1>
+        </header>
+
+        <div class="article-meta">
+            <a href="/blogs/2018/00-linux/Linux-profiling-with-performance-counters.html" class="article-date">
+                <time itemprop="datePublished">2018年00-linux月</time>
+            </a>
+        </div>
+
+        <div class="article-entry" itemprop="articleBody">
+            <p>Perf Event is a performance diagnostic tool that is released and maintained with the Linux kernel code. Perf can not only be used to analyze the performance of program, but it can also be used to analyze the performance of Linux kernel.</p>
+<h2><a data-uk-modal="{target:'#category-id'}">introduction</a></h2>
+
+<p>Perf a tool to analyze performance of program. We can use PMU,tracepoint and special counters in kernel to summarize the performance. With perf we can analyze the hardware event at the running time of programs, such as instructions retired and processor clock cycles. You can also analyze software events, such as Page Fault and the switch of process.</p>
+
+        </div>
+
+    </div>
+
+</article><article id="{article-id}" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+
+        <header class="article-header">
+            <h1 itemprop="name">
+                <a class="article-title" href="/blogs/2018/00-linux/Linux-Kernel-Module.html">Linux-Kernel-Module</a>
+            </h1>
+        </header>
+
+        <div class="article-meta">
+            <a href="/blogs/2018/00-linux/Linux-Kernel-Module.html" class="article-date">
+                <time itemprop="datePublished">2018年00-linux月</time>
+            </a>
+        </div>
+
+        <div class="article-entry" itemprop="articleBody">
+            <p>LKM means linux kernel module.</p>
+<p>These days i am doing something about adding a kernel module to linux, so this blog is mainly about kernel module. This is the programming guide that i referenced</p>
+<p>https://www.tldp.org/LDP/lkmpg/2.6/html/lkmpg.html</p>
+<p>A kernel module extends  the functionality of the kernel without the need to reboot the system.Take device driver as an example, it allows the kernel to access hardware connected to the system. Without kernel module we have to add the code into the kernel source code, and rebuild and reboot the kernel, obviously this is complicated.</p>
+
+        </div>
+
+    </div>
+
+</article><article id="{article-id}" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+
+        <header class="article-header">
+            <h1 itemprop="name">
+                <a class="article-title" href="/blogs/2018/00-algorithm/application-of-max-network-flow.html">application-of-max-network-flow</a>
+            </h1>
+        </header>
+
+        <div class="article-meta">
+            <a href="/blogs/2018/00-algorithm/application-of-max-network-flow.html" class="article-date">
+                <time itemprop="datePublished">2018年00-algorithm月</time>
+            </a>
+        </div>
+
+        <div class="article-entry" itemprop="articleBody">
+            <h2><a data-uk-modal="{target:'#category-id'}">Load balance</a></h2>
+
+<p>You have some different computers and jobs. For each job, it can only be done on one of two specified computers. The load of a computer is the number of jobs which have been done on the computer. Give the number of jobs and two computer ID for each job. You task is to minimize the max load.</p>
+<p>(hint: binary search)</p>
+<p>Implement Ford-Fulkerson algorithm to find the maximum flow of the following network, and list your intermediate steps. Use you implementation to solve problem 1 and show your answers. INPUT: (N, M) means number of jobs and computers. Next N line, each line has two computer ID for a job. see more detial in the file problem1.data. OUTPUT: the minimum number of the max load.</p>
+
+        </div>
+
+    </div>
+
+</article><article id="{article-id}" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+
+        <header class="article-header">
+            <h1 itemprop="name">
+                <a class="article-title" href="/blogs/2018/00-algorithm/algorithm-max-network-flow.html">algorithm-max-network-flow</a>
+            </h1>
+        </header>
+
+        <div class="article-meta">
+            <a href="/blogs/2018/00-algorithm/algorithm-max-network-flow.html" class="article-date">
+                <time itemprop="datePublished">2018年00-algorithm月</time>
+            </a>
+        </div>
+
+        <div class="article-entry" itemprop="articleBody">
+            <p>The network flow problem is to seek the max flow of a network, there are several property of a network.</p>
+<ul><li>Vertex</li>
+</ul>
+<p>+ adjacent Edge is those from the vertex out</p>
+<ul><li>Edge</li>
+</ul>
+<p>+ link two vertex</p>
+<p>+ have a direction</p>
+<p>+ have a capacity ( c )</p>
+<ul><li>flow</li>
+</ul>
+<p>+ stores how much has been used (f)</p>
+<p>+ residual</p>
+
+        </div>
+
+    </div>
+
+</article><article id="{article-id}" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+
+        <header class="article-header">
+            <h1 itemprop="name">
+                <a class="article-title" href="/blogs/2018/00-algorithm/algorithm-dynamic-programing.html">algorithm-dynamic-programing</a>
+            </h1>
+        </header>
+
+        <div class="article-meta">
+            <a href="/blogs/2018/00-algorithm/algorithm-dynamic-programing.html" class="article-date">
+                <time itemprop="datePublished">2018年00-algorithm月</time>
+            </a>
+        </div>
+
+        <div class="article-entry" itemprop="articleBody">
+            <h2><a data-uk-modal="{target:'#category-id'}">1 Largest Divisible Subset</a></h2>
+
+<p>Given a set of distinct positive integers, find the largest subset such that every pair \((Si, Sj)\) of elements in this subset satisfies:Si%Sj = 0 or Sj%Si = 0.</p>
+<h3><a data-uk-modal="{target:'#category-id'}">solution</a></h3>
+
+<p>the optimal structure is</p>
+<p>$$ OPT(i) = max{OPT(other(i)+Si), OPT(i-1)}$$</p>
+<p>other(i) demotes all the values that satisfy Si%v == 0, if Si is already in the OPT(i-1), then there is no need to do the repeated work.</p>
+
+        </div>
+
+    </div>
+
+</article><nav id="page-nav"><a class="extend prev" rel="prev" href="/page/4/">&laquo; Prev</a>
+<a class="page-number" href="/">1</a>
+<a class="page-number" href="/page/2/">2</a>
+<a class="page-number" href="/page/3/">3</a>
+<a class="page-number" href="/page/4/">4</a>
+<span class="page-number current">5</span><a class="page-number" href="/page/6/">6</a>
+<a class="extend next" rel="next" href="/page/6/">Next &raquo;</a>
+</nav>
+
+        </section>
+        <footer id="footer">
+
+            <div class="outer">
+                <div id="footer-info" class="inner">
+                    &copy; 2019 Wang Xingang.&nbsp; Powered by <a href="https://github.com/wxggg/libevent-cpp"
+                        target="_blank">libevent-cpp</a>, theme by <a href="http://github.com/ppoffice">PPOffice</a>
+                </div>
+            </div>
+        </footer>
+
+
+    </div>
+</body>
+
+</html>

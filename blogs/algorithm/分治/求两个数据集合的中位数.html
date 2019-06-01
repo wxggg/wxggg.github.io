@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+
+    <title>WXG的小站</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,
+            maximum-scale=1">
+
+    <link type="text/css" rel="stylesheet" href="/syntaxhighlighter/styles/shCoreDefault.css">
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/webfonts/ptserif/main.css">
+    <script src="/js/jquery.min.js"></script>
+    <script src="/js/script.js"></script>
+    <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=default"></script>
+    <script type="text/javascript" src="/syntaxhighlighter/scripts/shCore.js"></script>
+    <script type="text/javascript" src="/syntaxhighlighter/scripts/shBrushCpp.js"></script>
+    <script type="text/javascript" src="/syntaxhighlighter/scripts/shBrushPython.js"></script>
+    <script type="text/javascript" src="/syntaxhighlighter/scripts/shBrushPerl.js"></script>
+
+    <script type="text/javascript">
+        SyntaxHighlighter.all();
+    </script>
+    <style>
+        .syntaxhighlighter table {
+            font-size: 12px !important;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="container">
+        <header id="header">
+            <div id="header-outer" class="outer">
+                <div id="header-inner" class="inner">
+                    <a id="main-nav-toggle" class="nav-icon" href="javascript:;"></a>
+                    <a id="logo" class="logo" href="/"></a>
+                    <nav id="main-nav">
+                    </nav>
+                    <nav id="sub-nav">
+                        <div id="search-form-wrap">
+                            <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+                        </div>
+                    </nav>
+                </div>
+            </div>
+        </header>
+        <section id="main" class="outer">
+
+            <article id="post-hello-world" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+
+        <header class="article-header">
+            <h1 class="article-title" itemprop="name">求两个数据集合的中位数</h1>
+        </header>
+
+        <div class="article-meta">
+            <a href="/blogs/algorithm/分治/求两个数据集合的中位数.html" class="article-date">
+                <time itemprop="datePublished">algorithm年分治月</time>
+            </a>
+        </div>
+
+        <div class="article-entry" itemprop="articleBody">
+            <pre class="brush: c++;">
+#include < vector>
+#include < algorithm>
+#include < unordered_map>
+#include < map>
+#include < iostream>
+using namespace std;
+
+class Solution
+{
+  public:
+    vector< int> twoSum(vector< int> & nums, int target)
+    {
+        for (auto i = nums.begin(); i <  nums.end(); i++)
+        {
+            auto it = find(i + 1, nums.end(), target - *i);
+            if (it != nums.end())
+                return {(int)(i - nums.begin()), (int)(it - nums.begin())};
+        }
+        return {0, 0};
+    }
+
+    /** referece @sritee **/
+    vector< int> twoSum2(vector< int> & nums, int target)
+    {
+        unordered_map< int, int> hash;
+        for (int i = 0; i <  nums.size(); i++)
+        {
+            auto find = hash.find(target - nums[i]);
+            if (find == hash.end())
+                hash.emplace(nums[i], i);
+            else
+                return {find->second, i};
+        }
+        return {0, 0};
+    }
+
+    vector< int> twoSum3(vector< int> & nums, int target)
+    {
+        vector< int> nums1(nums);
+        sort(nums1.begin(), nums1.end());
+        vector< int> re;
+        int L = 0, R = nums.size() - 1;
+        while (L < = R)
+        {
+            if (nums1[L] + nums1[R] <  target)
+                L++;
+            else if (nums1[L] + nums1[R] > target)
+                R--;
+            else
+                break;
+        }
+        int len = nums.size();
+        for (int i = 0; i <  len; i++)
+        {
+            if (nums[i] == nums1[L] || nums[i] == nums1[R])
+                re.push_back(i);
+        }
+        return re;
+    }
+
+    vector< int> twoSum4(vector< int> & nums, int target)
+    {
+        map< int, int> hash;
+        auto end = hash.end();
+        for (int i = 0; i <  nums.size(); i++)
+        {
+            auto find = hash.find(target - nums[i]);
+            if (find == end)
+                hash.emplace(nums[i], i);
+            else
+                return {find->second, i};
+        }
+        return {0, 0};
+    }
+};
+
+int main(int argc, char const *argv[])
+{
+    Solution s;
+    vector< int> nums = {4, 4, 7};
+    vector< int> result;
+    int target = 11;
+
+    result = s.twoSum4(nums, target);
+    cout < <  "result:" < <  result[0] < <  " " < <  result[1] < <  endl;
+
+    return 0;
+}
+</pre>
+
+        </div>
+
+        <footer class="article-footer">
+        </footer>
+
+    </div>
+
+    <nav id="article-nav">
+        <a href="/" id="article-nav-newer" class="article-nav-link-wrap">
+            <div class="article-nav-title"><span>&lt;</span>&nbsp; 
+            </div>
+        </a>
+        <a href="/blogs/2019/03/linux-0-0-1-初始化及进程调度.html" id="article-nav-older" class="article-nav-link-wrap">
+            <div class="article-nav-title">linux-0-0-1-初始化及进程调度 &nbsp;<span>&gt;</span>
+            </div>
+        </a>
+
+
+    </nav>
+
+
+</article>
+
+        </section>
+        <footer id="footer">
+
+            <div class="outer">
+                <div id="footer-info" class="inner">
+                    &copy; 2019 Wang Xingang.&nbsp; Powered by <a href="https://github.com/wxggg/libevent-cpp" target="_blank">libevent-cpp</a>, theme by <a href="http://github.com/ppoffice">PPOffice</a>
+                </div>
+            </div>
+        </footer>
+
+
+    </div>
+</body>
+
+</html>

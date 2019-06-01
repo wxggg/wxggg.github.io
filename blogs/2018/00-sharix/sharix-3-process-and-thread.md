@@ -1,0 +1,184 @@
+The task switch method in sharix is software switch, so it is mainly about context switch and the change of the register value and there's nothing about TSS segments at the first time. When it is time to add the user process model in sharix, the TSS will be needed because we need it to change the esp0 and ss0 to change the privilege from ring3 to ring0.
+
+## init process structure
+```c
+// process's state in his life cycle
+enum proc_state {
+    PROC_UNINIT = 0,  // uninitialized
+    PROC_SLEEPING,    // sleeping
+    PROC_RUNNABLE,    // runnable(maybe running)
+    PROC_ZOMBIE,      // almost dead, and wait parent proc to reclaim his resource
+};
+struct proc_struct {
+  enum proc_state state;
+  int pid;
+  uintptr_t kstack;               // kernel stack
+  struct proc_struct *parent;
+  struct mm_struct *mm;
+  struct context context;
+  struct trapframe *tf;
+  uintptr_t cr3;                  // address of PDT
+  list_entry_t list_link;
+};
+```
+## idleproc
+kernel memory & registers
+
+In entry.S, CS has been set $KERNEL_CS, and DS & ES & SS has been set KERNEL_DS, The stack space is as follows:
+```c
+.data
+.align PGSIZE
+	.globl bootstack
+bootstack:
+	.space KSTACKSIZE
+	.global bootstacktop
+bootstacktop:
+```
+* eip is changing as the program goes.
+* mm is the boot_pgdir
+* cr3 is boot_cr3
+```c
+eax            0x10	16
+ecx            0x3	3
+edx            0xc0108d99	-1072656999
+ebx            0x10094	65684
+esp            0xc0121fbc	0xc0121fbc
+ebp            0xc0121ff8	0xc0121ff8
+esi            0x10094	65684
+edi            0x807c	32892
+eip            0xc01075bd	0xc01075bd <cpu_idle>
+eflags         0x286	[ PF SF IF ]
+cs             0x8	8
+ss             0x10	16
+ds             0x10	16
+es             0x10	16
+fs             0x23	35
+gs             0x23	35
+```
+
+## several process state
+ To clarify the process switch, there is only two kernel threads now in sharix. One is idleproc and another is thread1. The process thread1 is used to test the correctness of process, and it is created by kernel_thread function as follows:
+```c
+int pid = kernel_thread(thread1, NULL);
+struct proc_struct * proc = find_proc(pid);
+print_proc(proc);
+proc_run(proc);
+```
+###1) process idle structure value:
+```c
+------------------- [info process] ---------------
+state: runnable
+pid: 0
+need_resched: 0
+kstack: c0121000
+------------- contex ---------------
+eip: 0
+esp: 0
+ebx: 0
+ecx: 0
+edx: 0
+esi: 0
+edi: 0
+ebp: 0
+cr3: 7fdf000
+time_slice: 0
+```
+###2) created pid1 process value:
+```c
+------------------- [info process] ---------------
+state: uninitialized
+pid: 1
+need_resched: 0
+kstack: c7e51000 //proc->kstack = (uintptr_t)kmalloc(PGSIZE);
+parent pid: 0
+------------- contex ---------------
+eip: c01073a0 <forkret>
+esp: c7e51fbc //proc->context.esp = (uintptr_t)(proc->tf);
+ebx: 0
+ecx: 0
+edx: 0
+esi: 0
+edi: 0
+ebp: 0
+trapframe at 0xc7e51fbc //proc->tf = (struct trapframe *)(proc->kstack + PGSIZE) - 1
+  edi  0x00000000
+  esi  0x00000000
+  ebp  0x00000000
+  oesp 0x00000000
+  ebx  0xc010790f <thread1>
+  edx  0x00000000
+  ecx  0x00000000
+  eax  0x00000000
+  es   0x----0010
+  ds   0x----0010
+  trap 0x00000000
+  err  0x00000000
+  eip  0xc01000dc <kernel_thread_entry>
+  cs   0x----0008
+  flag 0x00000200
+cr3: 7fdf000
+time_slice: 0
+```
+
+## proc_run then switch_to
+```c
+struct context {
+    uint32_t eip;
+    uint32_t esp;
+    uint32_t ebx;
+    uint32_t ecx;
+    uint32_t edx;
+    uint32_t esi;
+    uint32_t edi;
+    uint32_t ebp;
+};
+// notice that from right to left push
+// 8(%esp) is to       4(%esp) is from
+// call means push eip and jmp, so (%esp) is eip
+void switch_to(struct context *from, struct context *to);
+.text
+.globl switch_to
+switch_to:                      # switch_to(from, to)
+
+    # save from's registers
+    movl 4(%esp), %eax          # eax points to from
+    popl 0(%eax)                # save eip to from.eip
+    movl %esp, 4(%eax)
+    movl %ebx, 8(%eax)
+    movl %ecx, 12(%eax)
+    movl %edx, 16(%eax)
+    movl %esi, 20(%eax)
+    movl %edi, 24(%eax)
+    movl %ebp, 28(%eax)
+
+    # restore to's registers
+    movl 4(%esp), %eax          # not 8(%esp): popped return address already
+                                # eax now points to to
+    movl 28(%eax), %ebp
+    movl 24(%eax), %edi
+    movl 20(%eax), %esi
+    movl 16(%eax), %edx
+    movl 12(%eax), %ecx
+    movl 8(%eax), %ebx
+    movl 4(%eax), %esp
+
+    pushl 0(%eax)               # push eip
+
+    ret
+```
+ The switch_to is likely to break the procedure of function call and return. Because a call means a push eip and then jmp, the to_switch use this to change the eip to return so as to change the process to run. Because there is nothing about the privilege, it will be fine to switch process like this.
+
+## kern_thread_entry:
+Now %eip = kern_thread_entry and %ebx = thread1, %edx = arg, so the kern_thread_entry is used to enter the thread1. But why it bothers so much to design such a complex procedure, because if we just set the eip as thread1, we still can switch to function thread1. The reason for this is that it is a little complex to do some work after a thread has returned. So there is kernel_thread_entry to call *%ebx and the use do_exit to do the exit work.
+```c
+.text
+.globl kernel_thread_entry
+kernel_thread_entry:        # void kernel_thread(void)
+
+    pushl %edx              # push arg
+    call *%ebx              # call fn
+
+    pushl %eax              # save the return value of fn(arg)
+    call do_exit            # call do_exit to terminate current thread
+```
+## exit_thread

@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+
+    <title>WXG的小站</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,
+            maximum-scale=1">
+
+    <link type="text/css" rel="stylesheet" href="/syntaxhighlighter/styles/shCore.css">
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/webfonts/ptserif/main.css">
+    <script src="/js/jquery.min.js"></script>
+    <script src="/js/script.js"></script>
+    <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=default"></script>
+    <script type="text/javascript" src="/syntaxhighlighter/scripts/shCore.js"></script>
+    <script type="text/javascript" src="/syntaxhighlighter/scripts/shBrushCpp.js"></script>
+    <script type="text/javascript" src="/syntaxhighlighter/scripts/shBrushPython.js"></script>
+    <script type="text/javascript" src="/syntaxhighlighter/scripts/shBrushPerl.js"></script>
+
+    <script type="text/javascript">
+        SyntaxHighlighter.all();
+    </script>
+    <style>
+        .syntaxhighlighter table {
+            font-size: 14px !important;
+            overflow: hidden !important;
+            /* background-color: aliceblue !important; */
+        }
+    </style>
+</head>
+
+<body>
+    <div id="container">
+        <header id="header">
+            <div id="header-outer" class="outer">
+                <div id="header-inner" class="inner">
+                    <a id="main-nav-toggle" class="nav-icon" href="javascript:;"></a>
+                    <a id="logo" class="logo" href="/"></a>
+                    <nav id="main-nav">
+                    </nav>
+                    <nav id="sub-nav">
+                        <div id="search-form-wrap">
+                            <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form">
+                                <input type="search" name="q" class="search-form-input" placeholder="Search"><button
+                                    type="submit" class="search-form-submit">&#xF002;</button><input type="hidden"
+                                    name="sitesearch" value="http://wxgg.cc"></form>
+                        </div>
+                    </nav>
+                </div>
+            </div>
+        </header>
+        <section id="main" class="outer">
+
+            <article id="post-hello-world" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+
+        <header class="article-header">
+            <h1 class="article-title" itemprop="name">algorithm-max-network-flow</h1>
+        </header>
+
+        <div class="article-meta">
+            <a href="/blogs/2018/00-algorithm/algorithm-max-network-flow.html" class="article-date">
+                <time itemprop="datePublished">2018年00-algorithm月</time>
+            </a>
+        </div>
+
+        <div class="article-entry" itemprop="articleBody">
+            <p>The network flow problem is to seek the max flow of a network, there are several property of a network.</p>
+<ul><li>Vertex</li>
+</ul>
+<p>+ adjacent Edge is those from the vertex out</p>
+<ul><li>Edge</li>
+</ul>
+<p>+ link two vertex</p>
+<p>+ have a direction</p>
+<p>+ have a capacity ( c )</p>
+<ul><li>flow</li>
+</ul>
+<p>+ stores how much has been used (f)</p>
+<p>+ residual</p>
+<p>+ stores the residual room, (= c-f)</p>
+<h2><a data-uk-modal="{target:'#category-id'}">Ford-Fulkerson algorithm</a></h2>
+
+<p>see detailed information in blog</p>
+<blockquote><p>https://www.cnblogs.com/luweiseu/archive/2012/07/14/2591573.html</p></blockquote>
+<p>and PPT of professor bdb</p>
+<blockquote><p>http://bioinfo.ict.ac.cn/~dbu/AlgorithmCourses/Lectures/Lec10.pdf</p></blockquote>
+<h3><a data-uk-modal="{target:'#category-id'}">realization</a></h3>
+
+<pre class="brush: python;">
+class Edge(object):
+    def __init__(self, u, v, c):
+        self.u = u
+        self.v = v
+        self.capacity = c
+
+    def __repr__(self):
+        return str(self.u) + "->" + str(self.v) + ":" + str(self.capacity)
+
+
+class NetworkFlow(object):
+    def __init__(self):
+        self.adjacent = {}
+        self.flow = {}
+
+    def addVertex(self, v):
+        self.adjacent[v] = []
+
+    def addEdge(self, u, v, w):
+        if u == v:
+            raise ValueError("u == v")
+        e = Edge(u, v, w)
+        re = Edge(v, u, 0)
+        e.redge = re
+        re.redge = e
+        self.adjacent[u].append(e)
+        self.adjacent[v].append(re)
+        self.flow[e] = 0
+        self.flow[re] = 0
+
+    def getEdge(self, v):
+        return self.adjacent[v]
+
+    def findPath(self, u, v, found):
+        if u == v:
+            return found
+        for e in self.adjacent[u]:
+            residual = e.capacity - self.flow[e]
+            if residual > 0 and (e, residual) not in found:
+                ret = self.findPath(e.v, v, found + [(e, residual)])
+                if ret != None:
+                    return ret
+
+    def maxFlow(self, u, v):
+        path = self.findPath(u,v,[])
+        while path != None:
+            print(path)
+            flow = min(res for e,res in path)
+            for e,res in path:
+                self.flow[e] += flow
+                self.flow[e.redge] -= flow
+            path = self.findPath(u,v,[])
+        return sum(self.flow[e] for e in self.adjacent[u])
+</pre>
+<h3><a data-uk-modal="{target:'#category-id'}">example</a></h3>
+
+<img src="https://images.cnblogs.com/cnblogs_com/luweiseu/1.8.6.jpg" alt="">
+<p>To solve this network, the result is 4.</p>
+<pre class="brush: python;">
+network = NetworkFlow()
+for i in range(6):
+    network.addVertex(i)
+
+network.addEdge(0, 1, 2)
+network.addEdge(0, 2, 3)
+network.addEdge(1, 3, 3)
+network.addEdge(1, 4, 1)
+network.addEdge(2, 3, 1)
+network.addEdge(2, 4, 1)
+network.addEdge(3, 5, 2)
+network.addEdge(4, 5, 3)
+</pre>
+<p>The result is correct on this problem, everything seems good since now.</p>
+<h3><a data-uk-modal="{target:'#category-id'}">a bad example</a></h3>
+
+<p>The result is correct but takes many steps to solve this problem, and this is mainly because there is a bottleneck on this problem, it is explained clear on the PPT mentioned before.</p>
+<img src="http://www.sharix.site/static/img/networkflow1.png" alt="">
+<p>There are several ways to solve this bad feature</p>
+<img src="http://www.sharix.site/static/img/networkflow2.png" alt="">
+<h2><a data-uk-modal="{target:'#category-id'}">scaling with delta</a></h2>
+
+<p>This method will take only several steps to solve the problem upward.</p>
+<img src="http://www.sharix.site/static/img/networkflow3.png" alt="">
+<pre class="brush: python;">
+def findPath(self, u, v, found,  delta):
+    if u == v:
+        return found
+    for e in self.adjacent[u]:
+        residual = e.capacity - self.flow[e]
+        # compare and make e.capacity > delta
+        if e.capacity > delta and residual > 0 and (e, residual) not in found:
+            ret = self.findPath(e.v, v, found + [(e, residual)], delta)
+            if ret != None:
+                return ret
+
+def maxFlow(self, u, v):
+    delta = sum(e.capacity for e in self.adjacent[u]) # set delta
+    while delta >= 1:
+        path = self.findPath(u,v,[], delta)
+        print(delta)
+        print(path)
+        while path != None:
+            flow = min(res for e,res in path)
+            for e,res in path:
+                self.flow[e] += flow
+                self.flow[e.redge] -= flow
+            path = self.findPath(u,v,[],delta)
+        delta /= 2 # scale delta
+    return sum(self.flow[e] for e in self.adjacent[u])
+</pre>
+<h2><a data-uk-modal="{target:'#category-id'}">Edmonds-Karp algorithm</a></h2>
+
+<p>use BFS search to find the shortest path</p>
+<img src="http://www.sharix.site/static/img/networkflow4.png" alt="">
+<pre class="brush: python;">
+def findShortestPath(self, u, v): # BFS
+    visited = []
+    level = [(u,[])]
+    while level != []:
+        nextlevel = []
+        for x,path in level:
+            visited.append(x)
+            for e in self.adjacent[x]:
+                residual = e.capacity - self.flow[e]
+                if residual > 0 and e.v not in visited:
+                    nextlevel.append((e.v,path+[(e,residual)]))
+                if e.v == v:
+                    return path+[(e,residual)]
+        level = nextlevel
+</pre>
+<h2><a data-uk-modal="{target:'#category-id'}">Dinic algorithm</a></h2>
+
+<p>use BFS tree to construct a layered network</p>
+<img src="http://www.sharix.site/static/img/networkflow5.png" alt="">
+<p>reference:</p>
+<blockquote><p>http://blog.csdn.net/jwg2732/article/details/78516817</p></blockquote>
+<h3><a data-uk-modal="{target:'#category-id'}">getLayeredNetwork</a></h3>
+
+<pre class="brush: python;">
+def getLayeredNetwork(self, u, v):
+    layered = NetworkFlow()
+    layered.addVertex(u)
+
+    visited = []
+    level = [u]
+    count = 1
+    while v not in level and level != []:
+        count += 1
+        visited += level
+        nextlevel = []
+        for x in level:
+            for e in self.adjacent[x]:
+                residual = e.capacity - self.flow[e]
+                if residual > 0 and e.v not in visited:
+                    nextlevel.append(e.v)
+                    layered.addVertex(e.v)
+                    layered.addE(e, residual)
+        level = list(set(nextlevel))
+
+    layered.count = count
+    if v in level:
+        return layered
+</pre>
+</blockquote>
+<h3><a data-uk-modal="{target:'#category-id'}">maxFlow</a></h3>
+
+<pre class="brush: python;">
+def maxFlow(self, u, v):
+    layered = self.getLayeredNetwork(u, v)
+    while layered != None:
+        level = [u]
+        totalpaths = {}
+        totalpaths[u] = ([([], sum(e.capacity for e in self.adjacent[u]))])
+        for i in range(layered.count):
+            nextlevel = []
+            nextpaths = {}
+            for x in totalpaths:
+                for path, total in totalpaths[x]:
+                    if x in level:
+                        for e in layered.adjacent[x]:
+                            if total == 0:
+                                break
+                            if e.v not in nextpaths:
+                                nextpaths[e.v] = []
+                            nextlevel.append(e.v)
+                            if layered.residual[e] >= total:
+                                nextpaths[e.v].append((path + [e], total))
+                                break
+                            else:
+                                nextpaths[e.v].append(
+                                    (path + [e], layered.residual[e]))
+                                total -= layered.residual[e]
+            level = list(set(nextlevel))
+            if len(nextpaths) != 0:
+                totalpaths = nextpaths
+
+        for path, total in totalpaths[v]:
+            for e in path:
+                self.flow[e] += total
+                self.flow[e.redge] -= total
+        layered = self.getLayeredNetwork(u, v)
+    return sum(self.flow[e] for e in self.adjacent[u])
+</pre>
+<p>a executing process example</p>
+<pre class="brush: c;">
+----------------------------------i= 0
+--------------------------x= 0
+totalpath {0: [([], 96)]}
+level [0]
+-------------total: 96 path: []
+---------e= 0->1:64 total: 96
+---------e= 0->2:32 total: 32
+----------------------------------i= 1
+--------------------------x= 1
+totalpath {1: [([0->1:64], 64)], 2: [([0->2:32], 32)]}
+level [1, 2]
+-------------total: 64 path: [0->1:64]
+---------e= 1->3:64 total: 64
+--------------------------x= 2
+totalpath {1: [([0->1:64], 64)], 2: [([0->2:32], 32)]}
+level [1, 2]
+-------------total: 32 path: [0->2:32]
+---------e= 2->3:32 total: 32
+</pre>
+</blockquote>
+<h2><a data-uk-modal="{target:'#category-id'}">Push-Relabel algorithm</a></h2>
+
+<p>use a field <code>forward</code> of Edge to judge if the edge is forward or backward.</p>
+<p>reference</p>
+<blockquote><p>http://blog.csdn.net/mr_kktian/article/details/53574134</p></blockquote>
+<img src="http://www.sharix.site/static/img/networkflow6.png" alt="">
+<h3><a data-uk-modal="{target:'#category-id'}">a instance</a></h3>
+
+<p>0.initially</p>
+<img src="http://www.sharix.site/static/img/networkflow7_0.png" alt="">
+<p>1.s->r1 push, r1->c1,c2,c3 =>t</p>
+<img src="http://www.sharix.site/static/img/networkflow7.png" alt="">
+<p>2.r2->c1 so c1 has a excess=1 need to push back</p>
+<img src="http://www.sharix.site/static/img/networkflow8.png" alt="">
+<p>3.c1->r1->s, push back the excess1 to s</p>
+<img src="http://www.sharix.site/static/img/networkflow9.png" alt="">
+<p>4.s->r1->c1, because only the path to r1 have left capacity, and then c1 push the excess=1 to r2</p>
+<img src="http://www.sharix.site/static/img/networkflow10.png" alt="">
+<p>5.finally</p>
+<img src="http://www.sharix.site/static/img/networkflow11.png" alt="">
+<h3><a data-uk-modal="{target:'#category-id'}">realize</a></h3>
+
+<pre class="brush: python;">
+def maxFlow(self, s, t):
+    self.height[s] = len(self.adjacent)
+    for e in self.adjacent[s]:
+        self.flow[e] = e.capacity
+        self.flow[e.redge] = e.capacity
+        self.excess[e.v] = e.capacity
+    self.excess[s] = 0
+
+    while True:
+        exc = [x for x in self.excess if self.excess[x] > 0 and x != t]
+        judge = False
+        flags = False
+        if len(exc) == 0:
+            break
+        elif len(exc) == 1 and exc[0] == s:
+            flags = True
+
+        for x in exc:
+            flag = False
+            for e in self.adjacent[x]:
+                if self.height[x] > self.height[e.v]:
+                    if e.forward and e.capacity - self.flow[e] > 0:
+                        bottleneck = min(self.excess[x], e.capacity - self.flow[e])
+                        self.flow[e] += bottleneck
+                        self.flow[e.redge] += bottleneck
+                        self.excess[x] -= bottleneck
+                        self.excess[e.v] += bottleneck
+                        flag = True
+                    elif not e.forward and self.flow[e] > 0:
+                        bottleneck = min(self.excess[x], self.flow[e])
+                        self.flow[e] -= bottleneck
+                        self.flow[e.redge] -= bottleneck
+                        self.excess[x] -= bottleneck
+                        self.excess[e.v] += bottleneck
+                        flag = True
+
+            if flag == False:
+                self.height[x] += 1
+                judge = True
+        if judge and flags:
+            break
+    return self.excess[t]
+</pre>
+
+        </div>
+
+        <footer class="article-footer">
+        </footer>
+
+    </div>
+
+    <nav id="article-nav">
+        <a href="/blogs/2018/00-algorithm/application-of-max-network-flow.html" id="article-nav-newer" class="article-nav-link-wrap">
+            <div class="article-nav-title"><span>&lt;</span>&nbsp; application-of-max-network-flow
+            </div>
+        </a>
+        <a href="/blogs/2018/00-algorithm/algorithm-dynamic-programing.html" id="article-nav-older" class="article-nav-link-wrap">
+            <div class="article-nav-title">algorithm-dynamic-programing &nbsp;<span>&gt;</span>
+            </div>
+        </a>
+
+
+    </nav>
+
+
+</article>
+
+        </section>
+        <footer id="footer">
+
+            <div class="outer">
+                <div id="footer-info" class="inner">
+                    &copy; 2019 Wang Xingang.&nbsp; Powered by <a href="https://github.com/wxggg/libevent-cpp"
+                        target="_blank">libevent-cpp</a>, theme by <a href="http://github.com/ppoffice">PPOffice</a>
+                </div>
+            </div>
+        </footer>
+
+
+    </div>
+</body>
+
+</html>

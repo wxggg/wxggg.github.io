@@ -1,159 +1,298 @@
 <!DOCTYPE html>
 <html>
-<head><meta name="generator" content="Hexo 3.8.0">
-  <meta charset="utf-8">
-  
-  <title>Hexo</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta property="og:type" content="website">
-<meta property="og:title" content="Hexo">
-<meta property="og:url" content="http://yoursite.com/index.html">
-<meta property="og:site_name" content="Hexo">
-<meta property="og:locale" content="default">
-<meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Hexo">
-  
-  
-  <link rel="stylesheet" href="/webfonts/ptserif/main.css">
-  <link rel="stylesheet" href="/webfonts/ptserif/source-code-pro.css">
-  <link rel="stylesheet" href="/css/style.css">
-  
 
+<head>
+    <meta charset="utf-8">
+
+    <title>WXG的小站</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,
+            maximum-scale=1">
+
+    <link type="text/css" rel="stylesheet" href="/syntaxhighlighter/styles/shCore.css">
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/webfonts/ptserif/main.css">
+    <script src="/js/jquery.min.js"></script>
+    <script src="/js/script.js"></script>
+    <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=default"></script>
+    <script type="text/javascript" src="/syntaxhighlighter/scripts/shCore.js"></script>
+    <script type="text/javascript" src="/syntaxhighlighter/scripts/shBrushCpp.js"></script>
+    <script type="text/javascript" src="/syntaxhighlighter/scripts/shBrushPython.js"></script>
+    <script type="text/javascript" src="/syntaxhighlighter/scripts/shBrushPerl.js"></script>
+
+    <script type="text/javascript">
+        SyntaxHighlighter.all();
+    </script>
+    <style>
+        .syntaxhighlighter table {
+            font-size: 14px !important;
+            overflow: hidden !important;
+            /* background-color: aliceblue !important; */
+        }
+    </style>
 </head>
-</html>
+
 <body>
-  <div id="container">
-    <header id="header">
-  <div id="header-outer" class="outer">
-    <div id="header-inner" class="inner">
-      <a id="main-nav-toggle" class="nav-icon" href="javascript:;"></a>
-      <a id="logo" class="logo" href="/"></a>
-      <nav id="main-nav">
-        
-      </nav>
-      <nav id="sub-nav">
-        <div id="search-form-wrap">
-          <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+    <div id="container">
+        <header id="header">
+            <div id="header-outer" class="outer">
+                <div id="header-inner" class="inner">
+                    <a id="main-nav-toggle" class="nav-icon" href="javascript:;"></a>
+                    <a id="logo" class="logo" href="/"></a>
+                    <nav id="main-nav">
+                    </nav>
+                    <nav id="sub-nav">
+                        <div id="search-form-wrap">
+                            <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form">
+                                <input type="search" name="q" class="search-form-input" placeholder="Search"><button
+                                    type="submit" class="search-form-submit">&#xF002;</button><input type="hidden"
+                                    name="sitesearch" value="http://wxgg.cc"></form>
+                        </div>
+                    </nav>
+                </div>
+            </div>
+        </header>
+        <section id="main" class="outer">
+
+            <article id="{article-id}" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+
+        <header class="article-header">
+            <h1 itemprop="name">
+                <a class="article-title" href="/blogs/2019/05/平衡二叉树和红黑树.html">平衡二叉树和红黑树</a>
+            </h1>
+        </header>
+
+        <div class="article-meta">
+            <a href="/blogs/2019/05/平衡二叉树和红黑树.html" class="article-date">
+                <time itemprop="datePublished">2019年05月</time>
+            </a>
         </div>
-      </nav>
+
+        <div class="article-entry" itemprop="articleBody">
+            <p>本文主要介绍了平衡二叉树（AVL）和红黑树（rbtree）的特点以及实现，具体而言在树的插入删除平衡修复过程介绍篇幅较大。</p>
+<h2><a data-uk-modal="{target:'#category-id'}">一、平衡二叉树和红黑树</a></h2>
+
+<p><strong>平衡二叉树（AVL）：</strong> 作为二叉查找树而言，平衡二叉树具备快速查找、插入、删除的特点，并且在平衡二叉树中任何节点的左右子树高度之差不超过1，这一特点使得平衡二叉树具备非常好的平衡性。</p>
+<p><strong>红黑树（RB）：</strong> 红黑树的特点是利用节点的颜色来控制树的平衡，根节点为黑，其余的节点可以为红或者黑，并且不能够存在父子节点同时为红的情况。最重要的一点是，每个节点到其叶节点的路径上的黑色节点的个数相等，这保证了红黑树具备平衡性。</p>
+<p>红黑树广泛应用于Linux内核、STL关联容器及nginx中，具备非常好的查找、插入删除特性。</p>
+<h2><a data-uk-modal="{target:'#category-id'}">二、为什么红黑树比平衡二叉树应用更广泛</a></h2>
+
+        </div>
+
     </div>
-  </div>
-</header>
-    <section id="main" class="outer">
-      <article id="post-hello-world.1" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/03/15/hello-world.1/">Hello World</a>
-    </h1>
-  
 
-      </header>
-    
-    <div class="article-meta">
-      <a href="/2019/03/15/hello-world.1/" class="article-date">
-  <time datetime="2019-03-15T12:20:26.497Z" itemprop="datePublished">2019-03-15</time>
-</a>
-      
-      
+</article><article id="{article-id}" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+
+        <header class="article-header">
+            <h1 itemprop="name">
+                <a class="article-title" href="/blogs/2019/05/b树和b+树实现.html">b树和b+树实现</a>
+            </h1>
+        </header>
+
+        <div class="article-meta">
+            <a href="/blogs/2019/05/b树和b+树实现.html" class="article-date">
+                <time itemprop="datePublished">2019年05月</time>
+            </a>
+        </div>
+
+        <div class="article-entry" itemprop="articleBody">
+            <p>本文主要介绍了b/b+树的特点以及为什么b/b+树在数据库中应用广泛，另外介绍了b/b+树基本操作的c++实现，并附完整源代码</p>
+<h2><a data-uk-modal="{target:'#category-id'}">一、 b树和b+树</a></h2>
+
+<p><strong>共同点：</strong> 首先b/b+树每个节点能够保存多个关键字，数量上限为M-1，这里M为b/b+树的度，限制了键的数量和子节点的数目，当一个非叶子节点有n个键的时候，必定有n+1个子节点。</p>
+<p>其次节点内及节点间的键值按顺序排列</p>
+<p>除根节点外的其它节点最少有 ceil(M/2)-1 个关键字</p>
+<p><strong>不同点：</strong> b树的每个节点都既能保存键(Key)又能保存值(Value)，而b+树只有叶子节点能够保存值，内部节点只保存键和子节点的指针</p>
+<p>b+树叶节点采用链表结构</p>
+<h2><a data-uk-modal="{target:'#category-id'}">二、 为什么用b/b+树</a></h2>
+
+<p>数据库如MySQL的数据一般放在磁盘中，而读盘的过程包括两次机械运动盘片旋转和磁头移动，这一过程比较耗时，所以对数据的访问性能受限于访问磁盘的次数。</p>
+
+        </div>
+
     </div>
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>Welcome to <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="noopener">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="noopener">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="noopener">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">"My New Post"</span></span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="noopener">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="noopener">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="noopener">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/deployment.html" target="_blank" rel="noopener">Deployment</a></p>
 
-      
+</article><article id="{article-id}" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+
+        <header class="article-header">
+            <h1 itemprop="name">
+                <a class="article-title" href="/blogs/2019/04/An-Implementation-Of-Multiprocessor-Linux-译.html">An-Implementation-Of-Multiprocessor-Linux-译</a>
+            </h1>
+        </header>
+
+        <div class="article-meta">
+            <a href="/blogs/2019/04/An-Implementation-Of-Multiprocessor-Linux-译.html" class="article-date">
+                <time itemprop="datePublished">2019年04月</time>
+            </a>
+        </div>
+
+        <div class="article-entry" itemprop="articleBody">
+            <h2><a data-uk-modal="{target:'#category-id'}">1 背景：Intel多处理器规范</a></h2>
+
+<p>Intel 奔腾处理器对支持多处理器有着很多内置的组建，包括硬件cache一致性、内置的处理器间中断处理和一套原子的test和set、exchange等类似操作。</p>
+<h2><a data-uk-modal="{target:'#category-id'}">2 单处理器内核中的互斥</a></h2>
+
+<p>内核要正确执行的话就得提供内部的锁来保护自己的各种表，以避免两个进程同时更新它们，比如分配同一个内存块。目前的Unix和类Unix内核有两种策略，传统早期的Unix系统采用粗粒度的锁，用少量的锁来保护整个内核。一些现代的系统使用细粒度的锁，因为细粒度锁有更多的开销其一般只用在多处理器内核和实时内核中。在实时内核中细粒度锁减少了锁被持有的事件，并且减少了严格的延迟时间。</p>
+<p>Linux内核中有些保证必须被确保。除非自愿睡眠，否则在内核中执行的进程不会被另一个内核中执行的进程抢占。这样确保了内核代码块相对于进程而言是原子的，极大地简化了很多操作。其次中断可能会抢占一个正在执行的内核态进程，但是永远都会返回到该进程。一个在内核态中的进程有可能禁用处理器上的中断并保证不会发生这种中断。最后的保证是内核任务不会抢占中断，也就是中断只有可能被其它中断抢占。</p>
+
+        </div>
+
     </div>
-    
-    
-  </div>
-  
-</article>
 
+</article><article id="{article-id}" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
 
+        <header class="article-header">
+            <h1 itemprop="name">
+                <a class="article-title" href="/blogs/2019/03/linux-0.x-初始化及进程调度.html">linux-0.x-初始化及进程调度</a>
+            </h1>
+        </header>
 
+        <div class="article-meta">
+            <a href="/blogs/2019/03/linux-0.x-初始化及进程调度.html" class="article-date">
+                <time itemprop="datePublished">2019年03月</time>
+            </a>
+        </div>
 
+        <div class="article-entry" itemprop="articleBody">
+            <p>Linux早期版本变化主要体现在启动及初始化的过程中，这一部分在后面则基本不会改动，前面提到linux-0.01版本的启动过程中包含多次内存移动过程，既有引导扇区将自己移动到0x90000，也有引导扇区将系统加载到0x10000后又移动到0x0000。这样做的目的主要是为了避免在加载的过程中覆盖bios的中断处理程序。这样的特点在后面的linux版本中也得以保留，以linux-0.11为例，主要变化就是将启动过程中的一部分代码抽取出来作为setup.s文件，这是因为引导扇区的大小固定为512B。</p>
+<img src="/blogs/2019/03/img/linux-0.x-boot.png" alt="">
+<p>到linux-0.99版本的变化主要是在如上setup.s代码获取到显卡数据之后立即进行显示模式的切换，当然这一切仍然在实模式下，因为显示模式的切换是需要调用bios中断的。</p>
+<h2><a data-uk-modal="{target:'#category-id'}">1 linux-0.99 初始化</a></h2>
 
+<p>前面setup.s跳转的32位入口是32位汇编程序head.s，head.s需要再次重建gdt、idt等分段和中断机制，之后执行初始化代码也就是start_kernel，相对于0.01版本而言，这里初始化的内容多了硬件中断初始化、软盘初始化、socket初始化、以及进程间通信ipc初始化，并且这里使用idle函数替代了0.01中的pause函数。</p>
 
+        </div>
 
-
-    
-      <article id="post-hello-world" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/03/15/hello-world/">Hello World</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-meta">
-      <a href="/2019/03/15/hello-world/" class="article-date">
-  <time datetime="2019-03-15T12:16:39.413Z" itemprop="datePublished">2019-03-15</time>
-</a>
-      
-      
     </div>
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>Welcome to <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="noopener">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="noopener">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="noopener">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">"My New Post"</span></span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="noopener">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="noopener">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="noopener">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/deployment.html" target="_blank" rel="noopener">Deployment</a></p>
 
-      
+</article><article id="{article-id}" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+
+        <header class="article-header">
+            <h1 itemprop="name">
+                <a class="article-title" href="/blogs/2019/03/linux-0.01-初始化及进程调度.html">linux-0.01-初始化及进程调度</a>
+            </h1>
+        </header>
+
+        <div class="article-meta">
+            <a href="/blogs/2019/03/linux-0.01-初始化及进程调度.html" class="article-date">
+                <time itemprop="datePublished">2019年03月</time>
+            </a>
+        </div>
+
+        <div class="article-entry" itemprop="articleBody">
+            <p>Linux0.01时Linus在1991年发布的第一个Linux版本，最初的这个版本的Linux代码量并不多，但是很多开始的设计在之后的多个版本中都一直保留，一般来说操作系统的设计分块一般不会有大的改动，主要包括启动加载初始化、内存管理、进程调度以及文件系统等。在<a href="https://www.kernel.org/">The Linux Kernel Archive</a>可以下载Linux内核源代码，Linux0.01代码分块来说主要包括boot、fs、include、kernel、lib、mm、tools和Makefile文件，主要包含了启动、文件系统、头文件、内核、内存管理等。</p>
+<h2><a data-uk-modal="{target:'#category-id'}">1 引导启动</a></h2>
+
+<p>一般来说，绝大多数x86硬件上的系统启动过程应该都是相似的，都是在硬件通电之后执行BIOS硬件程序，BIOS将系统的引导扇区（512B）加载到0x7c00处，BIOS自检之类的事情做完之后就会跳转到0x7c00执行引导扇区的入口。需要注意的就是此时的代码均为16位，为了兼容以前的系统即使现在的系统可能都到64位了，但是启动的时候还是得从16位实模式开始，后面会经过一系列过程开启保护模式进入32位。几乎任何一个x86平台的os应该都要经历这样的过程，不同的就是在加载启动过程中，不同的系统在启动过程中处理的方式可能不同，如下是linux-0.01引导时的流程图。</p>
+
+        </div>
+
     </div>
-    
-    
-  </div>
-  
-</article>
 
+</article><article id="{article-id}" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
 
+        <header class="article-header">
+            <h1 itemprop="name">
+                <a class="article-title" href="/blogs/2018/12/libevent-cpp-5-封装epoll及epoll内核实现原理.html">libevent-cpp-5-封装epoll及epoll内核实现原理</a>
+            </h1>
+        </header>
 
+        <div class="article-meta">
+            <a href="/blogs/2018/12/libevent-cpp-5-封装epoll及epoll内核实现原理.html" class="article-date">
+                <time itemprop="datePublished">2018年12月</time>
+            </a>
+        </div>
 
+        <div class="article-entry" itemprop="articleBody">
+            <p>前面介绍了poll和select在内核中的实现原理，可以说本质上两者都是相同的，都是将用户空间的文件描述符及对应事件复制到内核空间，然后在内核空间轮询，如果轮询没有事件，则将当前进程置于该文件描述符的等待队列，如此，在之后该文件进行读写操作时就可以唤醒其等待队列，然后再次轮询时会发现发生了读或者写事件。但是轮询机制在大规模IO复用时会有着明显的缺陷，首先因为poll和select要不断的轮询，所以其时间复杂度为O(n)，随着文件描述符的增多会越来越慢，另外文件描述符的增多也会导致要从用户态拷贝到内核态的数据越来越多，在大规模IO复用中，这种拷贝多次执行显然是难以忍受的，可以说基于poll种种缺点，在Linux-2.6版本左右加入了epoll机制，能够非常高高效的进行IO复用。</p>
+<p>首先针对IO复用这一机制，从原理上来说其实主要的几个思路是不会改变的。首先是用户程序需要将其关注的文件描述符或者相应的读写事件传递给内核，不做处理的话这里存在从用户态到内核态的拷贝，select和poll就是这么做的，其次比较关键的其实就是内核在获取了相应的文件描述符及事件之后，如何有针对性的监控该文件描述符是否发生事件，并根据有无来进行当前进程睡眠和唤醒，因为如果没有发生事件的话是需要释放cpu资源的。在引入epoll之前的Linux版本中，或者说在2.6以前的版本中，poll对进程的睡眠是通过一个<code>poll_wait</code>函数实现的，只要是实现了poll函数的虚拟文件系统，都会在<code>poll</code>中调用<code>poll_wait</code>，poll会将当前进程置于该文件的等待队列，然后在该虚拟文件系统的读写接口中会相应的进行等待队列进程的唤醒。</p>
 
+        </div>
 
-
-
-    </section>
-    <footer id="footer">
-  
-  <div class="outer">
-    <div id="footer-info" class="inner">
-      &copy; 2019 John Doe&nbsp;
-      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>, theme by <a href="http://github.com/ppoffice">PPOffice</a>
     </div>
-  </div>
-</footer>
-    
 
-<script src="/js/jquery.min.js"></script>
+</article><article id="{article-id}" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+
+        <header class="article-header">
+            <h1 itemprop="name">
+                <a class="article-title" href="/blogs/2018/12/libevent-cpp-4-封装poll及poll内核实现原理.html">libevent-cpp-4-封装poll及poll内核实现原理</a>
+            </h1>
+        </header>
+
+        <div class="article-meta">
+            <a href="/blogs/2018/12/libevent-cpp-4-封装poll及poll内核实现原理.html" class="article-date">
+                <time itemprop="datePublished">2018年12月</time>
+            </a>
+        </div>
+
+        <div class="article-entry" itemprop="articleBody">
+            <p>随着Linux的更新在linux-2.1.23版本中加入了poll机制，因为poll的加入导致select的实现变得基于poll了，本文在上一个版本的基础上在libevent-cpp中加入了对poll机制的封装。总的来说，主要介绍libevent-cpp poll机制以及Linux内核对poll机制的实现原理，另外还会介绍到内核中select实现因为poll而做的改变。</p>
+<h2><a data-uk-modal="{target:'#category-id'}">读写事件管理及poll机制</a></h2>
+
+<h3><a data-uk-modal="{target:'#category-id'}">poll机制</a></h3>
+
+<p>如下为<code>poll</code>库函数，接收的数据<code>struct pollfd *fds</code> 其实是一个<code>strucct pollfd</code> 类型的数组，<code>nfds</code>对应着数组中元素的个数，最后一个为超时。与select最大的区别在于将关注的文件描述符以及对应的事件都抽取出来整合成<code>struct pollfd</code>类型了，而select需要一个很大的文件描述符集合数组，而其中可能只有很少的几个描述符是我们关注的可能会有读写事件。所以从功能上来说<code>poll</code>其实是更高效的。</p>
+
+        </div>
+
+    </div>
+
+</article><article id="{article-id}" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+
+        <header class="article-header">
+            <h1 itemprop="name">
+                <a class="article-title" href="/blogs/2018/12/libevent-cpp-3-读写事件及Linux内核select机制实现原理.html">libevent-cpp-3-读写事件及Linux内核select机制实现原理</a>
+            </h1>
+        </header>
+
+        <div class="article-meta">
+            <a href="/blogs/2018/12/libevent-cpp-3-读写事件及Linux内核select机制实现原理.html" class="article-date">
+                <time itemprop="datePublished">2018年12月</time>
+            </a>
+        </div>
+
+        <div class="article-entry" itemprop="articleBody">
+            <p>关于libevent除了对于信号和超时的处理，最核心的部分其实是对于多路IO复用的封装。IO复用存在多种方式，包括select、poll、kqueue及epoll等多种接口。libevent的实现中用C语言以类似面向对象的方式来将这多种IO复用方式进行封装，对于我们的libevent-cpp而言，可以直接使用父子继承来实现各种不同的IO方式。本文主要介绍一下select机制以及libevent中使用select来处理IO读写事件的方式，然后深入Linux内核介绍一下select的实现机制。</p>
+<h2><a data-uk-modal="{target:'#category-id'}">读写事件管理及select机制</a></h2>
+
+<p></p>
+<h3><a data-uk-modal="{target:'#category-id'}">select机制</a></h3>
+
+<p>如下为select函数及对应的参数，参数中最重要的数据类型就是fd_set数组对应的读描述符集合和写描述符集合，其中分别保存着读写描述符的信息，进程首先会睡眠于select函数，之后一旦读或者写描述符集合中的某个fd满足读或者写了，那么select就会返回，然后进程处理对应描述符的读写。</p>
+
+        </div>
+
+    </div>
+
+</article><nav id="page-nav"><a class="extend prev" rel="prev" href="/">&laquo; Prev</a>
+<span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a>
+<a class="page-number" href="/page/3/">3</a>
+<a class="page-number" href="/page/4/">4</a>
+<a class="page-number" href="/page/5/">5</a>
+<a class="page-number" href="/page/6/">6</a>
+<a class="extend next" rel="next" href="/page/2/">Next &raquo;</a>
+</nav>
+
+        </section>
+        <footer id="footer">
+
+            <div class="outer">
+                <div id="footer-info" class="inner">
+                    &copy; 2019 Wang Xingang.&nbsp; Powered by <a href="https://github.com/wxggg/libevent-cpp"
+                        target="_blank">libevent-cpp</a>, theme by <a href="http://github.com/ppoffice">PPOffice</a>
+                </div>
+            </div>
+        </footer>
 
 
-
-<script src="/js/script.js"></script>
-  </div>
+    </div>
 </body>
+
 </html>

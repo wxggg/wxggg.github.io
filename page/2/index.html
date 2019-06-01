@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+
+    <title>WXG的小站</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,
+            maximum-scale=1">
+
+    <link type="text/css" rel="stylesheet" href="/syntaxhighlighter/styles/shCore.css">
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/webfonts/ptserif/main.css">
+    <script src="/js/jquery.min.js"></script>
+    <script src="/js/script.js"></script>
+    <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=default"></script>
+    <script type="text/javascript" src="/syntaxhighlighter/scripts/shCore.js"></script>
+    <script type="text/javascript" src="/syntaxhighlighter/scripts/shBrushCpp.js"></script>
+    <script type="text/javascript" src="/syntaxhighlighter/scripts/shBrushPython.js"></script>
+    <script type="text/javascript" src="/syntaxhighlighter/scripts/shBrushPerl.js"></script>
+
+    <script type="text/javascript">
+        SyntaxHighlighter.all();
+    </script>
+    <style>
+        .syntaxhighlighter table {
+            font-size: 14px !important;
+            overflow: hidden !important;
+            /* background-color: aliceblue !important; */
+        }
+    </style>
+</head>
+
+<body>
+    <div id="container">
+        <header id="header">
+            <div id="header-outer" class="outer">
+                <div id="header-inner" class="inner">
+                    <a id="main-nav-toggle" class="nav-icon" href="javascript:;"></a>
+                    <a id="logo" class="logo" href="/"></a>
+                    <nav id="main-nav">
+                    </nav>
+                    <nav id="sub-nav">
+                        <div id="search-form-wrap">
+                            <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form">
+                                <input type="search" name="q" class="search-form-input" placeholder="Search"><button
+                                    type="submit" class="search-form-submit">&#xF002;</button><input type="hidden"
+                                    name="sitesearch" value="http://wxgg.cc"></form>
+                        </div>
+                    </nav>
+                </div>
+            </div>
+        </header>
+        <section id="main" class="outer">
+
+            <article id="{article-id}" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+
+        <header class="article-header">
+            <h1 itemprop="name">
+                <a class="article-title" href="/blogs/2018/11/中缀表达式转后缀求值并打印树结构.html">中缀表达式转后缀求值并打印树结构</a>
+            </h1>
+        </header>
+
+        <div class="article-meta">
+            <a href="/blogs/2018/11/中缀表达式转后缀求值并打印树结构.html" class="article-date">
+                <time itemprop="datePublished">2018年11月</time>
+            </a>
+        </div>
+
+        <div class="article-entry" itemprop="articleBody">
+            <p>题目内容：众所周知，任何一个表达式，都可以用一棵表达式树来表示。例如，表达式a+b*c，可以表示为如下的表达式树。现在，给你一个中缀表达式，这个中缀表达式用变量来表示（不含数字），请你将这个中缀表达式用表达式二叉树的形式输出出来。</p>
+<pre class="brush: ;">
+   +
+  / \
+ a   *
+    / \
+    b c
+</pre>
+<h4><a data-uk-modal="{target:'#category-id'}">输入格式:</a></h4>
+
+<p>输入分为三个部分。</p>
+<p>第一部分为一行，即中缀表达式(长度不大于50)。中缀表达式可能含有小写字母代表变量（a-z），也可能含有运算符（+、-、*、/、小括号），不含有数字，也不含有空格。</p>
+<p>第二部分为一个整数n(n < 10)，表示中缀表达式的变量数。</p>
+<p>第三部分有n行，每行格式为C　x，C为变量的字符，x为该变量的值。</p>
+<h4><a data-uk-modal="{target:'#category-id'}">输出格式：</a></h4>
+
+<p>输出分为三个部分，第一个部分为该表达式的逆波兰式，即该表达式树的后根遍历结果。占一行。</p>
+
+        </div>
+
+    </div>
+
+</article><article id="{article-id}" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+
+        <header class="article-header">
+            <h1 itemprop="name">
+                <a class="article-title" href="/blogs/2018/11/libevent-cpp-2-事件重构及时间处理.html">libevent-cpp-2-事件重构及时间处理</a>
+            </h1>
+        </header>
+
+        <div class="article-meta">
+            <a href="/blogs/2018/11/libevent-cpp-2-事件重构及时间处理.html" class="article-date">
+                <time itemprop="datePublished">2018年11月</time>
+            </a>
+        </div>
+
+        <div class="article-entry" itemprop="articleBody">
+            <p>上一篇介绍主要关于libevent的基本架构，并以C++的方式重写了其中的信号机制，在事件本身的结构还没有进行过多的抽象。在原本的libevent中，事件的类型是由 <code>ev_events</code> 来决定的，而事件所处的状态是由 <code>ev_flags</code> 来决定的。但是客观上来说，不同类型的事件之间的处理方式差别还是挺大的，因而可以分别以不同类进行抽象处理。这篇文章主要在进行事件抽象的基础上增加了时间处理，能够对超时事件进行响应。</p>
+<h2><a data-uk-modal="{target:'#category-id'}">重构事件的起源-event类</a></h2>
+
+<p>从重构的角度来看，对于信号事件、时间时间和读写事件应该分别进行抽象，并将尽可能相同的功能放到基类event中，所以就暂时有了如下的event：</p>
+<pre class="brush: c++;">
+class event
+{
+  public:
+	event_base *_base;
+	short _events; /* EV_TIMEOUT EV_READ EV_WRITE EV_SIGNAL EV_PERSIST */
+	short _ncalls = 0;
+	int _pri; /* smaller numbers means higher priority */
+
+	void (*_callback)(short, void *arg);
+	int _res; /* result passed to event callback */
+
+  public:
+	event(event_base *base);
+	virtual ~event() { std::cout < <  __func__ < <  std::endl; }
+
+	void set_base(event_base *base) { _base = base; }
+	void set_callback(void (*callback)(short, void *)) { _callback = callback; }
+
+	virtual void add() {}
+	virtual void del() {}
+
+	void activate(int res, short ncalls);
+};
+</pre>
+
+        </div>
+
+    </div>
+
+</article><article id="{article-id}" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+
+        <header class="article-header">
+            <h1 itemprop="name">
+                <a class="article-title" href="/blogs/2018/11/libevent-cpp-1-基本架构及信号处理.html">libevent-cpp-1-基本架构及信号处理</a>
+            </h1>
+        </header>
+
+        <div class="article-meta">
+            <a href="/blogs/2018/11/libevent-cpp-1-基本架构及信号处理.html" class="article-date">
+                <time itemprop="datePublished">2018年11月</time>
+            </a>
+        </div>
+
+        <div class="article-entry" itemprop="articleBody">
+            <p>Libevent是一个事件通知库，其API提供了一种机制用于在文件描述符上发生特定事件或者超时之后执行回调函数，此外，libevent还支持因为信号或常规超时引起的回调操作。libevent 旨在替换事件驱动的网络f服务器中的事件循环，应用程序只需要调用 <code>event_dispatch</code> ，然后动态添加或删除事件，而不需要更改事件循环。</p>
+<p>Libevent 是用C语言编写的高性能网路库，这里尝试使用C++进行封装其中的接口，目前主要基于 libevent-1.1b 版本的代码。本文在简介libevent基本架构的同时主要分析libevent中对于信号的处理方式。本文C++封装代码可在<a href="https://github.com/sharixos/libevent-cpp">libevent-cpp</a> 找到。</p>
+<h2><a data-uk-modal="{target:'#category-id'}">Libevent 基本架构</a></h2>
+
+<p>Libevent中最关键的数据类型就是事件<code>event</code>和事件管理器，事件管理器其实就是<code>event_bas</code>。</p>
+
+        </div>
+
+    </div>
+
+</article><article id="{article-id}" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+
+        <header class="article-header">
+            <h1 itemprop="name">
+                <a class="article-title" href="/blogs/2018/11/Linux-信号机制-signal.html">Linux-信号机制-signal</a>
+            </h1>
+        </header>
+
+        <div class="article-meta">
+            <a href="/blogs/2018/11/Linux-信号机制-signal.html" class="article-date">
+                <time itemprop="datePublished">2018年11月</time>
+            </a>
+        </div>
+
+        <div class="article-entry" itemprop="articleBody">
+            <p>信号是类Unix系统中一种常用的IPC机制，信号是发送到进程或同一进程内的特定线程的异步通知，以便通知它发生的事件。当信号发出时，操作系统会终端目标进程的执行流来传递信号，任何非原子的执行过程都可以被中断，如果进程之前已经注册过信号处理函数，该处理函数就会被调用，否则会执行默认的信号处理函数。信号和中断类似，区别是中断是由硬件调停并由内核处理，而信号是由内核调停而由进程处理。内核可能将某些中断当作信号传给进程，比如 SIGSEGV、SIGBUS、SIGILL以及SIGFPE等。</p>
+<ul><li>当其它进程调用像 <code>kill</code> 这样的函数时</li>
+<li>使用 <code>abort</code> 之类的函数从进程自身发送信号</li>
+<li>子进程退出时操作系统发送 SIGCHLD 信号</li>
+<li>父进程死亡或在控制终端监测到挂起时发送 SIGHUP 信号</li>
+<li>用户从键盘中断程序时发送 SIGINT 信号</li>
+<li>当程序行为不正确时发送 SIGILL、SIGFPE和 SIGSEGV 之一</li>
+<li>当程序访问 <code>mmap</code> 映射的但是不可用的内存时</li>
+
+        </div>
+
+    </div>
+
+</article><article id="{article-id}" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+
+        <header class="article-header">
+            <h1 itemprop="name">
+                <a class="article-title" href="/blogs/2018/11/C标准库-2-之工具.html">C标准库-2-之工具</a>
+            </h1>
+        </header>
+
+        <div class="article-meta">
+            <a href="/blogs/2018/11/C标准库-2-之工具.html" class="article-date">
+                <time itemprop="datePublished">2018年11月</time>
+            </a>
+        </div>
+
+        <div class="article-entry" itemprop="articleBody">
+            <p>GNU C标准库提供了很多工具用来简化编程，包括各种数学工具，对于时间的处理接口以及对系统资源的访问等等。本部分为GNU C标准库阅读记录第二部分，主要包括像随机数、浮点运算操作及定时时钟设置以及进程自己睡眠等操作。</p>
+<h2><a data-uk-modal="{target:'#category-id'}">Mathematics</a></h2>
+
+<p>标准库在<code>math.h</code> 头文件中声明了包括三角函数在内的很多数学函数用来计算，而在 <code>complex.h</code> 中提供了对复数的支持以及各种用于复数的计算。针对浮点类型的函数提供了三种变体，分别是对 <code>double</code>、<code>float</code>和<code>long double</code> 的支持，其中 <code>float</code>的计算是最快的，另外两个分别精度比较高。</p>
+<p>以三角函数为例，分别存在<code>sin</code> 、<code>sinf</code> 和<code>sinl</code> 这三个函数，针对 <code>double</code> 、<code>float</code> 和 <code>long double</code> 进行计算。对于复数的支持函数一般叫做如 <code>ccos</code>和 <code>ctan</code> 等，后缀如<code>ccosf</code>同样表示对<code>float</code>的支持。反三角函数如反正弦函数位 <code>asin</code> ，三角函数中还有如双曲正弦函数 <code>sanh</code>等。</p>
+
+        </div>
+
+    </div>
+
+</article><article id="{article-id}" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+
+        <header class="article-header">
+            <h1 itemprop="name">
+                <a class="article-title" href="/blogs/2018/11/C标准库-1-之输入输出IO.html">C标准库-1-之输入输出IO</a>
+            </h1>
+        </header>
+
+        <div class="article-meta">
+            <a href="/blogs/2018/11/C标准库-1-之输入输出IO.html" class="article-date">
+                <time itemprop="datePublished">2018年11月</time>
+            </a>
+        </div>
+
+        <div class="article-entry" itemprop="articleBody">
+            <p>在对文件进行读写之前需要与该文件建立一个通道，也就是打开一个文件。而打开文件的连接过程可以是一个流或者一个文件描述符。有些处理文件的函数需要流，而其它的可能会对文件描述符进行操作，在结束读写的时候需要关闭文件。文件描述符一般是 <code>int</code> 类型，而流则一般是 <code>FILE *</code> 对象。</p>
+<p>文件描述符给 I/O 提供了一个原始的底层的接口。文件描述符和流都能表示对如 terminal 这样的设备的连接，也可以作为普通的文件或者被管道和 socket 用来与其它进程进行连接。但是如果要对特殊的设备执行特定的控制操作则只能使用文件描述符，因为没有流提供这种支持。如果需要进行特殊种类的输入或输出比如非阻塞I/O，那么也只能使用文件描述符。</p>
+<p>流提供了基于原始文件描述符设备的高层接口，使用流的优点是对于流上面的输入输出操作存在更丰富且强大的工具。文件描述符接口只提供了操作字符块的简单函数，而流接口则提供了强大的格式化输入输出函数比如 <code>printf</code> 和 <code>scanf</code> ，也提供了对于字符和面向行的输入输出。既然流是基于文件描述符来实现的，故而可以将流解开并使用对于文件描述符的底层操作。相对应的也可以将一个连接打开为文件描述符然后让一个流与该文件描述符相关联。</p>
+
+        </div>
+
+    </div>
+
+</article><article id="{article-id}" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+
+        <header class="article-header">
+            <h1 itemprop="name">
+                <a class="article-title" href="/blogs/2018/10/Elfen-Scheduling-Fine-Grain-Principled-Borrowing-from-Latency-Critical-Workloads-using-Simultaneous-Multithreading.html">Elfen-Scheduling-Fine-Grain-Principled-Borrowing-from-Latency-Critical-Workloads-using-Simultaneous-Multithreading</a>
+            </h1>
+        </header>
+
+        <div class="article-meta">
+            <a href="/blogs/2018/10/Elfen-Scheduling-Fine-Grain-Principled-Borrowing-from-Latency-Critical-Workloads-using-Simultaneous-Multithreading.html" class="article-date">
+                <time itemprop="datePublished">2018年10月</time>
+            </a>
+        </div>
+
+        <div class="article-entry" itemprop="articleBody">
+            <p>论文全称《Elfen Scheduling: Fine-Grain Principled Borrowing from Latency-Critical Workloads using Simultaneous Multithreading》，标题翻译为《Elfen调度：使用同时多线程技术从时延关键型工作负载进行细粒度原则借用》，由ANU的Xi Yang博士发表于会议ATC-2016，github上可以找到实验代码：https://github.com/yangxi/elfen</p>
+<p>文章主要介绍了一种新的细粒度调度CPU的方法，使得对于低延迟要求的服务能够利用这些服务未执行的时候来执行系统其他普通任务，用以提高SMT同时多线程CPU的利用率。</p>
+<h2><a data-uk-modal="{target:'#category-id'}">Abstract 摘要</a></h2>
+
+<p>摘要部分说明了Web服务器的一个现状，对于<code>tail latency</code>要求较高的一些服务如游戏或股票等会关闭同时多线程（SMT），在一个核上只运行一个服务，使得CPU的利用率很低。所以就希望能够同时运行批处理任务和时延关键型请求来利用SMT的多个硬件环境（论文中称为lanes，也就是通道），但是如果完全共享CPU资源的话又会对<code>tail latency</code>和违反 <code>SLO</code>（Service Level Objectives即服务水平目标）产生非线性的影响。</p>
+
+        </div>
+
+    </div>
+
+</article><article id="{article-id}" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+
+        <header class="article-header">
+            <h1 itemprop="name">
+                <a class="article-title" href="/blogs/2018/09/模拟MFC关键技术.html">模拟MFC关键技术</a>
+            </h1>
+        </header>
+
+        <div class="article-meta">
+            <a href="/blogs/2018/09/模拟MFC关键技术.html" class="article-date">
+                <time itemprop="datePublished">2018年09月</time>
+            </a>
+        </div>
+
+        <div class="article-entry" itemprop="articleBody">
+            <p>MFC也就是Microsoft Foundation Class之前一直都是Windows平台软件开发的主要软件框架（Application Framework）， 随着新技术的不断产生，MFC也渐渐消失在主流开发者的眼中。诚然，MFC设计的晦涩确实是其一大弊端，正如《深入浅出MFC》的作者侯杰所提到的很多敌视者将MFC这个Application Framework视作Minotaur（希腊神话中的牛头怪，会吃掉迷失在迷宫中的人），但是考虑到MFC设计的时间，其很多设计思想其实很有意思，《深入浅出MFC》中所提到的MFC设计的六大关键技术在现在可能已经有了更好的实现方式，比如说运行时类型识别RTTI，MFC设计之初C++还没有引入运行时类型识别，所以对于此MFC便设计了一套专门的宏以及相应的数据结构进行处理，在今天看来，这着实很麻烦，因为现在C++的特性早已经可以直接进行运行时类型的识别以及转换了。无论怎样，相对于直接调用Windows的api进行界面程序的实现，MFC程序确实是有着相当大的进步，虽然这种进步在当今看来早已落伍，但是MFC作为一个Application Framework的设计思想却值得进行探究。</p>
+
+        </div>
+
+    </div>
+
+</article><nav id="page-nav"><a class="extend prev" rel="prev" href="/">&laquo; Prev</a>
+<a class="page-number" href="/">1</a>
+<span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a>
+<a class="page-number" href="/page/4/">4</a>
+<a class="page-number" href="/page/5/">5</a>
+<a class="page-number" href="/page/6/">6</a>
+<a class="extend next" rel="next" href="/page/3/">Next &raquo;</a>
+</nav>
+
+        </section>
+        <footer id="footer">
+
+            <div class="outer">
+                <div id="footer-info" class="inner">
+                    &copy; 2019 Wang Xingang.&nbsp; Powered by <a href="https://github.com/wxggg/libevent-cpp"
+                        target="_blank">libevent-cpp</a>, theme by <a href="http://github.com/ppoffice">PPOffice</a>
+                </div>
+            </div>
+        </footer>
+
+
+    </div>
+</body>
+
+</html>

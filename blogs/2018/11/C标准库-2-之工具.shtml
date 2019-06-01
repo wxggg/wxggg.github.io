@@ -1,0 +1,30 @@
+<p>GNU C标准库提供了很多工具用来简化编程，包括各种数学工具，对于时间的处理接口以及对系统资源的访问等等。本部分为GNU C标准库阅读记录第二部分，主要包括像随机数、浮点运算操作及定时时钟设置以及进程自己睡眠等操作。</p>
+<h2><a data-uk-modal="{target:'#category-id'}">Mathematics</a></h2>
+
+<p>标准库在<code>math.h</code> 头文件中声明了包括三角函数在内的很多数学函数用来计算，而在 <code>complex.h</code> 中提供了对复数的支持以及各种用于复数的计算。针对浮点类型的函数提供了三种变体，分别是对 <code>double</code>、<code>float</code>和<code>long double</code> 的支持，其中 <code>float</code>的计算是最快的，另外两个分别精度比较高。</p>
+<p>以三角函数为例，分别存在<code>sin</code> 、<code>sinf</code> 和<code>sinl</code> 这三个函数，针对 <code>double</code> 、<code>float</code> 和 <code>long double</code> 进行计算。对于复数的支持函数一般叫做如 <code>ccos</code>和 <code>ctan</code> 等，后缀如<code>ccosf</code>同样表示对<code>float</code>的支持。反三角函数如反正弦函数位 <code>asin</code> ，三角函数中还有如双曲正弦函数 <code>sanh</code>等。</p>
+<p>指数函数一般用 <code>exp</code>表示对<code>double</code> 的处理，<code>expf</code>表示对<code>float</code>的处理，另外还提供如<code>exp10</code> 和 <code>exp2</code>等函数表示10或者2的指数。相应的对数函数同样有 <code>log</code> 、<code>logf</code>、及<code>log10</code>等。比较通用的指数函数是<code>pow</code> 和 <code>powf</code> ，可以指定基数和阶。另外 <code>sqrt</code>可以用来开平方。</p>
+<h4><a data-uk-modal="{target:'#category-id'}">伪随机数</a></h4>
+
+<p>随机函数产生的一般不是真正的随机数，而是伪随机数并且因为循环周期足够大可以忽略，随机数产生器通过记住一个种子值并且用它来计算下一个随机数并同时计算一个新的种子。尽管程序中产生的数看起来是不可预测的，但是程序每次的执行随机数序列都是相同的，这是因为开始的种子总是相同的，当调试程序的时候是方便的，但是如果希望每次都有不同的随机数却是无用的。针对这一点，可以让种子基于当前时间来产生随机数。</p>
+<p>标准C中的随机函数是 <code>rand</code>，存在于<code>stdlib.h</code> 中产生的随机数范围是 0 到 RAND_MAX，最大数在GNU C中32位机器上是最大的有符号整型数，使用 <code>srand</code> 可以设置种子，默认情况下使用 <code>rand</code> 的种子是1。在BSD系统中随机函数位<code>random</code> 和 <code>srandom</code> 。</p>
+<h2><a data-uk-modal="{target:'#category-id'}">Arithmetic Functions</a></h2>
+
+<p>标准C同样提供了基本的运算操作比如 <code>div</code> ，可以用来计算商和余数。对于浮点类型包括很多运算，比如 <code>fpclassify</code> 可以判断给定的浮点类型是否是有限还是0，还是无限数，另外对应还存在 <code>isfinite</code> 和 <code>isnan</code>等判断函数。浮点运算的时候可能会出现错误，比如无穷大数的加减，除0操作，上溢出和下溢出等可能会导致出现 SIGFPE 信号。</p>
+<p>对于运算存在如绝对值 <code>abs</code> 及正则化函数 <code>frexp</code> 等操作，对于浮点数的舍入，存在多种舍入方式，比如向上舍入到整型 <code>ceil</code> 函数，向下舍入到整型 <code>floor</code> 函数，还有截断小数函数 <code>trunc</code> ， 而 <code>rint</code> 函数和 <code>round</code> 函数使用当前的舍入模式来处理。</p>
+<h2><a data-uk-modal="{target:'#category-id'}">Date and Time</a></h2>
+
+<p>GNU函数库提供了对日期和时间的支持，主要位于头文件 <code>time.h</code> 中，对于经过的时间可以使用 <code>difftime</code> 来计算，参数为日期时间，单位是秒。对于时间的处理用得最多的结构是 <code>struct timeval</code>， 它包含两个成员，一个代表经过的时间 <code>tv_sec</code> ，另一个是 <code>tv_usec</code> ，表示生于的经过时间，用微秒表示，还可以使用 <code>struct timespec</code> ，只不过它能够表示更精细的时间。使用 <code>gettimeofday</code> 可以获取当前的时间，获取结构为 <code>struct timeval</code>， 还可以使用 <code>settimeofday</code>设置当前的时间。</p>
+<p>对于CPU的时间可以用 <code>clock</code>函数查询，而对于处理器时间的查询需要借助 <code>struct tms</code> ，使用 <code>times</code> 函数来获取。</p>
+<p>对于日期时间，使用 <code>time</code> 可以直接获取当前时间，而 <code>stime</code> 则可以设置系统时钟。但是 <code>time</code>函数只是返回 <code>time_t</code> 类型，也就是以秒为单位，如果需要获取更精确的时间需要借助 <code>struct timeval</code> 结构和 <code>gettimeofday</code> 函数。使用 <code>adjtime</code> 可以对系统时钟进行微调。</p>
+<h4><a data-uk-modal="{target:'#category-id'}">设置定时器</a></h4>
+
+<p>函数 <code>alarm</code> 和 <code>setitimer</code> 提供了让进程中断自己的机制，可以通过设置一个时钟，当时间用完的时候，进程就会收到一个信号。每个进程都可以由三种独立的内部时钟：</p>
+<ul><li>真正的时钟用来计算经过的时间，在时钟到期时发发送 SIGALRM 信号</li>
+<li>虚拟时钟计算进程的处理器时间，时钟到期发送 SIGVTALRM 信号</li>
+<li>一个测量时钟既计算进程使用的处理器时间，也计算进程系统调用的时间，当时钟到期时发送 SIGPROF 信号</li>
+</ul>
+<p>在设置时钟时，每种类型只能设置一个，多次设置会重置时钟。在调用 <code>alarm</code> 和 <code>setitimer</code> 之前就应该设置好相应信号的处理函数。</p>
+<h4><a data-uk-modal="{target:'#category-id'}">睡眠</a></h4>
+
+<p>使用 <code>sleep</code> 能够方便的让程序睡眠一定的时间，当然如果有信号出现的话会提前醒来。另外 <code>nanosleep</code> 可以睡眠更精确的时间。</p>
