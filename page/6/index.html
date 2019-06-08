@@ -8,7 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1,
             maximum-scale=1">
 
-    <link type="text/css" rel="stylesheet" href="/syntaxhighlighter/styles/shCore.css">
+    <link type="text/css" rel="stylesheet" href="/syntaxhighlighter/styles/shCoreDefault.css">
     <link rel="stylesheet" href="/css/style.css">
     <link rel="stylesheet" href="/webfonts/ptserif/main.css">
     <script src="/js/jquery.min.js"></script>
@@ -26,7 +26,7 @@
         .syntaxhighlighter table {
             font-size: 14px !important;
             overflow: hidden !important;
-            /* background-color: aliceblue !important; */
+            background-color: aliceblue !important;
         }
     </style>
 </head>
@@ -54,6 +54,35 @@
         <section id="main" class="outer">
 
             <article id="{article-id}" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+
+        <header class="article-header">
+            <h1 itemprop="name">
+                <a class="article-title" href="/blogs/2018/00-algorithm/algorithm-dynamic-programing.html">algorithm-dynamic-programing</a>
+            </h1>
+        </header>
+
+        <div class="article-meta">
+            <a href="/blogs/2018/00-algorithm/algorithm-dynamic-programing.html" class="article-date">
+                <time itemprop="datePublished">2018年00-algorithm月</time>
+            </a>
+        </div>
+
+        <div class="article-entry" itemprop="articleBody">
+            <h2><a data-uk-modal="{target:'#category-id'}">1 Largest Divisible Subset</a></h2>
+
+<p>Given a set of distinct positive integers, find the largest subset such that every pair \((Si, Sj)\) of elements in this subset satisfies:Si%Sj = 0 or Sj%Si = 0.</p>
+<h3><a data-uk-modal="{target:'#category-id'}">solution</a></h3>
+
+<p>the optimal structure is</p>
+<p>$$ OPT(i) = max{OPT(other(i)+Si), OPT(i-1)}$$</p>
+<p>other(i) demotes all the values that satisfy Si%v == 0, if Si is already in the OPT(i-1), then there is no need to do the repeated work.</p>
+
+        </div>
+
+    </div>
+
+</article><article id="{article-id}" class="article article-type-post" itemscope itemprop="blogPost">
     <div class="article-inner">
 
         <header class="article-header">

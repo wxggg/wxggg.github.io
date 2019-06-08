@@ -8,7 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1,
             maximum-scale=1">
 
-    <link type="text/css" rel="stylesheet" href="/syntaxhighlighter/styles/shCore.css">
+    <link type="text/css" rel="stylesheet" href="/syntaxhighlighter/styles/shCoreDefault.css">
     <link rel="stylesheet" href="/css/style.css">
     <link rel="stylesheet" href="/webfonts/ptserif/main.css">
     <script src="/js/jquery.min.js"></script>
@@ -26,7 +26,7 @@
         .syntaxhighlighter table {
             font-size: 14px !important;
             overflow: hidden !important;
-            /* background-color: aliceblue !important; */
+            background-color: aliceblue !important;
         }
     </style>
 </head>
@@ -54,6 +54,32 @@
         <section id="main" class="outer">
 
             <article id="{article-id}" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+
+        <header class="article-header">
+            <h1 itemprop="name">
+                <a class="article-title" href="/blogs/2018/03/Computer-Performance-Microscopy-with-SHIM.html">Computer-Performance-Microscopy-with-SHIM</a>
+            </h1>
+        </header>
+
+        <div class="article-meta">
+            <a href="/blogs/2018/03/Computer-Performance-Microscopy-with-SHIM.html" class="article-date">
+                <time itemprop="datePublished">2018年03月</time>
+            </a>
+        </div>
+
+        <div class="article-entry" itemprop="articleBody">
+            <p>文章主要是关于细粒度高频率观测程序性能，作者yangxi，<a href="https://github.com/yangxi/SHIM">文章和实验代码</a>均可以在github上找到 。一般的程序性能观测采样是采用的linux的perf模块，但是perf只能观测较为宏观的程序性能参数，如果进行高频度的观测，观测程序就会对被观测程序进行影响，而这篇文章中的shim正是为解决这个问题而存在的。而shim之所以能在elfen论文中被使用也正是因为其高频度的准确观测程序数据，这一点使得其能够高频度观测到cpu空闲的区间，进而被elfen所用。</p>
+<p>实验代码主要包括两个部分，一个是一个linux内核模块ppid_module，另一个是shim的核心代码。文章中的实验数据是对一个java模拟器进行性能观测，这里我仅对ppid_module和shim的两个简单使用例子进行说明。</p>
+<h2><a data-uk-modal="{target:'#category-id'}">ppid 内核模块</a></h2>
+
+<p>这个模块的主要作用是任何时候显示哪个线程跑在哪个cpu上，主要方式是允许一个用户程序映射一段无cache的连续物理内存缓冲区，ppid主要的工作在初始化和映射，以及一个额外的在内核中schedule处被调用的一个回调函数</p>
+
+        </div>
+
+    </div>
+
+</article><article id="{article-id}" class="article article-type-post" itemscope itemprop="blogPost">
     <div class="article-inner">
 
         <header class="article-header">
@@ -262,35 +288,6 @@ struct e820map
 </ul>
 <p>+ stores how much has been used (f)</p>
 <p>+ residual</p>
-
-        </div>
-
-    </div>
-
-</article><article id="{article-id}" class="article article-type-post" itemscope itemprop="blogPost">
-    <div class="article-inner">
-
-        <header class="article-header">
-            <h1 itemprop="name">
-                <a class="article-title" href="/blogs/2018/00-algorithm/algorithm-dynamic-programing.html">algorithm-dynamic-programing</a>
-            </h1>
-        </header>
-
-        <div class="article-meta">
-            <a href="/blogs/2018/00-algorithm/algorithm-dynamic-programing.html" class="article-date">
-                <time itemprop="datePublished">2018年00-algorithm月</time>
-            </a>
-        </div>
-
-        <div class="article-entry" itemprop="articleBody">
-            <h2><a data-uk-modal="{target:'#category-id'}">1 Largest Divisible Subset</a></h2>
-
-<p>Given a set of distinct positive integers, find the largest subset such that every pair \((Si, Sj)\) of elements in this subset satisfies:Si%Sj = 0 or Sj%Si = 0.</p>
-<h3><a data-uk-modal="{target:'#category-id'}">solution</a></h3>
-
-<p>the optimal structure is</p>
-<p>$$ OPT(i) = max{OPT(other(i)+Si), OPT(i-1)}$$</p>
-<p>other(i) demotes all the values that satisfy Si%v == 0, if Si is already in the OPT(i-1), then there is no need to do the repeated work.</p>
 
         </div>
 

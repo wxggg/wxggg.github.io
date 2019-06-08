@@ -8,7 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1,
             maximum-scale=1">
 
-    <link type="text/css" rel="stylesheet" href="/syntaxhighlighter/styles/shCore.css">
+    <link type="text/css" rel="stylesheet" href="/syntaxhighlighter/styles/shCoreDefault.css">
     <link rel="stylesheet" href="/css/style.css">
     <link rel="stylesheet" href="/webfonts/ptserif/main.css">
     <script src="/js/jquery.min.js"></script>
@@ -26,7 +26,7 @@
         .syntaxhighlighter table {
             font-size: 14px !important;
             overflow: hidden !important;
-            /* background-color: aliceblue !important; */
+            background-color: aliceblue !important;
         }
     </style>
 </head>
@@ -54,6 +54,35 @@
         <section id="main" class="outer">
 
             <article id="{article-id}" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+
+        <header class="article-header">
+            <h1 itemprop="name">
+                <a class="article-title" href="/blogs/2018/04/自建博客本地中英文搜索引擎.html">自建博客本地中英文搜索引擎</a>
+            </h1>
+        </header>
+
+        <div class="article-meta">
+            <a href="/blogs/2018/04/自建博客本地中英文搜索引擎.html" class="article-date">
+                <time itemprop="datePublished">2018年04月</time>
+            </a>
+        </div>
+
+        <div class="article-entry" itemprop="articleBody">
+            <p>博客中一直都没有搜索功能，之前学过信息检索的课程，所以现在尝试着利用现代信息检索的方式给博客增加一个本地搜索引擎。主要的步骤包括中英文分词、建立词典和倒排索引表以及根据TF-IDF来进行搜索返回结果的排序。</p>
+<h2><a data-uk-modal="{target:'#category-id'}">分词</a></h2>
+
+<p>进行分词之前需要先读取blog的内容，这里采取直接读markdown文件的方式而不是读HTML，可以直接读取关键信息。读取时选择性读取对检索有用的信息，比如对于图片链接或是代码框都应该省去，读完内容后还应该利用正则表达式去除无用的字符，同时进行英文转小写字母的处理。</p>
+<pre class="brush: python;">
+content = re.sub('\W',' ',content).lower().replace('__','')
+</pre>
+<p>对于分词，由于要进行中文的分词，所以这里选择jieba分词，是目前最好用的中文分词工具了，在github上面有其详细介绍：<a href="https://github.com/fxsjy/jieba">jieba</a>，可利用<code>pip3 install jieba</code>直接进行安装。jieba可以根据不同的使用场景选择不同的分词方法，这里我们用于搜索引擎构建倒排索引，所以选择<code>jieba.cut_for_search</code>方法，返回一个可迭代的generator，对应的有相同方法<code>jieba.lcut_for_search</code>直接返回list。另外jieba分词提供了依据TF-IDF的 <strong>关键词提取</strong>，并去除停用词，可以替换tf-idf库和停用词表为自定义语料库。如下为分词和提取关键词的操作，由于存在大量英文使用jieba分词会产生大量空格，因此需要专门去除。</p>
+
+        </div>
+
+    </div>
+
+</article><article id="{article-id}" class="article article-type-post" itemscope itemprop="blogPost">
     <div class="article-inner">
 
         <header class="article-header">
@@ -279,32 +308,6 @@ python src/python/setup.py -download
 "cd trunk; git checkout -b new_branch ceb66d34c0a6f840ec195f6da85e323de5e9a04d"
 "cd ./lucene; ant compile-test"
 </pre>
-
-        </div>
-
-    </div>
-
-</article><article id="{article-id}" class="article article-type-post" itemscope itemprop="blogPost">
-    <div class="article-inner">
-
-        <header class="article-header">
-            <h1 itemprop="name">
-                <a class="article-title" href="/blogs/2018/03/Computer-Performance-Microscopy-with-SHIM.html">Computer-Performance-Microscopy-with-SHIM</a>
-            </h1>
-        </header>
-
-        <div class="article-meta">
-            <a href="/blogs/2018/03/Computer-Performance-Microscopy-with-SHIM.html" class="article-date">
-                <time itemprop="datePublished">2018年03月</time>
-            </a>
-        </div>
-
-        <div class="article-entry" itemprop="articleBody">
-            <p>文章主要是关于细粒度高频率观测程序性能，作者yangxi，<a href="https://github.com/yangxi/SHIM">文章和实验代码</a>均可以在github上找到 。一般的程序性能观测采样是采用的linux的perf模块，但是perf只能观测较为宏观的程序性能参数，如果进行高频度的观测，观测程序就会对被观测程序进行影响，而这篇文章中的shim正是为解决这个问题而存在的。而shim之所以能在elfen论文中被使用也正是因为其高频度的准确观测程序数据，这一点使得其能够高频度观测到cpu空闲的区间，进而被elfen所用。</p>
-<p>实验代码主要包括两个部分，一个是一个linux内核模块ppid_module，另一个是shim的核心代码。文章中的实验数据是对一个java模拟器进行性能观测，这里我仅对ppid_module和shim的两个简单使用例子进行说明。</p>
-<h2><a data-uk-modal="{target:'#category-id'}">ppid 内核模块</a></h2>
-
-<p>这个模块的主要作用是任何时候显示哪个线程跑在哪个cpu上，主要方式是允许一个用户程序映射一段无cache的连续物理内存缓冲区，ppid主要的工作在初始化和映射，以及一个额外的在内核中schedule处被调用的一个回调函数</p>
 
         </div>
 

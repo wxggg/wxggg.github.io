@@ -8,7 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1,
             maximum-scale=1">
 
-    <link type="text/css" rel="stylesheet" href="/syntaxhighlighter/styles/shCore.css">
+    <link type="text/css" rel="stylesheet" href="/syntaxhighlighter/styles/shCoreDefault.css">
     <link rel="stylesheet" href="/css/style.css">
     <link rel="stylesheet" href="/webfonts/ptserif/main.css">
     <script src="/js/jquery.min.js"></script>
@@ -26,7 +26,7 @@
         .syntaxhighlighter table {
             font-size: 14px !important;
             overflow: hidden !important;
-            /* background-color: aliceblue !important; */
+            background-color: aliceblue !important;
         }
     </style>
 </head>
@@ -54,6 +54,28 @@
         <section id="main" class="outer">
 
             <article id="{article-id}" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+
+        <header class="article-header">
+            <h1 itemprop="name">
+                <a class="article-title" href="/blogs/2018/09/模拟MFC关键技术.html">模拟MFC关键技术</a>
+            </h1>
+        </header>
+
+        <div class="article-meta">
+            <a href="/blogs/2018/09/模拟MFC关键技术.html" class="article-date">
+                <time itemprop="datePublished">2018年09月</time>
+            </a>
+        </div>
+
+        <div class="article-entry" itemprop="articleBody">
+            <p>MFC也就是Microsoft Foundation Class之前一直都是Windows平台软件开发的主要软件框架（Application Framework）， 随着新技术的不断产生，MFC也渐渐消失在主流开发者的眼中。诚然，MFC设计的晦涩确实是其一大弊端，正如《深入浅出MFC》的作者侯杰所提到的很多敌视者将MFC这个Application Framework视作Minotaur（希腊神话中的牛头怪，会吃掉迷失在迷宫中的人），但是考虑到MFC设计的时间，其很多设计思想其实很有意思，《深入浅出MFC》中所提到的MFC设计的六大关键技术在现在可能已经有了更好的实现方式，比如说运行时类型识别RTTI，MFC设计之初C++还没有引入运行时类型识别，所以对于此MFC便设计了一套专门的宏以及相应的数据结构进行处理，在今天看来，这着实很麻烦，因为现在C++的特性早已经可以直接进行运行时类型的识别以及转换了。无论怎样，相对于直接调用Windows的api进行界面程序的实现，MFC程序确实是有着相当大的进步，虽然这种进步在当今看来早已落伍，但是MFC作为一个Application Framework的设计思想却值得进行探究。</p>
+
+        </div>
+
+    </div>
+
+</article><article id="{article-id}" class="article article-type-post" itemscope itemprop="blogPost">
     <div class="article-inner">
 
         <header class="article-header">
@@ -241,35 +263,6 @@ $$H(X) = -\sum{p(x)}log_2p(x)$$
 mnist = tf.keras.datasets.mnist.load_data()
 </pre>
 <img src="http://www.sharix.site/static/img/tensorflow/tensorflow2_0.png" alt="">
-
-        </div>
-
-    </div>
-
-</article><article id="{article-id}" class="article article-type-post" itemscope itemprop="blogPost">
-    <div class="article-inner">
-
-        <header class="article-header">
-            <h1 itemprop="name">
-                <a class="article-title" href="/blogs/2018/04/自建博客本地中英文搜索引擎.html">自建博客本地中英文搜索引擎</a>
-            </h1>
-        </header>
-
-        <div class="article-meta">
-            <a href="/blogs/2018/04/自建博客本地中英文搜索引擎.html" class="article-date">
-                <time itemprop="datePublished">2018年04月</time>
-            </a>
-        </div>
-
-        <div class="article-entry" itemprop="articleBody">
-            <p>博客中一直都没有搜索功能，之前学过信息检索的课程，所以现在尝试着利用现代信息检索的方式给博客增加一个本地搜索引擎。主要的步骤包括中英文分词、建立词典和倒排索引表以及根据TF-IDF来进行搜索返回结果的排序。</p>
-<h2><a data-uk-modal="{target:'#category-id'}">分词</a></h2>
-
-<p>进行分词之前需要先读取blog的内容，这里采取直接读markdown文件的方式而不是读HTML，可以直接读取关键信息。读取时选择性读取对检索有用的信息，比如对于图片链接或是代码框都应该省去，读完内容后还应该利用正则表达式去除无用的字符，同时进行英文转小写字母的处理。</p>
-<pre class="brush: python;">
-content = re.sub('\W',' ',content).lower().replace('__','')
-</pre>
-<p>对于分词，由于要进行中文的分词，所以这里选择jieba分词，是目前最好用的中文分词工具了，在github上面有其详细介绍：<a href="https://github.com/fxsjy/jieba">jieba</a>，可利用<code>pip3 install jieba</code>直接进行安装。jieba可以根据不同的使用场景选择不同的分词方法，这里我们用于搜索引擎构建倒排索引，所以选择<code>jieba.cut_for_search</code>方法，返回一个可迭代的generator，对应的有相同方法<code>jieba.lcut_for_search</code>直接返回list。另外jieba分词提供了依据TF-IDF的 <strong>关键词提取</strong>，并去除停用词，可以替换tf-idf库和停用词表为自定义语料库。如下为分词和提取关键词的操作，由于存在大量英文使用jieba分词会产生大量空格，因此需要专门去除。</p>
 
         </div>
 

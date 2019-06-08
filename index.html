@@ -8,7 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1,
             maximum-scale=1">
 
-    <link type="text/css" rel="stylesheet" href="/syntaxhighlighter/styles/shCore.css">
+    <link type="text/css" rel="stylesheet" href="/syntaxhighlighter/styles/shCoreDefault.css">
     <link rel="stylesheet" href="/css/style.css">
     <link rel="stylesheet" href="/webfonts/ptserif/main.css">
     <script src="/js/jquery.min.js"></script>
@@ -26,7 +26,7 @@
         .syntaxhighlighter table {
             font-size: 14px !important;
             overflow: hidden !important;
-            /* background-color: aliceblue !important; */
+            background-color: aliceblue !important;
         }
     </style>
 </head>
@@ -54,6 +54,48 @@
         <section id="main" class="outer">
 
             <article id="{article-id}" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+
+        <header class="article-header">
+            <h1 itemprop="name">
+                <a class="article-title" href="/blogs/2019/06/图论基本算法实现.html">图论基本算法实现</a>
+            </h1>
+        </header>
+
+        <div class="article-meta">
+            <a href="/blogs/2019/06/图论基本算法实现.html" class="article-date">
+                <time itemprop="datePublished">2019年06月</time>
+            </a>
+        </div>
+
+        <div class="article-entry" itemprop="articleBody">
+            <p>图分为有向图和无向图，相关常见问题及算法有最短路径算法、拓扑排序、关键路径以及最短路径等。本文介绍相关算法的C++实现，完整源码直接参看文末。</p>
+<h2><a data-uk-modal="{target:'#category-id'}">广度优先BFS和深度优先DFS搜索</a></h2>
+
+<p>与图相关的问题中大多数的节点遍历方式都采用BFS或DFS，顾名思义，广度优先就是先将节点相邻的节点全部遍历，然后递归搜索相邻接点的相邻接点，这一特点与队列比较类似因此在广度优先搜索时一般使用队列作为辅助结构，二叉树的层序遍历实际上就是BFS，而在二叉树的层序遍历中借助的正是队列。</p>
+<p>与树不同的是，在图的遍历过程中都需要借助一个额外的数据结构来保存已经遍历过的节点，避免节点的重复遍历，这里借助一个名为visited的set来记录。</p>
+<p>为了是的bfs能够多次被使用，这里借助template传入一个functor来操作x，便于代码重用。</p>
+<pre class="brush: c++;">
+template < class Func>
+void bfs(node_t start, Func & & func) {
+    que.push(start);
+    visited.insert(start);
+    while (!que.empty()) 
+        auto x = que.front();
+        func(x);
+        que.pop();
+        for (auto & & e : adjacent[x])
+            if (!visited.count(e->v)) 
+                visited.insert(e->v);
+                que.push(e->v);
+}
+</pre>
+
+        </div>
+
+    </div>
+
+</article><article id="{article-id}" class="article article-type-post" itemscope itemprop="blogPost">
     <div class="article-inner">
 
         <header class="article-header">
@@ -238,34 +280,6 @@
 <h3><a data-uk-modal="{target:'#category-id'}">poll机制</a></h3>
 
 <p>如下为<code>poll</code>库函数，接收的数据<code>struct pollfd *fds</code> 其实是一个<code>strucct pollfd</code> 类型的数组，<code>nfds</code>对应着数组中元素的个数，最后一个为超时。与select最大的区别在于将关注的文件描述符以及对应的事件都抽取出来整合成<code>struct pollfd</code>类型了，而select需要一个很大的文件描述符集合数组，而其中可能只有很少的几个描述符是我们关注的可能会有读写事件。所以从功能上来说<code>poll</code>其实是更高效的。</p>
-
-        </div>
-
-    </div>
-
-</article><article id="{article-id}" class="article article-type-post" itemscope itemprop="blogPost">
-    <div class="article-inner">
-
-        <header class="article-header">
-            <h1 itemprop="name">
-                <a class="article-title" href="/blogs/2018/12/libevent-cpp-3-读写事件及Linux内核select机制实现原理.html">libevent-cpp-3-读写事件及Linux内核select机制实现原理</a>
-            </h1>
-        </header>
-
-        <div class="article-meta">
-            <a href="/blogs/2018/12/libevent-cpp-3-读写事件及Linux内核select机制实现原理.html" class="article-date">
-                <time itemprop="datePublished">2018年12月</time>
-            </a>
-        </div>
-
-        <div class="article-entry" itemprop="articleBody">
-            <p>关于libevent除了对于信号和超时的处理，最核心的部分其实是对于多路IO复用的封装。IO复用存在多种方式，包括select、poll、kqueue及epoll等多种接口。libevent的实现中用C语言以类似面向对象的方式来将这多种IO复用方式进行封装，对于我们的libevent-cpp而言，可以直接使用父子继承来实现各种不同的IO方式。本文主要介绍一下select机制以及libevent中使用select来处理IO读写事件的方式，然后深入Linux内核介绍一下select的实现机制。</p>
-<h2><a data-uk-modal="{target:'#category-id'}">读写事件管理及select机制</a></h2>
-
-<p></p>
-<h3><a data-uk-modal="{target:'#category-id'}">select机制</a></h3>
-
-<p>如下为select函数及对应的参数，参数中最重要的数据类型就是fd_set数组对应的读描述符集合和写描述符集合，其中分别保存着读写描述符的信息，进程首先会睡眠于select函数，之后一旦读或者写描述符集合中的某个fd满足读或者写了，那么select就会返回，然后进程处理对应描述符的读写。</p>
 
         </div>
 

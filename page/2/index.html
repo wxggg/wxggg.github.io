@@ -8,7 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1,
             maximum-scale=1">
 
-    <link type="text/css" rel="stylesheet" href="/syntaxhighlighter/styles/shCore.css">
+    <link type="text/css" rel="stylesheet" href="/syntaxhighlighter/styles/shCoreDefault.css">
     <link rel="stylesheet" href="/css/style.css">
     <link rel="stylesheet" href="/webfonts/ptserif/main.css">
     <script src="/js/jquery.min.js"></script>
@@ -26,7 +26,7 @@
         .syntaxhighlighter table {
             font-size: 14px !important;
             overflow: hidden !important;
-            /* background-color: aliceblue !important; */
+            background-color: aliceblue !important;
         }
     </style>
 </head>
@@ -54,6 +54,34 @@
         <section id="main" class="outer">
 
             <article id="{article-id}" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+
+        <header class="article-header">
+            <h1 itemprop="name">
+                <a class="article-title" href="/blogs/2018/12/libevent-cpp-3-读写事件及Linux内核select机制实现原理.html">libevent-cpp-3-读写事件及Linux内核select机制实现原理</a>
+            </h1>
+        </header>
+
+        <div class="article-meta">
+            <a href="/blogs/2018/12/libevent-cpp-3-读写事件及Linux内核select机制实现原理.html" class="article-date">
+                <time itemprop="datePublished">2018年12月</time>
+            </a>
+        </div>
+
+        <div class="article-entry" itemprop="articleBody">
+            <p>关于libevent除了对于信号和超时的处理，最核心的部分其实是对于多路IO复用的封装。IO复用存在多种方式，包括select、poll、kqueue及epoll等多种接口。libevent的实现中用C语言以类似面向对象的方式来将这多种IO复用方式进行封装，对于我们的libevent-cpp而言，可以直接使用父子继承来实现各种不同的IO方式。本文主要介绍一下select机制以及libevent中使用select来处理IO读写事件的方式，然后深入Linux内核介绍一下select的实现机制。</p>
+<h2><a data-uk-modal="{target:'#category-id'}">读写事件管理及select机制</a></h2>
+
+<p></p>
+<h3><a data-uk-modal="{target:'#category-id'}">select机制</a></h3>
+
+<p>如下为select函数及对应的参数，参数中最重要的数据类型就是fd_set数组对应的读描述符集合和写描述符集合，其中分别保存着读写描述符的信息，进程首先会睡眠于select函数，之后一旦读或者写描述符集合中的某个fd满足读或者写了，那么select就会返回，然后进程处理对应描述符的读写。</p>
+
+        </div>
+
+    </div>
+
+</article><article id="{article-id}" class="article article-type-post" itemscope itemprop="blogPost">
     <div class="article-inner">
 
         <header class="article-header">
@@ -267,28 +295,6 @@ class event
 <h2><a data-uk-modal="{target:'#category-id'}">Abstract 摘要</a></h2>
 
 <p>摘要部分说明了Web服务器的一个现状，对于<code>tail latency</code>要求较高的一些服务如游戏或股票等会关闭同时多线程（SMT），在一个核上只运行一个服务，使得CPU的利用率很低。所以就希望能够同时运行批处理任务和时延关键型请求来利用SMT的多个硬件环境（论文中称为lanes，也就是通道），但是如果完全共享CPU资源的话又会对<code>tail latency</code>和违反 <code>SLO</code>（Service Level Objectives即服务水平目标）产生非线性的影响。</p>
-
-        </div>
-
-    </div>
-
-</article><article id="{article-id}" class="article article-type-post" itemscope itemprop="blogPost">
-    <div class="article-inner">
-
-        <header class="article-header">
-            <h1 itemprop="name">
-                <a class="article-title" href="/blogs/2018/09/模拟MFC关键技术.html">模拟MFC关键技术</a>
-            </h1>
-        </header>
-
-        <div class="article-meta">
-            <a href="/blogs/2018/09/模拟MFC关键技术.html" class="article-date">
-                <time itemprop="datePublished">2018年09月</time>
-            </a>
-        </div>
-
-        <div class="article-entry" itemprop="articleBody">
-            <p>MFC也就是Microsoft Foundation Class之前一直都是Windows平台软件开发的主要软件框架（Application Framework）， 随着新技术的不断产生，MFC也渐渐消失在主流开发者的眼中。诚然，MFC设计的晦涩确实是其一大弊端，正如《深入浅出MFC》的作者侯杰所提到的很多敌视者将MFC这个Application Framework视作Minotaur（希腊神话中的牛头怪，会吃掉迷失在迷宫中的人），但是考虑到MFC设计的时间，其很多设计思想其实很有意思，《深入浅出MFC》中所提到的MFC设计的六大关键技术在现在可能已经有了更好的实现方式，比如说运行时类型识别RTTI，MFC设计之初C++还没有引入运行时类型识别，所以对于此MFC便设计了一套专门的宏以及相应的数据结构进行处理，在今天看来，这着实很麻烦，因为现在C++的特性早已经可以直接进行运行时类型的识别以及转换了。无论怎样，相对于直接调用Windows的api进行界面程序的实现，MFC程序确实是有着相当大的进步，虽然这种进步在当今看来早已落伍，但是MFC作为一个Application Framework的设计思想却值得进行探究。</p>
 
         </div>
 
