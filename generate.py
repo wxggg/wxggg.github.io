@@ -82,6 +82,19 @@ def generate_article(path, last_path, next_path):
         f.write(base.replace('{item}', a, -1))
 
 
+def generate_single_article(path):
+    with open(path+'.html', 'w') as f:
+        content = read_all(path + '.shtml')
+        a = article.replace('{content}', content)
+        a = a.replace('{article-title}', '')
+        a = a.replace('{article-date}', '')
+        a = a.replace('{last-article-link}', '', -1)
+        a = a.replace('{last-article-title}', '', -1)
+        a = a.replace('{next-article-link}', '', -1)
+        a = a.replace('{next-article-title}', '', -1)
+        f.write(base.replace('{item}', a, -1))
+
+
 def generate_page_nav(current, total):
     if current > 2:
         anchors = prev_page.replace(
@@ -148,8 +161,10 @@ def generate(dirs):
     for i in range(pages):
         id = i+1
         generate_page(id, paths[i*single_page:(i+1)*single_page], total)
-    
+
 
 if __name__ == '__main__':
     dirs = ["blogs/2018", "blogs/2019"]
     generate(dirs)
+
+    generate_single_article('blogs/me')
