@@ -93,6 +93,34 @@ void bfs(node_t start, Func & & func) {
 
         <header class="article-header">
             <h1 itemprop="name">
+                <a class="article-title" href="/blogs/2019/06/nginx工作模式与惊群现象.html">nginx工作模式与惊群现象</a>
+            </h1>
+        </header>
+
+        <div class="article-meta">
+            <a href="/blogs/2019/06/nginx工作模式与惊群现象.html" class="article-date">
+                <time itemprop="datePublished">2019年06月</time>
+            </a>
+        </div>
+
+        <div class="article-entry" itemprop="articleBody">
+            <p>本文主要介绍了nginx的不同工作模式的初始化过程,并针对性的介绍了nginx如何优先处理accept事件,并借助进程锁来解决惊群现象.</p>
+<h2><a data-uk-modal="{target:'#category-id'}">初始化</a></h2>
+
+<p>Nginx入口在core/nginx.c中，开始时会进行debug和错误信息的初始化，然后读入启动参数，之后进行时间和日志的初始化。然后会初始化一个非常重要的全局变量ngx_cycle，其中保存了全局可用的非常重要的变量，包括内存池、连接池、日志指针等信息。之后会处理读入的参数，进行os相关的初始化，读入并解析配置文件。</p>
+<h3><a data-uk-modal="{target:'#category-id'}">平滑升级 ngx_add_inherited_sockets</a></h3>
+
+<p>在初始化时一个比较有意思的就是sockets的继承，在进行不重启服务升级nginx时，原来运行的nginx会通过 NGINX 环境变量来来传递需要监听的端口，新启动的nginx会通过  gx_add_inherited_sockets 来使用已经打开的端口，如果不这样的话，会报错端口已经被bind。</p>
+
+        </div>
+
+    </div>
+
+</article><article id="{article-id}" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+
+        <header class="article-header">
+            <h1 itemprop="name">
                 <a class="article-title" href="/blogs/2019/05/平衡二叉树和红黑树.html">平衡二叉树和红黑树</a>
             </h1>
         </header>
@@ -246,33 +274,6 @@ void bfs(node_t start, Func & & func) {
         <div class="article-entry" itemprop="articleBody">
             <p>前面介绍了poll和select在内核中的实现原理，可以说本质上两者都是相同的，都是将用户空间的文件描述符及对应事件复制到内核空间，然后在内核空间轮询，如果轮询没有事件，则将当前进程置于该文件描述符的等待队列，如此，在之后该文件进行读写操作时就可以唤醒其等待队列，然后再次轮询时会发现发生了读或者写事件。但是轮询机制在大规模IO复用时会有着明显的缺陷，首先因为poll和select要不断的轮询，所以其时间复杂度为O(n)，随着文件描述符的增多会越来越慢，另外文件描述符的增多也会导致要从用户态拷贝到内核态的数据越来越多，在大规模IO复用中，这种拷贝多次执行显然是难以忍受的，可以说基于poll种种缺点，在Linux-2.6版本左右加入了epoll机制，能够非常高高效的进行IO复用。</p>
 <p>首先针对IO复用这一机制，从原理上来说其实主要的几个思路是不会改变的。首先是用户程序需要将其关注的文件描述符或者相应的读写事件传递给内核，不做处理的话这里存在从用户态到内核态的拷贝，select和poll就是这么做的，其次比较关键的其实就是内核在获取了相应的文件描述符及事件之后，如何有针对性的监控该文件描述符是否发生事件，并根据有无来进行当前进程睡眠和唤醒，因为如果没有发生事件的话是需要释放cpu资源的。在引入epoll之前的Linux版本中，或者说在2.6以前的版本中，poll对进程的睡眠是通过一个<code>poll_wait</code>函数实现的，只要是实现了poll函数的虚拟文件系统，都会在<code>poll</code>中调用<code>poll_wait</code>，poll会将当前进程置于该文件的等待队列，然后在该虚拟文件系统的读写接口中会相应的进行等待队列进程的唤醒。</p>
-
-        </div>
-
-    </div>
-
-</article><article id="{article-id}" class="article article-type-post" itemscope itemprop="blogPost">
-    <div class="article-inner">
-
-        <header class="article-header">
-            <h1 itemprop="name">
-                <a class="article-title" href="/blogs/2018/12/libevent-cpp-4-封装poll及poll内核实现原理.html">libevent-cpp-4-封装poll及poll内核实现原理</a>
-            </h1>
-        </header>
-
-        <div class="article-meta">
-            <a href="/blogs/2018/12/libevent-cpp-4-封装poll及poll内核实现原理.html" class="article-date">
-                <time itemprop="datePublished">2018年12月</time>
-            </a>
-        </div>
-
-        <div class="article-entry" itemprop="articleBody">
-            <p>随着Linux的更新在linux-2.1.23版本中加入了poll机制，因为poll的加入导致select的实现变得基于poll了，本文在上一个版本的基础上在libevent-cpp中加入了对poll机制的封装。总的来说，主要介绍libevent-cpp poll机制以及Linux内核对poll机制的实现原理，另外还会介绍到内核中select实现因为poll而做的改变。</p>
-<h2><a data-uk-modal="{target:'#category-id'}">读写事件管理及poll机制</a></h2>
-
-<h3><a data-uk-modal="{target:'#category-id'}">poll机制</a></h3>
-
-<p>如下为<code>poll</code>库函数，接收的数据<code>struct pollfd *fds</code> 其实是一个<code>strucct pollfd</code> 类型的数组，<code>nfds</code>对应着数组中元素的个数，最后一个为超时。与select最大的区别在于将关注的文件描述符以及对应的事件都抽取出来整合成<code>struct pollfd</code>类型了，而select需要一个很大的文件描述符集合数组，而其中可能只有很少的几个描述符是我们关注的可能会有读写事件。所以从功能上来说<code>poll</code>其实是更高效的。</p>
 
         </div>
 

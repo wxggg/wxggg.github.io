@@ -1,0 +1,127 @@
+<p>本文主要介绍了nginx的不同工作模式的初始化过程,并针对性的介绍了nginx如何优先处理accept事件,并借助进程锁来解决惊群现象.</p>
+<h2><a data-uk-modal="{target:'#category-id'}">初始化</a></h2>
+
+<p>Nginx入口在core/nginx.c中，开始时会进行debug和错误信息的初始化，然后读入启动参数，之后进行时间和日志的初始化。然后会初始化一个非常重要的全局变量ngx_cycle，其中保存了全局可用的非常重要的变量，包括内存池、连接池、日志指针等信息。之后会处理读入的参数，进行os相关的初始化，读入并解析配置文件。</p>
+<h3><a data-uk-modal="{target:'#category-id'}">平滑升级 ngx_add_inherited_sockets</a></h3>
+
+<p>在初始化时一个比较有意思的就是sockets的继承，在进行不重启服务升级nginx时，原来运行的nginx会通过 NGINX 环境变量来来传递需要监听的端口，新启动的nginx会通过  gx_add_inherited_sockets 来使用已经打开的端口，如果不这样的话，会报错端口已经被bind。</p>
+<p>Nginx在平滑升级时，不会重启master进程，而是直接启动新的nginx，旧版本的master进程借助execve来fork出新的master进程，这时原来的master需要告诉新的master是在做平滑升级，nginx借助环境变量来传递信息，利用ngx_add_inherited_sockets继承原来监听的sockets。</p>
+<h2><a data-uk-modal="{target:'#category-id'}">单进程工作模式</a></h2>
+
+<p>主函数初始化结尾会根据配置信息采用单进程还是master工作模式，单进程模式ngx_single_process_cycle开始会启动核心模块，然后进入主循环，等待处理相应事件。每次处理完事件之后都会判断是否收到了terminate或quit消息，是的话就先关闭各个模块，然后退出。每次处理完事件也会判断是否重新配置，以及是否需要重新打开日志文件。</p>
+<pre class="brush: c++;">
+ngx_single_process_cycle(ngx_cycle_t *cycle) {
+    for( ;; ) {
+        ngx_process_events_and_timers(cycle);
+
+        if (ngx_terminate || ngx_quit) {
+            ngx_modules[i]->exit_process(cycle); // 关闭各个模块
+            ngx_master_process_exit(cycle);
+        }
+
+        if (ngx_reconfigure) // 重新配置
+        if (ngx_reopen) // 重新打开日志文件
+    }
+}
+</pre>
+<h2><a data-uk-modal="{target:'#category-id'}">master工作模式</a></h2>
+
+<p>多进程工作模式就是master-worker模式,主进程启动n个子进程用于请求事件处理,而主进程只关注信号,用户通过给主进程发送信号来控制nginx的重启,退出等操作.</p>
+<pre class="brush: c++;">
+ngx_master_process_cycle(ngx_cycle_t *cycle) {
+    sigaddset(& set, ...); // SIGCHLD SIGALRM SIGIO SIGINT
+    sigprocmask(SIG_BLOCK, & set, NULL);
+
+    ngx_start_worker_processes(cycle, ccf->worker_processes,
+                               NGX_PROCESS_RESPAWN); //启动worker进程
+    ngx_start_cache_manager_processes(cycle, 0); //启动cache manager， cache loader进程
+
+    for( ;; ) {
+        if (delay) settimer(...);
+
+        sigsuspend(& set);
+
+        if (ngx_terminate)... ngx_signal_worker_processes(); // 通知worker
+        if (ngx_quit)
+    }
+}
+</pre>
+<h3><a data-uk-modal="{target:'#category-id'}">缓存 cache_manger</a></h3>
+
+<p>有意思的是这里处理启动了子进程worker来处理请求,还启动了另外的子进程cache_manager,可以处理缓存,分为两个子进程,一个会定期检查缓存并删除超时的缓存, 第二个子进程会在启动时将磁盘中缓存的个体映射到内存中.</p>
+<p>为什么要进行cache呢,当web访问量非常大的时候,而某些页面又不是经常变化,为了性能可以将请求结果页面静态化并进行缓存,所以很多web服务器选择nginx作为静态代理.</p>
+<h2><a data-uk-modal="{target:'#category-id'}">worker处理请求事件</a></h2>
+
+<p>由master通过fork创建出来的worker进程与单进程模式的nginx工作状态一样,使用同样的函数处理事件.</p>
+<pre class="brush: c++;">
+ngx_worker_process_cycle(ngx_cycle_t *cycle, void *data) //data表示这是第几个worker进程
+{
+    ngx_worker_process_init(cycle, worker); //主要工作是把CPU和进程绑定
+
+    for( ;; ) {
+        if (ngx_exiting) ...
+
+        ngx_process_events_and_timers(cycle);
+
+        if (ngx_terminate)
+        if (ngx_quit)
+        if (ngx_reopen)
+    }
+}
+
+</pre>
+<h2><a data-uk-modal="{target:'#category-id'}">惊群现象</a></h2>
+
+<p>介绍nginx的事件处理离不开惊群现象, 当多线程/进程等待同一个socket事件，比如客户端的连接请求，当事件发生时所有的线程/进程都被唤醒，就是惊群。所有的线程、进程都被唤醒，但是只有一个处理该事件，所以惊群会造成因调度而产生的性能损失。</p>
+<h3><a data-uk-modal="{target:'#category-id'}">进程锁 accept_mutex</a></h3>
+
+<p>本质上对于惊群现象,nginx采用一个进程锁来处理,各个worker通过获取accept_mutex锁来决定是否进行accept.而accept_mutex是保存在共享变量区的变量,锁的实现依赖于操作系统的支持,可能是基于原子锁也可能基于文件锁.</p>
+<h2><a data-uk-modal="{target:'#category-id'}">处理事件 ngx_process_events_and_timers</a></h2>
+
+<p>那么具体而言nginx如何处理惊群现象的呢,首先通过一个ngx_use_accept_mutex变量来表示是否需要对accept进行加锁来解决惊群问题,如果是的话继续判断 ngx_accept_disabled 变量,如果大于0的话就说明当前worker的可用连接已经超过了八分之七,那么就不争抢accept锁了. 否则的话尝试accept锁,如果拿到锁的话就设置flags,让事件延后处理.</p>
+<pre class="brush: c++;">
+ngx_process_events_and_timers(ngx_cycle_t *cycle) {
+    if (ngx_use_accept_mutex) {
+        if (ngx_accept_disabled > 0) { 
+            ngx_accept_disabled--;
+        } else {
+            ngx_trylock_accept_mutex(cycle)
+            if (ngx_accept_mutex_held) flags |= NGX_POST_EVENTS;
+        }
+    }
+
+    ngx_process_events(cycle, timer, flags);
+
+    //一般执行ngx_event_accept
+    ngx_event_process_posted(cycle, & ngx_posted_accept_events); 
+
+    //释放锁后再处理下面的EPOLLIN EPOLLOUT请求   
+    if (ngx_accept_mutex_held) ngx_shmtx_unlock(& ngx_accept_mutex);
+
+    //普通读写事件放在释放ngx_accept_mutex锁后执行，提高客户端accept性能
+    ngx_event_process_posted(cycle, & ngx_posted_events); 
+
+}
+</pre>
+<p>以上ngx_process_events事实上就是进程阻塞并等待事件发生的地方,根据采用的多路复用机制对应不同的模块处理函数,如epoll最终会调用epoll_wait,而poll最终会调用poll函数.</p>
+<p>那么问题来了,如果已经获取到accept锁了,那么又是如何优先处理accept事件的呢</p>
+<h3><a data-uk-modal="{target:'#category-id'}">事件延后处理</a></h3>
+
+<p>以epoll_wait为例,如果传入的flag设置了NGC_POST_EVENTS标志的话,在发生了读事件时, 并且设置了POST标志的话,说明该事件要延后处理,并且还需要判断该事件是否为accept事件,如果是的话加入到ngx_posted_accept_events队列中,不是的话加入到ngx_posted_events队列中.</p>
+<pre class="brush: c++;">
+    if ((revents &  EPOLLIN) & &  rev->active) { 
+
+        //flags参数中含有NGX_POST_EVENTS表示这批事件要延后处理
+        if (flags &  NGX_POST_EVENTS) {
+            queue = rev->accept ? & ngx_posted_accept_events
+                                : & ngx_posted_events;
+
+            ngx_post_event(rev, queue); 
+        }
+    }
+</pre>
+<p>这样就比较清楚了,在事件被延后处理之后,回到ngx_process_events_and_timers中后,会先处理accept事件队列,这样就能够做到优先处理客户端的连接请求事件了.</p>
+<h2><a data-uk-modal="{target:'#category-id'}">参考</a></h2>
+
+<p><a href="https://github.com/nginx/nginx">1. https://github.com/nginx/nginx</a></p>
+<p><a href="https://github.com/y123456yz/reading-code-of-nginx-1.9.2">2. https://github.com/y123456yz/reading-code-of-nginx-1.9.2</a></p>

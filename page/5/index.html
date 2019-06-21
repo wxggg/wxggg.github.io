@@ -51,6 +51,42 @@
 
         <header class="article-header">
             <h1 itemprop="name">
+                <a class="article-title" href="/blogs/2018/03/Elfen论文复现.html">Elfen论文复现</a>
+            </h1>
+        </header>
+
+        <div class="article-meta">
+            <a href="/blogs/2018/03/Elfen论文复现.html" class="article-date">
+                <time itemprop="datePublished">2018年03月</time>
+            </a>
+        </div>
+
+        <div class="article-entry" itemprop="articleBody">
+            <p>由于作者使用的是Lucene的开源代码以及另外一个Lucene性能测试的开源项目代码，而Lucene的代码会经常更新，幸好对应的性能测试代码也会对应更新，性能测试代码： https://github.com/mikemccand/luceneutil</p>
+<p>准备作者的ELFEN代码以及作者的Luceneutil代码，从github上可得到 https://github.com/yangxi</p>
+<p>然后根据作者的说明进行实验,<strong>准备实验数据</strong>，wiki的英文数据，利用如下</p>
+<pre class="brush: perl;">
+# Usage
+#1. Download the wikipedia data
+python src/python/setup.py -download
+</pre>
+<p><strong>准备Lucene引擎</strong>，clone最新的Lucene代码，并用ant编译，如下Apache的源码下载时容易掉线，用github上的镜像就不会出现下载掉线的问题</p>
+<pre class="brush: perl;">
+#2. Build the Lucene
+"cd ../; git clone git://git.apache.org/lucene-solr.git trunk;"
+"cd trunk; git checkout -b new_branch ceb66d34c0a6f840ec195f6da85e323de5e9a04d"
+"cd ./lucene; ant compile-test"
+</pre>
+
+        </div>
+
+    </div>
+
+</article><article id="{article-id}" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+
+        <header class="article-header">
+            <h1 itemprop="name">
                 <a class="article-title" href="/blogs/2018/03/Computer-Performance-Microscopy-with-SHIM.html">Computer-Performance-Microscopy-with-SHIM</a>
             </h1>
         </header>
@@ -247,40 +283,6 @@ struct e820map
 <p>You have some different computers and jobs. For each job, it can only be done on one of two specified computers. The load of a computer is the number of jobs which have been done on the computer. Give the number of jobs and two computer ID for each job. You task is to minimize the max load.</p>
 <p>(hint: binary search)</p>
 <p>Implement Ford-Fulkerson algorithm to find the maximum flow of the following network, and list your intermediate steps. Use you implementation to solve problem 1 and show your answers. INPUT: (N, M) means number of jobs and computers. Next N line, each line has two computer ID for a job. see more detial in the file problem1.data. OUTPUT: the minimum number of the max load.</p>
-
-        </div>
-
-    </div>
-
-</article><article id="{article-id}" class="article article-type-post" itemscope itemprop="blogPost">
-    <div class="article-inner">
-
-        <header class="article-header">
-            <h1 itemprop="name">
-                <a class="article-title" href="/blogs/2018/00-algorithm/algorithm-max-network-flow.html">algorithm-max-network-flow</a>
-            </h1>
-        </header>
-
-        <div class="article-meta">
-            <a href="/blogs/2018/00-algorithm/algorithm-max-network-flow.html" class="article-date">
-                <time itemprop="datePublished">2018年00-algorithm月</time>
-            </a>
-        </div>
-
-        <div class="article-entry" itemprop="articleBody">
-            <p>The network flow problem is to seek the max flow of a network, there are several property of a network.</p>
-<ul><li>Vertex</li>
-</ul>
-<p>+ adjacent Edge is those from the vertex out</p>
-<ul><li>Edge</li>
-</ul>
-<p>+ link two vertex</p>
-<p>+ have a direction</p>
-<p>+ have a capacity ( c )</p>
-<ul><li>flow</li>
-</ul>
-<p>+ stores how much has been used (f)</p>
-<p>+ residual</p>
 
         </div>
 

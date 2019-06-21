@@ -51,6 +51,39 @@
 
         <header class="article-header">
             <h1 itemprop="name">
+                <a class="article-title" href="/blogs/2018/05/MNIST 手写数字多分类方法.html">MNIST 手写数字多分类方法</a>
+            </h1>
+        </header>
+
+        <div class="article-meta">
+            <a href="/blogs/2018/05/MNIST 手写数字多分类方法.html" class="article-date">
+                <time itemprop="datePublished">2018年05月</time>
+            </a>
+        </div>
+
+        <div class="article-entry" itemprop="articleBody">
+            <p>本例主要测试不同的统计学习方法对于mnist手写数字识别的应用，包括机器学习方法和深度学习神经网络的方法，主要应用了机器学习框架sklearn和深度学习框架tensorflow，暂时使用如下方法进行测试</p>
+<ul><li>朴素贝叶斯-sklearn</li>
+<li>logistic回归-sklearn</li>
+<li>单层神经网络-softmax全连接-tensorflow</li>
+</ul>
+<h2><a data-uk-modal="{target:'#category-id'}">数据集简介</a></h2>
+
+<p>mnist的数据为灰度图片，分为训练数据和测试数据，数据的形式比较简单，数据标签为0-9之间的数字，mnist的数据可以使用多种方式获得，这里直接采用tensorflow的keras框架api来获取</p>
+<pre class="brush: python;">
+mnist = tf.keras.datasets.mnist.load_data()
+</pre>
+<img src="http://www.sharix.site/static/img/tensorflow/tensorflow2_0.png" alt="">
+
+        </div>
+
+    </div>
+
+</article><article id="{article-id}" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+
+        <header class="article-header">
+            <h1 itemprop="name">
                 <a class="article-title" href="/blogs/2018/04/自建博客本地中英文搜索引擎.html">自建博客本地中英文搜索引擎</a>
             </h1>
         </header>
@@ -264,42 +297,6 @@ char *get_time()
     time(& ltime);
     return ctime(& ltime);
 }
-</pre>
-
-        </div>
-
-    </div>
-
-</article><article id="{article-id}" class="article article-type-post" itemscope itemprop="blogPost">
-    <div class="article-inner">
-
-        <header class="article-header">
-            <h1 itemprop="name">
-                <a class="article-title" href="/blogs/2018/03/Elfen论文复现.html">Elfen论文复现</a>
-            </h1>
-        </header>
-
-        <div class="article-meta">
-            <a href="/blogs/2018/03/Elfen论文复现.html" class="article-date">
-                <time itemprop="datePublished">2018年03月</time>
-            </a>
-        </div>
-
-        <div class="article-entry" itemprop="articleBody">
-            <p>由于作者使用的是Lucene的开源代码以及另外一个Lucene性能测试的开源项目代码，而Lucene的代码会经常更新，幸好对应的性能测试代码也会对应更新，性能测试代码： https://github.com/mikemccand/luceneutil</p>
-<p>准备作者的ELFEN代码以及作者的Luceneutil代码，从github上可得到 https://github.com/yangxi</p>
-<p>然后根据作者的说明进行实验,<strong>准备实验数据</strong>，wiki的英文数据，利用如下</p>
-<pre class="brush: perl;">
-# Usage
-#1. Download the wikipedia data
-python src/python/setup.py -download
-</pre>
-<p><strong>准备Lucene引擎</strong>，clone最新的Lucene代码，并用ant编译，如下Apache的源码下载时容易掉线，用github上的镜像就不会出现下载掉线的问题</p>
-<pre class="brush: perl;">
-#2. Build the Lucene
-"cd ../; git clone git://git.apache.org/lucene-solr.git trunk;"
-"cd trunk; git checkout -b new_branch ceb66d34c0a6f840ec195f6da85e323de5e9a04d"
-"cd ./lucene; ant compile-test"
 </pre>
 
         </div>

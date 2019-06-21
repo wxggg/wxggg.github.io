@@ -51,6 +51,33 @@
 
         <header class="article-header">
             <h1 itemprop="name">
+                <a class="article-title" href="/blogs/2018/12/libevent-cpp-4-封装poll及poll内核实现原理.html">libevent-cpp-4-封装poll及poll内核实现原理</a>
+            </h1>
+        </header>
+
+        <div class="article-meta">
+            <a href="/blogs/2018/12/libevent-cpp-4-封装poll及poll内核实现原理.html" class="article-date">
+                <time itemprop="datePublished">2018年12月</time>
+            </a>
+        </div>
+
+        <div class="article-entry" itemprop="articleBody">
+            <p>随着Linux的更新在linux-2.1.23版本中加入了poll机制，因为poll的加入导致select的实现变得基于poll了，本文在上一个版本的基础上在libevent-cpp中加入了对poll机制的封装。总的来说，主要介绍libevent-cpp poll机制以及Linux内核对poll机制的实现原理，另外还会介绍到内核中select实现因为poll而做的改变。</p>
+<h2><a data-uk-modal="{target:'#category-id'}">读写事件管理及poll机制</a></h2>
+
+<h3><a data-uk-modal="{target:'#category-id'}">poll机制</a></h3>
+
+<p>如下为<code>poll</code>库函数，接收的数据<code>struct pollfd *fds</code> 其实是一个<code>strucct pollfd</code> 类型的数组，<code>nfds</code>对应着数组中元素的个数，最后一个为超时。与select最大的区别在于将关注的文件描述符以及对应的事件都抽取出来整合成<code>struct pollfd</code>类型了，而select需要一个很大的文件描述符集合数组，而其中可能只有很少的几个描述符是我们关注的可能会有读写事件。所以从功能上来说<code>poll</code>其实是更高效的。</p>
+
+        </div>
+
+    </div>
+
+</article><article id="{article-id}" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+
+        <header class="article-header">
+            <h1 itemprop="name">
                 <a class="article-title" href="/blogs/2018/12/libevent-cpp-3-读写事件及Linux内核select机制实现原理.html">libevent-cpp-3-读写事件及Linux内核select机制实现原理</a>
             </h1>
         </header>
@@ -262,32 +289,6 @@ class event
             <p>在对文件进行读写之前需要与该文件建立一个通道，也就是打开一个文件。而打开文件的连接过程可以是一个流或者一个文件描述符。有些处理文件的函数需要流，而其它的可能会对文件描述符进行操作，在结束读写的时候需要关闭文件。文件描述符一般是 <code>int</code> 类型，而流则一般是 <code>FILE *</code> 对象。</p>
 <p>文件描述符给 I/O 提供了一个原始的底层的接口。文件描述符和流都能表示对如 terminal 这样的设备的连接，也可以作为普通的文件或者被管道和 socket 用来与其它进程进行连接。但是如果要对特殊的设备执行特定的控制操作则只能使用文件描述符，因为没有流提供这种支持。如果需要进行特殊种类的输入或输出比如非阻塞I/O，那么也只能使用文件描述符。</p>
 <p>流提供了基于原始文件描述符设备的高层接口，使用流的优点是对于流上面的输入输出操作存在更丰富且强大的工具。文件描述符接口只提供了操作字符块的简单函数，而流接口则提供了强大的格式化输入输出函数比如 <code>printf</code> 和 <code>scanf</code> ，也提供了对于字符和面向行的输入输出。既然流是基于文件描述符来实现的，故而可以将流解开并使用对于文件描述符的底层操作。相对应的也可以将一个连接打开为文件描述符然后让一个流与该文件描述符相关联。</p>
-
-        </div>
-
-    </div>
-
-</article><article id="{article-id}" class="article article-type-post" itemscope itemprop="blogPost">
-    <div class="article-inner">
-
-        <header class="article-header">
-            <h1 itemprop="name">
-                <a class="article-title" href="/blogs/2018/10/Elfen-Scheduling-Fine-Grain-Principled-Borrowing-from-Latency-Critical-Workloads-using-Simultaneous-Multithreading.html">Elfen-Scheduling-Fine-Grain-Principled-Borrowing-from-Latency-Critical-Workloads-using-Simultaneous-Multithreading</a>
-            </h1>
-        </header>
-
-        <div class="article-meta">
-            <a href="/blogs/2018/10/Elfen-Scheduling-Fine-Grain-Principled-Borrowing-from-Latency-Critical-Workloads-using-Simultaneous-Multithreading.html" class="article-date">
-                <time itemprop="datePublished">2018年10月</time>
-            </a>
-        </div>
-
-        <div class="article-entry" itemprop="articleBody">
-            <p>论文全称《Elfen Scheduling: Fine-Grain Principled Borrowing from Latency-Critical Workloads using Simultaneous Multithreading》，标题翻译为《Elfen调度：使用同时多线程技术从时延关键型工作负载进行细粒度原则借用》，由ANU的Xi Yang博士发表于会议ATC-2016，github上可以找到实验代码：https://github.com/yangxi/elfen</p>
-<p>文章主要介绍了一种新的细粒度调度CPU的方法，使得对于低延迟要求的服务能够利用这些服务未执行的时候来执行系统其他普通任务，用以提高SMT同时多线程CPU的利用率。</p>
-<h2><a data-uk-modal="{target:'#category-id'}">Abstract 摘要</a></h2>
-
-<p>摘要部分说明了Web服务器的一个现状，对于<code>tail latency</code>要求较高的一些服务如游戏或股票等会关闭同时多线程（SMT），在一个核上只运行一个服务，使得CPU的利用率很低。所以就希望能够同时运行批处理任务和时延关键型请求来利用SMT的多个硬件环境（论文中称为lanes，也就是通道），但是如果完全共享CPU资源的话又会对<code>tail latency</code>和违反 <code>SLO</code>（Service Level Objectives即服务水平目标）产生非线性的影响。</p>
 
         </div>
 
