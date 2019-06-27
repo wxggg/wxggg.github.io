@@ -37,7 +37,7 @@
             <div id="header-outer" class="outer" style="">
                 <div id="header-inner" class="inner" style="margin-top: 10px;">
                     <a href="/" style="font-size:24px; color: black; margin-right: 10px;">Home</a>
-                    <a href="/books/algorithm/" style="font-size:24px; color: black; margin-right: 10px;">Book</a>
+                    <a href="/books/algorithm/_book/" style="font-size:24px; color: black; margin-right: 10px;">Book</a>
                     <a href="/blogs/me.html" style="font-size:24px; color: black;">About</a>
                     <nav id="main-nav">
                     </nav>
@@ -47,6 +47,51 @@
         <section id="main" class="outer">
 
             <article id="{article-id}" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+
+        <header class="article-header">
+            <h1 itemprop="name">
+                <a class="article-title" href="/blogs/2018/03/Tensorflow-4之利用SWIG连接前端多语言环境与后端CC++.html">Tensorflow-4之利用SWIG连接前端多语言环境与后端CC++</a>
+            </h1>
+        </header>
+
+        <div class="article-meta">
+            <a href="/blogs/2018/03/Tensorflow-4之利用SWIG连接前端多语言环境与后端CC++.html" class="article-date">
+                <time itemprop="datePublished">2018年03月</time>
+            </a>
+        </div>
+
+        <div class="article-entry" itemprop="articleBody">
+            <p>Tensorflow 源码中python API和底层c/c++之间的关联主要是靠 <code>SWIG</code> 来完成的，这是一个用于把C/C++集成到其他语言中的编译器。本文主要介绍swig以及tensorflow如何利用swig关联前后端，另外主要介绍了一下Session的生命周期。</p>
+<p>http://www.swig.org/</p>
+<h2><a data-uk-modal="{target:'#category-id'}">SWIG实例之python调用C</a></h2>
+
+<p>首先准备C语言函数</p>
+<pre class="brush: c++;">
+/* File : example.c */
+#include < time.h>
+double My_variable = 3.0;
+
+int fact(int n) {
+    if (n < = 1) return 1;
+    else return n*fact(n-1);
+}
+int my_mod(int x, int y) {
+    return (x%y);
+}
+char *get_time()
+{
+    time_t ltime;
+    time(& ltime);
+    return ctime(& ltime);
+}
+</pre>
+
+        </div>
+
+    </div>
+
+</article><article id="{article-id}" class="article article-type-post" itemscope itemprop="blogPost">
     <div class="article-inner">
 
         <header class="article-header">
@@ -257,32 +302,6 @@ struct e820map
 <p>These days i am doing something about adding a kernel module to linux, so this blog is mainly about kernel module. This is the programming guide that i referenced</p>
 <p>https://www.tldp.org/LDP/lkmpg/2.6/html/lkmpg.html</p>
 <p>A kernel module extends  the functionality of the kernel without the need to reboot the system.Take device driver as an example, it allows the kernel to access hardware connected to the system. Without kernel module we have to add the code into the kernel source code, and rebuild and reboot the kernel, obviously this is complicated.</p>
-
-        </div>
-
-    </div>
-
-</article><article id="{article-id}" class="article article-type-post" itemscope itemprop="blogPost">
-    <div class="article-inner">
-
-        <header class="article-header">
-            <h1 itemprop="name">
-                <a class="article-title" href="/blogs/2018/00-algorithm/application-of-max-network-flow.html">application-of-max-network-flow</a>
-            </h1>
-        </header>
-
-        <div class="article-meta">
-            <a href="/blogs/2018/00-algorithm/application-of-max-network-flow.html" class="article-date">
-                <time itemprop="datePublished">2018年00-algorithm月</time>
-            </a>
-        </div>
-
-        <div class="article-entry" itemprop="articleBody">
-            <h2><a data-uk-modal="{target:'#category-id'}">Load balance</a></h2>
-
-<p>You have some different computers and jobs. For each job, it can only be done on one of two specified computers. The load of a computer is the number of jobs which have been done on the computer. Give the number of jobs and two computer ID for each job. You task is to minimize the max load.</p>
-<p>(hint: binary search)</p>
-<p>Implement Ford-Fulkerson algorithm to find the maximum flow of the following network, and list your intermediate steps. Use you implementation to solve problem 1 and show your answers. INPUT: (N, M) means number of jobs and computers. Next N line, each line has two computer ID for a job. see more detial in the file problem1.data. OUTPUT: the minimum number of the max load.</p>
 
         </div>
 

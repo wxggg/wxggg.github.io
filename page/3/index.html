@@ -37,7 +37,7 @@
             <div id="header-outer" class="outer" style="">
                 <div id="header-inner" class="inner" style="margin-top: 10px;">
                     <a href="/" style="font-size:24px; color: black; margin-right: 10px;">Home</a>
-                    <a href="/books/algorithm/" style="font-size:24px; color: black; margin-right: 10px;">Book</a>
+                    <a href="/books/algorithm/_book/" style="font-size:24px; color: black; margin-right: 10px;">Book</a>
                     <a href="/blogs/me.html" style="font-size:24px; color: black;">About</a>
                     <nav id="main-nav">
                     </nav>
@@ -47,6 +47,30 @@
         <section id="main" class="outer">
 
             <article id="{article-id}" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+
+        <header class="article-header">
+            <h1 itemprop="name">
+                <a class="article-title" href="/blogs/2018/11/C标准库-1-之输入输出IO.html">C标准库-1-之输入输出IO</a>
+            </h1>
+        </header>
+
+        <div class="article-meta">
+            <a href="/blogs/2018/11/C标准库-1-之输入输出IO.html" class="article-date">
+                <time itemprop="datePublished">2018年11月</time>
+            </a>
+        </div>
+
+        <div class="article-entry" itemprop="articleBody">
+            <p>在对文件进行读写之前需要与该文件建立一个通道，也就是打开一个文件。而打开文件的连接过程可以是一个流或者一个文件描述符。有些处理文件的函数需要流，而其它的可能会对文件描述符进行操作，在结束读写的时候需要关闭文件。文件描述符一般是 <code>int</code> 类型，而流则一般是 <code>FILE *</code> 对象。</p>
+<p>文件描述符给 I/O 提供了一个原始的底层的接口。文件描述符和流都能表示对如 terminal 这样的设备的连接，也可以作为普通的文件或者被管道和 socket 用来与其它进程进行连接。但是如果要对特殊的设备执行特定的控制操作则只能使用文件描述符，因为没有流提供这种支持。如果需要进行特殊种类的输入或输出比如非阻塞I/O，那么也只能使用文件描述符。</p>
+<p>流提供了基于原始文件描述符设备的高层接口，使用流的优点是对于流上面的输入输出操作存在更丰富且强大的工具。文件描述符接口只提供了操作字符块的简单函数，而流接口则提供了强大的格式化输入输出函数比如 <code>printf</code> 和 <code>scanf</code> ，也提供了对于字符和面向行的输入输出。既然流是基于文件描述符来实现的，故而可以将流解开并使用对于文件描述符的底层操作。相对应的也可以将一个连接打开为文件描述符然后让一个流与该文件描述符相关联。</p>
+
+        </div>
+
+    </div>
+
+</article><article id="{article-id}" class="article article-type-post" itemscope itemprop="blogPost">
     <div class="article-inner">
 
         <header class="article-header">
@@ -224,31 +248,6 @@ $$H(X) = -\sum{p(x)}log_2p(x)$$
 
 <p>卷积操作在高等数学和概率论中均有介绍，但是当时学时并没有理解其本质的意义，关于卷积操作的具体解释可以参看知乎问题</p>
 <ul><li><a href="https://www.zhihu.com/question/22298352/answer/228543288">如何通俗易懂地解释卷积？</a></li>
-
-        </div>
-
-    </div>
-
-</article><article id="{article-id}" class="article article-type-post" itemscope itemprop="blogPost">
-    <div class="article-inner">
-
-        <header class="article-header">
-            <h1 itemprop="name">
-                <a class="article-title" href="/blogs/2018/05/Shielding-applications-from-an-untrusted-cloud-with-Haven.html">Shielding-applications-from-an-untrusted-cloud-with-Haven</a>
-            </h1>
-        </header>
-
-        <div class="article-meta">
-            <a href="/blogs/2018/05/Shielding-applications-from-an-untrusted-cloud-with-Haven.html" class="article-date">
-                <time itemprop="datePublished">2018年05月</time>
-            </a>
-        </div>
-
-        <div class="article-entry" itemprop="articleBody">
-            <p>这篇文章全称《Shielding applications from an untrusted cloud with Haven》，是Microsoft在2014年发表在USENIX OSDI上的一篇文章，主要考虑的问题是云计算基础架构的安全性，云计算的用户希望云计算软硬件提供商能够保证数据的隐私及安全。这篇文章引入了shielded execution的概念，也就是屏蔽执行，能够保护程序和数据的运行平台的机密性和完整性，主要是云OS、虚拟机和firmware的安全，文章基于Windows设计了Haven原型，利用Intel的SGX的硬件保护来抵御内存探测等特权代码和物理攻击，这项工作促使了SGX规范的改进。</p>
-<h2><a data-uk-modal="{target:'#category-id'}">简介 & Introduction</a></h2>
-
-<p>现在的云计算系统使用传统的分层安全模型构建，目的是为了保护云提供商的特权代码不受不可信代码的影响，比如不被用户的虚拟机代码影响，但是缺点是不能够保护用户的数据被特权代码访问。目前保护隐私最好的方式是使用硬件安全模块HSM，支持一系列加功能，但是成本高，不通用。之前的相关研究是依赖可靠的VM管理程序来保护应用程序免受恶意OS的攻击，但无法防范受感染的虚拟机管理程序，另外通用计算的加密方案具有严重的性能限制。</p>
 
         </div>
 

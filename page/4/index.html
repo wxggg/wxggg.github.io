@@ -37,7 +37,7 @@
             <div id="header-outer" class="outer" style="">
                 <div id="header-inner" class="inner" style="margin-top: 10px;">
                     <a href="/" style="font-size:24px; color: black; margin-right: 10px;">Home</a>
-                    <a href="/books/algorithm/" style="font-size:24px; color: black; margin-right: 10px;">Book</a>
+                    <a href="/books/algorithm/_book/" style="font-size:24px; color: black; margin-right: 10px;">Book</a>
                     <a href="/blogs/me.html" style="font-size:24px; color: black;">About</a>
                     <nav id="main-nav">
                     </nav>
@@ -47,6 +47,31 @@
         <section id="main" class="outer">
 
             <article id="{article-id}" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+
+        <header class="article-header">
+            <h1 itemprop="name">
+                <a class="article-title" href="/blogs/2018/05/Shielding-applications-from-an-untrusted-cloud-with-Haven.html">Shielding-applications-from-an-untrusted-cloud-with-Haven</a>
+            </h1>
+        </header>
+
+        <div class="article-meta">
+            <a href="/blogs/2018/05/Shielding-applications-from-an-untrusted-cloud-with-Haven.html" class="article-date">
+                <time itemprop="datePublished">2018年05月</time>
+            </a>
+        </div>
+
+        <div class="article-entry" itemprop="articleBody">
+            <p>这篇文章全称《Shielding applications from an untrusted cloud with Haven》，是Microsoft在2014年发表在USENIX OSDI上的一篇文章，主要考虑的问题是云计算基础架构的安全性，云计算的用户希望云计算软硬件提供商能够保证数据的隐私及安全。这篇文章引入了shielded execution的概念，也就是屏蔽执行，能够保护程序和数据的运行平台的机密性和完整性，主要是云OS、虚拟机和firmware的安全，文章基于Windows设计了Haven原型，利用Intel的SGX的硬件保护来抵御内存探测等特权代码和物理攻击，这项工作促使了SGX规范的改进。</p>
+<h2><a data-uk-modal="{target:'#category-id'}">简介 & Introduction</a></h2>
+
+<p>现在的云计算系统使用传统的分层安全模型构建，目的是为了保护云提供商的特权代码不受不可信代码的影响，比如不被用户的虚拟机代码影响，但是缺点是不能够保护用户的数据被特权代码访问。目前保护隐私最好的方式是使用硬件安全模块HSM，支持一系列加功能，但是成本高，不通用。之前的相关研究是依赖可靠的VM管理程序来保护应用程序免受恶意OS的攻击，但无法防范受感染的虚拟机管理程序，另外通用计算的加密方案具有严重的性能限制。</p>
+
+        </div>
+
+    </div>
+
+</article><article id="{article-id}" class="article article-type-post" itemscope itemprop="blogPost">
     <div class="article-inner">
 
         <header class="article-header">
@@ -253,51 +278,6 @@ $python premade_estimator.py
 <h3><a data-uk-modal="{target:'#category-id'}">准备数据</a></h3>
 
 <p>本例使用的是csv格式的数据，可以使用<code>pandas</code>进行处理，如下为train的部分数据，从中可以看出来第一行主要是提供相关信息，比如数据行数等，可以在<code>read_csv</code>函数中说明header=0表示第一行为header，数据从第二行开始。</p>
-
-        </div>
-
-    </div>
-
-</article><article id="{article-id}" class="article article-type-post" itemscope itemprop="blogPost">
-    <div class="article-inner">
-
-        <header class="article-header">
-            <h1 itemprop="name">
-                <a class="article-title" href="/blogs/2018/03/Tensorflow-4之利用SWIG连接前端多语言环境与后端CC++.html">Tensorflow-4之利用SWIG连接前端多语言环境与后端CC++</a>
-            </h1>
-        </header>
-
-        <div class="article-meta">
-            <a href="/blogs/2018/03/Tensorflow-4之利用SWIG连接前端多语言环境与后端CC++.html" class="article-date">
-                <time itemprop="datePublished">2018年03月</time>
-            </a>
-        </div>
-
-        <div class="article-entry" itemprop="articleBody">
-            <p>Tensorflow 源码中python API和底层c/c++之间的关联主要是靠 <code>SWIG</code> 来完成的，这是一个用于把C/C++集成到其他语言中的编译器。本文主要介绍swig以及tensorflow如何利用swig关联前后端，另外主要介绍了一下Session的生命周期。</p>
-<p>http://www.swig.org/</p>
-<h2><a data-uk-modal="{target:'#category-id'}">SWIG实例之python调用C</a></h2>
-
-<p>首先准备C语言函数</p>
-<pre class="brush: c++;">
-/* File : example.c */
-#include < time.h>
-double My_variable = 3.0;
-
-int fact(int n) {
-    if (n < = 1) return 1;
-    else return n*fact(n-1);
-}
-int my_mod(int x, int y) {
-    return (x%y);
-}
-char *get_time()
-{
-    time_t ltime;
-    time(& ltime);
-    return ctime(& ltime);
-}
-</pre>
 
         </div>
 

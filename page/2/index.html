@@ -37,7 +37,7 @@
             <div id="header-outer" class="outer" style="">
                 <div id="header-inner" class="inner" style="margin-top: 10px;">
                     <a href="/" style="font-size:24px; color: black; margin-right: 10px;">Home</a>
-                    <a href="/books/algorithm/" style="font-size:24px; color: black; margin-right: 10px;">Book</a>
+                    <a href="/books/algorithm/_book/" style="font-size:24px; color: black; margin-right: 10px;">Book</a>
                     <a href="/blogs/me.html" style="font-size:24px; color: black;">About</a>
                     <nav id="main-nav">
                     </nav>
@@ -47,6 +47,29 @@
         <section id="main" class="outer">
 
             <article id="{article-id}" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+
+        <header class="article-header">
+            <h1 itemprop="name">
+                <a class="article-title" href="/blogs/2018/12/libevent-cpp-5-封装epoll及epoll内核实现原理.html">libevent-cpp-5-封装epoll及epoll内核实现原理</a>
+            </h1>
+        </header>
+
+        <div class="article-meta">
+            <a href="/blogs/2018/12/libevent-cpp-5-封装epoll及epoll内核实现原理.html" class="article-date">
+                <time itemprop="datePublished">2018年12月</time>
+            </a>
+        </div>
+
+        <div class="article-entry" itemprop="articleBody">
+            <p>前面介绍了poll和select在内核中的实现原理，可以说本质上两者都是相同的，都是将用户空间的文件描述符及对应事件复制到内核空间，然后在内核空间轮询，如果轮询没有事件，则将当前进程置于该文件描述符的等待队列，如此，在之后该文件进行读写操作时就可以唤醒其等待队列，然后再次轮询时会发现发生了读或者写事件。但是轮询机制在大规模IO复用时会有着明显的缺陷，首先因为poll和select要不断的轮询，所以其时间复杂度为O(n)，随着文件描述符的增多会越来越慢，另外文件描述符的增多也会导致要从用户态拷贝到内核态的数据越来越多，在大规模IO复用中，这种拷贝多次执行显然是难以忍受的，可以说基于poll种种缺点，在Linux-2.6版本左右加入了epoll机制，能够非常高高效的进行IO复用。</p>
+<p>首先针对IO复用这一机制，从原理上来说其实主要的几个思路是不会改变的。首先是用户程序需要将其关注的文件描述符或者相应的读写事件传递给内核，不做处理的话这里存在从用户态到内核态的拷贝，select和poll就是这么做的，其次比较关键的其实就是内核在获取了相应的文件描述符及事件之后，如何有针对性的监控该文件描述符是否发生事件，并根据有无来进行当前进程睡眠和唤醒，因为如果没有发生事件的话是需要释放cpu资源的。在引入epoll之前的Linux版本中，或者说在2.6以前的版本中，poll对进程的睡眠是通过一个<code>poll_wait</code>函数实现的，只要是实现了poll函数的虚拟文件系统，都会在<code>poll</code>中调用<code>poll_wait</code>，poll会将当前进程置于该文件的等待队列，然后在该虚拟文件系统的读写接口中会相应的进行等待队列进程的唤醒。</p>
+
+        </div>
+
+    </div>
+
+</article><article id="{article-id}" class="article article-type-post" itemscope itemprop="blogPost">
     <div class="article-inner">
 
         <header class="article-header">
@@ -265,30 +288,6 @@ class event
 
 <p>标准库在<code>math.h</code> 头文件中声明了包括三角函数在内的很多数学函数用来计算，而在 <code>complex.h</code> 中提供了对复数的支持以及各种用于复数的计算。针对浮点类型的函数提供了三种变体，分别是对 <code>double</code>、<code>float</code>和<code>long double</code> 的支持，其中 <code>float</code>的计算是最快的，另外两个分别精度比较高。</p>
 <p>以三角函数为例，分别存在<code>sin</code> 、<code>sinf</code> 和<code>sinl</code> 这三个函数，针对 <code>double</code> 、<code>float</code> 和 <code>long double</code> 进行计算。对于复数的支持函数一般叫做如 <code>ccos</code>和 <code>ctan</code> 等，后缀如<code>ccosf</code>同样表示对<code>float</code>的支持。反三角函数如反正弦函数位 <code>asin</code> ，三角函数中还有如双曲正弦函数 <code>sanh</code>等。</p>
-
-        </div>
-
-    </div>
-
-</article><article id="{article-id}" class="article article-type-post" itemscope itemprop="blogPost">
-    <div class="article-inner">
-
-        <header class="article-header">
-            <h1 itemprop="name">
-                <a class="article-title" href="/blogs/2018/11/C标准库-1-之输入输出IO.html">C标准库-1-之输入输出IO</a>
-            </h1>
-        </header>
-
-        <div class="article-meta">
-            <a href="/blogs/2018/11/C标准库-1-之输入输出IO.html" class="article-date">
-                <time itemprop="datePublished">2018年11月</time>
-            </a>
-        </div>
-
-        <div class="article-entry" itemprop="articleBody">
-            <p>在对文件进行读写之前需要与该文件建立一个通道，也就是打开一个文件。而打开文件的连接过程可以是一个流或者一个文件描述符。有些处理文件的函数需要流，而其它的可能会对文件描述符进行操作，在结束读写的时候需要关闭文件。文件描述符一般是 <code>int</code> 类型，而流则一般是 <code>FILE *</code> 对象。</p>
-<p>文件描述符给 I/O 提供了一个原始的底层的接口。文件描述符和流都能表示对如 terminal 这样的设备的连接，也可以作为普通的文件或者被管道和 socket 用来与其它进程进行连接。但是如果要对特殊的设备执行特定的控制操作则只能使用文件描述符，因为没有流提供这种支持。如果需要进行特殊种类的输入或输出比如非阻塞I/O，那么也只能使用文件描述符。</p>
-<p>流提供了基于原始文件描述符设备的高层接口，使用流的优点是对于流上面的输入输出操作存在更丰富且强大的工具。文件描述符接口只提供了操作字符块的简单函数，而流接口则提供了强大的格式化输入输出函数比如 <code>printf</code> 和 <code>scanf</code> ，也提供了对于字符和面向行的输入输出。既然流是基于文件描述符来实现的，故而可以将流解开并使用对于文件描述符的底层操作。相对应的也可以将一个连接打开为文件描述符然后让一个流与该文件描述符相关联。</p>
 
         </div>
 
