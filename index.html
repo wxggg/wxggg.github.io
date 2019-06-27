@@ -37,7 +37,7 @@
             <div id="header-outer" class="outer" style="">
                 <div id="header-inner" class="inner" style="margin-top: 10px;">
                     <a href="/" style="font-size:24px; color: black; margin-right: 10px;">Home</a>
-                    <a href="/books/algorithm/" style="font-size:24px; color: black; margin-right: 10px;">Book</a>
+                    <a href="/books/algorithm/_book/" style="font-size:24px; color: black; margin-right: 10px;">Book</a>
                     <a href="/blogs/me.html" style="font-size:24px; color: black;">About</a>
                     <nav id="main-nav">
                     </nav>
@@ -111,6 +111,32 @@ void bfs(node_t start, Func & & func) {
 <h3><a data-uk-modal="{target:'#category-id'}">平滑升级 ngx_add_inherited_sockets</a></h3>
 
 <p>在初始化时一个比较有意思的就是sockets的继承，在进行不重启服务升级nginx时，原来运行的nginx会通过 NGINX 环境变量来来传递需要监听的端口，新启动的nginx会通过  gx_add_inherited_sockets 来使用已经打开的端口，如果不这样的话，会报错端口已经被bind。</p>
+
+        </div>
+
+    </div>
+
+</article><article id="{article-id}" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+
+        <header class="article-header">
+            <h1 itemprop="name">
+                <a class="article-title" href="/blogs/2019/06/Linux下asio如何利用reactor来模拟proactor模式.html">Linux下asio如何利用reactor来模拟proactor模式</a>
+            </h1>
+        </header>
+
+        <div class="article-meta">
+            <a href="/blogs/2019/06/Linux下asio如何利用reactor来模拟proactor模式.html" class="article-date">
+                <time itemprop="datePublished">2019年06月</time>
+            </a>
+        </div>
+
+        <div class="article-entry" itemprop="articleBody">
+            <p>高并发网络有reactor和proactor两种模式,reactor基于非阻塞io多路复用,本质上属于同步io,而proactor模式则基于异步io. 类unix平台一般都采用reactor模式,如epoll和kqueue等.而Windows平台因为对于reactor模式的支持不好,但是对于异步io有IOCP非常高效. 作为有可能在c++20中进入标准的网络库,asio需要对不同平台都提供支持,这样就造成了只能用一种模式去模拟另一种模式,asio选择在linux下面使用reactor模拟proactor模式.</p>
+<p>言归正传,本文就一个主题:在linux下面asio到底是如何借助reactor如epoll来模拟proactor异步模式的.</p>
+<h2><a data-uk-modal="{target:'#category-id'}">1. reactor和proactor模式之间到底有什么区别</a></h2>
+
+<p>首先reactor模式依赖于epoll这样的io多路复用机制,能监听大量文件描述符的读写,在有可读写时发生超时或收到信号时从阻塞状态退出,用户程序根据发生的事件进行相应的处理. 本质上来看reactor模式还是同步模式,当前进程一直监控一个事件集合,可读就读,可写就写.</p>
 
         </div>
 
@@ -251,29 +277,6 @@ void bfs(node_t start, Func & & func) {
 <h2><a data-uk-modal="{target:'#category-id'}">1 引导启动</a></h2>
 
 <p>一般来说，绝大多数x86硬件上的系统启动过程应该都是相似的，都是在硬件通电之后执行BIOS硬件程序，BIOS将系统的引导扇区（512B）加载到0x7c00处，BIOS自检之类的事情做完之后就会跳转到0x7c00执行引导扇区的入口。需要注意的就是此时的代码均为16位，为了兼容以前的系统即使现在的系统可能都到64位了，但是启动的时候还是得从16位实模式开始，后面会经过一系列过程开启保护模式进入32位。几乎任何一个x86平台的os应该都要经历这样的过程，不同的就是在加载启动过程中，不同的系统在启动过程中处理的方式可能不同，如下是linux-0.01引导时的流程图。</p>
-
-        </div>
-
-    </div>
-
-</article><article id="{article-id}" class="article article-type-post" itemscope itemprop="blogPost">
-    <div class="article-inner">
-
-        <header class="article-header">
-            <h1 itemprop="name">
-                <a class="article-title" href="/blogs/2018/12/libevent-cpp-5-封装epoll及epoll内核实现原理.html">libevent-cpp-5-封装epoll及epoll内核实现原理</a>
-            </h1>
-        </header>
-
-        <div class="article-meta">
-            <a href="/blogs/2018/12/libevent-cpp-5-封装epoll及epoll内核实现原理.html" class="article-date">
-                <time itemprop="datePublished">2018年12月</time>
-            </a>
-        </div>
-
-        <div class="article-entry" itemprop="articleBody">
-            <p>前面介绍了poll和select在内核中的实现原理，可以说本质上两者都是相同的，都是将用户空间的文件描述符及对应事件复制到内核空间，然后在内核空间轮询，如果轮询没有事件，则将当前进程置于该文件描述符的等待队列，如此，在之后该文件进行读写操作时就可以唤醒其等待队列，然后再次轮询时会发现发生了读或者写事件。但是轮询机制在大规模IO复用时会有着明显的缺陷，首先因为poll和select要不断的轮询，所以其时间复杂度为O(n)，随着文件描述符的增多会越来越慢，另外文件描述符的增多也会导致要从用户态拷贝到内核态的数据越来越多，在大规模IO复用中，这种拷贝多次执行显然是难以忍受的，可以说基于poll种种缺点，在Linux-2.6版本左右加入了epoll机制，能够非常高高效的进行IO复用。</p>
-<p>首先针对IO复用这一机制，从原理上来说其实主要的几个思路是不会改变的。首先是用户程序需要将其关注的文件描述符或者相应的读写事件传递给内核，不做处理的话这里存在从用户态到内核态的拷贝，select和poll就是这么做的，其次比较关键的其实就是内核在获取了相应的文件描述符及事件之后，如何有针对性的监控该文件描述符是否发生事件，并根据有无来进行当前进程睡眠和唤醒，因为如果没有发生事件的话是需要释放cpu资源的。在引入epoll之前的Linux版本中，或者说在2.6以前的版本中，poll对进程的睡眠是通过一个<code>poll_wait</code>函数实现的，只要是实现了poll函数的虚拟文件系统，都会在<code>poll</code>中调用<code>poll_wait</code>，poll会将当前进程置于该文件的等待队列，然后在该虚拟文件系统的读写接口中会相应的进行等待队列进程的唤醒。</p>
 
         </div>
 
