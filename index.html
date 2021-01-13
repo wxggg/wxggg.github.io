@@ -42,6 +42,49 @@
 
         <header class="article-header">
             <h1 itemprop="name">
+                <a class="article-title" href="/blogs/2021/01/搭建Linux内核开发环境.html">搭建Linux内核开发环境</a>
+            </h1>
+        </header>
+
+        <div class="article-meta">
+            <a href="/blogs/2021/01/搭建Linux内核开发环境.html" class="article-date">
+                <time itemprop="datePublished">2021年01月</time>
+            </a>
+        </div>
+
+        <div class="article-entry" itemprop="articleBody">
+            <p>搭建Linux内核开发环境</p>
+<ul><li>Linux 内核编译</li>
+<li>Qemu + GDB 启动调试</li>
+<li>buildroot 构建根文件系统</li>
+</ul>
+<h2><a data-uk-modal="{target:'#category-id'}">Linux内核编译</a></h2>
+
+<pre class="brush: ;">
+git clone https://github.com/torvalds/linux.git
+</pre>
+<pre class="brush: ;">
+make ARCH=x86_64 x86_64_defconfig
+make ARCH=x86_64 menuconfig
+</pre>
+<p>使用编译选项增加debug信息</p>
+<pre class="brush: ;">
+Kernel hacking
+	Compile-time checks and compiler options  --->
+		[*] Compile-time checks and compiler options  --->
+		[ ]   Reduce debugging information
+		[*]   Provide GDB scripts for kernel debugging
+</pre>
+
+        </div>
+
+    </div>
+
+</article><article id="{article-id}" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+
+        <header class="article-header">
+            <h1 itemprop="name">
                 <a class="article-title" href="/blogs/2019/06/图论基本算法实现.html">图论基本算法实现</a>
             </h1>
         </header>
@@ -198,7 +241,7 @@ void bfs(node_t start, Func & & func) {
 
         <header class="article-header">
             <h1 itemprop="name">
-                <a class="article-title" href="/blogs/2019/04/An-Implementation-Of-Multiprocessor-Linux-译.html">An-Implementation-Of-Multiprocessor-Linux-译</a>
+                <a class="article-title" href="/blogs/2019/04/An-Implementation-Of-Multiprocessor-Linux-译.html">An Implementation Of Multiprocessor Linux 译</a>
             </h1>
         </header>
 
@@ -226,7 +269,7 @@ void bfs(node_t start, Func & & func) {
 
         <header class="article-header">
             <h1 itemprop="name">
-                <a class="article-title" href="/blogs/2019/03/linux-0.x-初始化及进程调度.html">linux-0.x-初始化及进程调度</a>
+                <a class="article-title" href="/blogs/2019/03/linux-0.x-初始化及进程调度.html">linux 0.x 初始化及进程调度</a>
             </h1>
         </header>
 
@@ -243,31 +286,6 @@ void bfs(node_t start, Func & & func) {
 <h2><a data-uk-modal="{target:'#category-id'}">1 linux-0.99 初始化</a></h2>
 
 <p>前面setup.s跳转的32位入口是32位汇编程序head.s，head.s需要再次重建gdt、idt等分段和中断机制，之后执行初始化代码也就是start_kernel，相对于0.01版本而言，这里初始化的内容多了硬件中断初始化、软盘初始化、socket初始化、以及进程间通信ipc初始化，并且这里使用idle函数替代了0.01中的pause函数。</p>
-
-        </div>
-
-    </div>
-
-</article><article id="{article-id}" class="article article-type-post" itemscope itemprop="blogPost">
-    <div class="article-inner">
-
-        <header class="article-header">
-            <h1 itemprop="name">
-                <a class="article-title" href="/blogs/2019/03/linux-0.01-初始化及进程调度.html">linux-0.01-初始化及进程调度</a>
-            </h1>
-        </header>
-
-        <div class="article-meta">
-            <a href="/blogs/2019/03/linux-0.01-初始化及进程调度.html" class="article-date">
-                <time itemprop="datePublished">2019年03月</time>
-            </a>
-        </div>
-
-        <div class="article-entry" itemprop="articleBody">
-            <p>Linux0.01时Linus在1991年发布的第一个Linux版本，最初的这个版本的Linux代码量并不多，但是很多开始的设计在之后的多个版本中都一直保留，一般来说操作系统的设计分块一般不会有大的改动，主要包括启动加载初始化、内存管理、进程调度以及文件系统等。在<a href="https://www.kernel.org/">The Linux Kernel Archive</a>可以下载Linux内核源代码，Linux0.01代码分块来说主要包括boot、fs、include、kernel、lib、mm、tools和Makefile文件，主要包含了启动、文件系统、头文件、内核、内存管理等。</p>
-<h2><a data-uk-modal="{target:'#category-id'}">1 引导启动</a></h2>
-
-<p>一般来说，绝大多数x86硬件上的系统启动过程应该都是相似的，都是在硬件通电之后执行BIOS硬件程序，BIOS将系统的引导扇区（512B）加载到0x7c00处，BIOS自检之类的事情做完之后就会跳转到0x7c00执行引导扇区的入口。需要注意的就是此时的代码均为16位，为了兼容以前的系统即使现在的系统可能都到64位了，但是启动的时候还是得从16位实模式开始，后面会经过一系列过程开启保护模式进入32位。几乎任何一个x86平台的os应该都要经历这样的过程，不同的就是在加载启动过程中，不同的系统在启动过程中处理的方式可能不同，如下是linux-0.01引导时的流程图。</p>
 
         </div>
 

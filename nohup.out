@@ -1,0 +1,55 @@
+Serving HTTP on 0.0.0.0 port 8000 (http://0.0.0.0:8000/) ...
+
+Keyboard interrupt received, exiting.
+127.0.0.1 - - [09/Jan/2021 23:29:30] "GET / HTTP/1.1" 304 -
+127.0.0.1 - - [09/Jan/2021 23:29:30] "GET /syntaxhighlighter/styles/shCoreDefault.css HTTP/1.1" 304 -
+127.0.0.1 - - [09/Jan/2021 23:29:30] "GET /css/style.css HTTP/1.1" 304 -
+127.0.0.1 - - [09/Jan/2021 23:29:30] "GET /js/jquery.min.js HTTP/1.1" 304 -
+127.0.0.1 - - [09/Jan/2021 23:29:30] "GET /js/script.js HTTP/1.1" 304 -
+127.0.0.1 - - [09/Jan/2021 23:29:30] "GET /syntaxhighlighter/scripts/shCore.js HTTP/1.1" 304 -
+127.0.0.1 - - [09/Jan/2021 23:29:30] "GET /syntaxhighlighter/scripts/shBrushCpp.js HTTP/1.1" 304 -
+127.0.0.1 - - [09/Jan/2021 23:29:30] "GET /syntaxhighlighter/scripts/shBrushPython.js HTTP/1.1" 304 -
+127.0.0.1 - - [09/Jan/2021 23:29:30] "GET /webfonts/ptserif/main.css HTTP/1.1" 304 -
+127.0.0.1 - - [09/Jan/2021 23:29:30] "GET /syntaxhighlighter/scripts/shBrushPerl.js HTTP/1.1" 304 -
+127.0.0.1 - - [09/Jan/2021 23:29:30] "GET /blogs/2019/03/img/linux-0.x-boot.png HTTP/1.1" 304 -
+127.0.0.1 - - [09/Jan/2021 23:31:44] "GET /page/6/ HTTP/1.1" 200 -
+127.0.0.1 - - [09/Jan/2021 23:31:44] "GET /syntaxhighlighter/styles/shCoreDefault.css HTTP/1.1" 304 -
+127.0.0.1 - - [09/Jan/2021 23:31:44] "GET /webfonts/ptserif/main.css HTTP/1.1" 304 -
+127.0.0.1 - - [09/Jan/2021 23:31:44] "GET /css/style.css HTTP/1.1" 304 -
+127.0.0.1 - - [09/Jan/2021 23:31:44] "GET /js/jquery.min.js HTTP/1.1" 304 -
+127.0.0.1 - - [09/Jan/2021 23:31:44] "GET /js/script.js HTTP/1.1" 304 -
+127.0.0.1 - - [09/Jan/2021 23:31:44] "GET /syntaxhighlighter/scripts/shCore.js HTTP/1.1" 304 -
+127.0.0.1 - - [09/Jan/2021 23:31:44] "GET /syntaxhighlighter/scripts/shBrushCpp.js HTTP/1.1" 304 -
+127.0.0.1 - - [09/Jan/2021 23:31:44] "GET /syntaxhighlighter/scripts/shBrushPython.js HTTP/1.1" 304 -
+127.0.0.1 - - [09/Jan/2021 23:31:44] "GET /syntaxhighlighter/scripts/shBrushPerl.js HTTP/1.1" 304 -
+127.0.0.1 - - [13/Jan/2021 21:29:18] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [13/Jan/2021 21:29:18] "GET /syntaxhighlighter/styles/shCoreDefault.css HTTP/1.1" 200 -
+127.0.0.1 - - [13/Jan/2021 21:29:18] "GET /webfonts/ptserif/main.css HTTP/1.1" 200 -
+127.0.0.1 - - [13/Jan/2021 21:29:18] "GET /css/style.css HTTP/1.1" 200 -
+127.0.0.1 - - [13/Jan/2021 21:29:18] "GET /js/jquery.min.js HTTP/1.1" 200 -
+127.0.0.1 - - [13/Jan/2021 21:29:18] "GET /js/script.js HTTP/1.1" 200 -
+127.0.0.1 - - [13/Jan/2021 21:29:18] "GET /syntaxhighlighter/scripts/shBrushCpp.js HTTP/1.1" 200 -
+127.0.0.1 - - [13/Jan/2021 21:29:18] "GET /syntaxhighlighter/scripts/shBrushPerl.js HTTP/1.1" 200 -
+127.0.0.1 - - [13/Jan/2021 21:29:18] "GET /syntaxhighlighter/scripts/shCore.js HTTP/1.1" 200 -
+127.0.0.1 - - [13/Jan/2021 21:29:18] "GET /syntaxhighlighter/scripts/shBrushPython.js HTTP/1.1" 200 -
+127.0.0.1 - - [13/Jan/2021 21:29:18] "GET /blogs/2019/03/img/linux-0.x-boot.png HTTP/1.1" 200 -
+127.0.0.1 - - [13/Jan/2021 21:29:19] "GET /webfonts/ptserif/fonts/I-OtoJZa3TeyH6D9oli3ifesZW2xOQ-xsNqO47m55DA.woff2 HTTP/1.1" 200 -
+127.0.0.1 - - [13/Jan/2021 21:29:19] "GET /webfonts/ptserif/fonts/QABk9IxT-LFTJ_dQzv7xpI4P5ICox8Kq3LLUNMylGO4.woff2 HTTP/1.1" 200 -
+127.0.0.1 - - [13/Jan/2021 21:29:20] code 404, message File not found
+127.0.0.1 - - [13/Jan/2021 21:29:20] "GET /favicon.ico HTTP/1.1" 404 -
+127.0.0.1 - - [13/Jan/2021 21:29:52] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [13/Jan/2021 22:00:10] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [13/Jan/2021 22:00:17] "GET / HTTP/1.1" 304 -
+127.0.0.1 - - [13/Jan/2021 22:01:01] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [13/Jan/2021 22:01:03] "GET /blogs/2021/01/Setup-environment-for-linux-kernel-development.html HTTP/1.1" 200 -
+127.0.0.1 - - [13/Jan/2021 22:02:20] "GET /blogs/2021/01/Setup-environment-for-linux-kernel-development.html HTTP/1.1" 200 -
+127.0.0.1 - - [13/Jan/2021 22:02:25] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [13/Jan/2021 22:03:16] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [13/Jan/2021 22:04:49] "GET /blogs/2021/01/%E6%90%AD%E5%BB%BALinux%E5%86%85%E6%A0%B8%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83.html HTTP/1.1" 200 -
+127.0.0.1 - - [13/Jan/2021 22:07:43] "GET /blogs/2021/01/%E6%90%AD%E5%BB%BALinux%E5%86%85%E6%A0%B8%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83.html HTTP/1.1" 200 -
+127.0.0.1 - - [13/Jan/2021 22:10:21] "GET /blogs/2021/01/%E6%90%AD%E5%BB%BALinux%E5%86%85%E6%A0%B8%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83.html HTTP/1.1" 304 -
+127.0.0.1 - - [13/Jan/2021 23:55:11] "GET /blogs/2021/01/%E6%90%AD%E5%BB%BALinux%E5%86%85%E6%A0%B8%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83.html HTTP/1.1" 200 -
+127.0.0.1 - - [13/Jan/2021 23:55:15] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [13/Jan/2021 23:55:16] "GET /blogs/2021/01/%E6%90%AD%E5%BB%BALinux%E5%86%85%E6%A0%B8%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83.html HTTP/1.1" 304 -
+127.0.0.1 - - [13/Jan/2021 23:56:11] "GET /blogs/2021/01/%E6%90%AD%E5%BB%BALinux%E5%86%85%E6%A0%B8%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83.html HTTP/1.1" 200 -
+127.0.0.1 - - [13/Jan/2021 23:57:20] "GET /blogs/2021/01/%E6%90%AD%E5%BB%BALinux%E5%86%85%E6%A0%B8%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83.html HTTP/1.1" 200 -

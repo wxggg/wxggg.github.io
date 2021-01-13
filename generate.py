@@ -55,7 +55,7 @@ def sort_paths(paths):
 
 def replace_article_info(a, path):
     blogs, year, month, title = path.split('/')
-    a = a.replace('{article-title}', title, -1)
+    a = a.replace('{article-title}', title.replace('-', ' '), -1)
     a = a.replace('{article-link}', '/'+path+'.html', -1)
     a = a.replace('{article-date}', year+'年'+month+'月')
     return a
@@ -164,7 +164,7 @@ def generate(dirs):
 
 
 if __name__ == '__main__':
-    dirs = ["blogs/2018", "blogs/2019"]
+    dirs = ["blogs/2018", "blogs/2019", "blogs/2021"]
     generate(dirs)
 
     generate_single_article('blogs/me')

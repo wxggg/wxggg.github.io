@@ -42,7 +42,33 @@
 
         <header class="article-header">
             <h1 itemprop="name">
-                <a class="article-title" href="/blogs/2018/11/C标准库-1-之输入输出IO.html">C标准库-1-之输入输出IO</a>
+                <a class="article-title" href="/blogs/2018/11/C标准库-2-之工具.html">C标准库 2 之工具</a>
+            </h1>
+        </header>
+
+        <div class="article-meta">
+            <a href="/blogs/2018/11/C标准库-2-之工具.html" class="article-date">
+                <time itemprop="datePublished">2018年11月</time>
+            </a>
+        </div>
+
+        <div class="article-entry" itemprop="articleBody">
+            <p>GNU C标准库提供了很多工具用来简化编程，包括各种数学工具，对于时间的处理接口以及对系统资源的访问等等。本部分为GNU C标准库阅读记录第二部分，主要包括像随机数、浮点运算操作及定时时钟设置以及进程自己睡眠等操作。</p>
+<h2><a data-uk-modal="{target:'#category-id'}">Mathematics</a></h2>
+
+<p>标准库在<code>math.h</code> 头文件中声明了包括三角函数在内的很多数学函数用来计算，而在 <code>complex.h</code> 中提供了对复数的支持以及各种用于复数的计算。针对浮点类型的函数提供了三种变体，分别是对 <code>double</code>、<code>float</code>和<code>long double</code> 的支持，其中 <code>float</code>的计算是最快的，另外两个分别精度比较高。</p>
+<p>以三角函数为例，分别存在<code>sin</code> 、<code>sinf</code> 和<code>sinl</code> 这三个函数，针对 <code>double</code> 、<code>float</code> 和 <code>long double</code> 进行计算。对于复数的支持函数一般叫做如 <code>ccos</code>和 <code>ctan</code> 等，后缀如<code>ccosf</code>同样表示对<code>float</code>的支持。反三角函数如反正弦函数位 <code>asin</code> ，三角函数中还有如双曲正弦函数 <code>sanh</code>等。</p>
+
+        </div>
+
+    </div>
+
+</article><article id="{article-id}" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+
+        <header class="article-header">
+            <h1 itemprop="name">
+                <a class="article-title" href="/blogs/2018/11/C标准库-1-之输入输出IO.html">C标准库 1 之输入输出IO</a>
             </h1>
         </header>
 
@@ -66,7 +92,7 @@
 
         <header class="article-header">
             <h1 itemprop="name">
-                <a class="article-title" href="/blogs/2018/10/Elfen-Scheduling-Fine-Grain-Principled-Borrowing-from-Latency-Critical-Workloads-using-Simultaneous-Multithreading.html">Elfen-Scheduling-Fine-Grain-Principled-Borrowing-from-Latency-Critical-Workloads-using-Simultaneous-Multithreading</a>
+                <a class="article-title" href="/blogs/2018/10/Elfen-Scheduling-Fine-Grain-Principled-Borrowing-from-Latency-Critical-Workloads-using-Simultaneous-Multithreading.html">Elfen Scheduling Fine Grain Principled Borrowing from Latency Critical Workloads using Simultaneous Multithreading</a>
             </h1>
         </header>
 
@@ -114,7 +140,7 @@
 
         <header class="article-header">
             <h1 itemprop="name">
-                <a class="article-title" href="/blogs/2018/09/Linux-From-Scratch.html">Linux-From-Scratch</a>
+                <a class="article-title" href="/blogs/2018/09/Linux-From-Scratch.html">Linux From Scratch</a>
             </h1>
         </header>
 
@@ -208,37 +234,6 @@ $$H(X) = -\sum{p(x)}log_2p(x)$$
 <h2><a data-uk-modal="{target:'#category-id'}">介绍</a></h2>
 
 <p>手写识别即 Handwriting recognition(HWR)[1]是计算机接收来自文章文档、照片以及触摸屏或其它设备的手写输入并识别其中的文字的一种能力。输入的包含文本的图片可以来自于离线的包含手写文本的图片，这些图片可以是来自于OCR光学扫描的图片，OCR是Optical character recognition[2]，也就是光学字符识别，是用想扫描仪或数码相机这样的电子设备来检查纸上的字符，然后用字符识别方法将其翻译成计算机文字的过程，OCR是模式识别、人工智能及计算机视觉中的一个研究领域。手写识别另一个方向就是在线手写识别，这里的在线指的是在笔写的过程中进行实时的识别，识别的方法可以考虑笔移动的信息。</p>
-
-        </div>
-
-    </div>
-
-</article><article id="{article-id}" class="article article-type-post" itemscope itemprop="blogPost">
-    <div class="article-inner">
-
-        <header class="article-header">
-            <h1 itemprop="name">
-                <a class="article-title" href="/blogs/2018/05/从卷积到 Convolutional Neural Network.html">从卷积到 Convolutional Neural Network</a>
-            </h1>
-        </header>
-
-        <div class="article-meta">
-            <a href="/blogs/2018/05/从卷积到 Convolutional Neural Network.html" class="article-date">
-                <time itemprop="datePublished">2018年05月</time>
-            </a>
-        </div>
-
-        <div class="article-entry" itemprop="articleBody">
-            <p>卷积神经网络cnn中最基本的操作是卷积和池化，而卷积操作又赋予了特征提取的功能，本文将从卷积操作的具体运算过程入手总结cnn的相关应用。我使用的数据集为mnist手写数字的dataset，每一个样本为28x28的数字灰度图像。卷积神经网络不仅在图像处理上应用广泛，现在在NLP领域也越来越多的使用cnn进行包括分类在内的各种应用。写这篇文章的目的主要是在学习的过程中同时对卷积cnn做一个梳理，如有不正之处敬请指出。本文涉及到的主要内容包括：</p>
-<ul><li>卷积及CNN</li>
-<li>VGG网络</li>
-<li>FCN与语义分割</li>
-<li>RCNN与目标检测</li>
-</ul>
-<h2><a data-uk-modal="{target:'#category-id'}">卷积</a></h2>
-
-<p>卷积操作在高等数学和概率论中均有介绍，但是当时学时并没有理解其本质的意义，关于卷积操作的具体解释可以参看知乎问题</p>
-<ul><li><a href="https://www.zhihu.com/question/22298352/answer/228543288">如何通俗易懂地解释卷积？</a></li>
 
         </div>
 

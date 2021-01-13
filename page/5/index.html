@@ -42,7 +42,39 @@
 
         <header class="article-header">
             <h1 itemprop="name">
-                <a class="article-title" href="/blogs/2018/03/Tensorflow-4之利用SWIG连接前端多语言环境与后端CC++.html">Tensorflow-4之利用SWIG连接前端多语言环境与后端CC++</a>
+                <a class="article-title" href="/blogs/2018/03/Tensorflow-7之建模及高级API Estimators.html">Tensorflow 7之建模及高级API Estimators</a>
+            </h1>
+        </header>
+
+        <div class="article-meta">
+            <a href="/blogs/2018/03/Tensorflow-7之建模及高级API Estimators.html" class="article-date">
+                <time itemprop="datePublished">2018年03月</time>
+            </a>
+        </div>
+
+        <div class="article-entry" itemprop="articleBody">
+            <p>本文主要通过官网实例花的分类来了解tensorflow建模过程，在github上tensorflow提供了很多model模可供学习。对于花的分类实例需要安装<code>pandas</code>，这是一个Python的数据处理库，可以直接处理csv格式文件。tensorflow实现了keras机器学习库，在这个实例中也被用到。</p>
+<p>可按如下步骤进行该实例的运行，并能看到取得了很好的分类效果，之后看看具体的建模训练及评测过程。</p>
+<pre class="brush: shell;">
+$pip install pandas
+$git clone https://github.com/tensorflow/models
+$cd models/samples/core/get_started/
+$python premade_estimator.py
+</pre>
+<h3><a data-uk-modal="{target:'#category-id'}">准备数据</a></h3>
+
+<p>本例使用的是csv格式的数据，可以使用<code>pandas</code>进行处理，如下为train的部分数据，从中可以看出来第一行主要是提供相关信息，比如数据行数等，可以在<code>read_csv</code>函数中说明header=0表示第一行为header，数据从第二行开始。</p>
+
+        </div>
+
+    </div>
+
+</article><article id="{article-id}" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+
+        <header class="article-header">
+            <h1 itemprop="name">
+                <a class="article-title" href="/blogs/2018/03/Tensorflow-4之利用SWIG连接前端多语言环境与后端CC++.html">Tensorflow 4之利用SWIG连接前端多语言环境与后端CC++</a>
             </h1>
         </header>
 
@@ -123,7 +155,7 @@ python src/python/setup.py -download
 
         <header class="article-header">
             <h1 itemprop="name">
-                <a class="article-title" href="/blogs/2018/03/Computer-Performance-Microscopy-with-SHIM.html">Computer-Performance-Microscopy-with-SHIM</a>
+                <a class="article-title" href="/blogs/2018/03/Computer-Performance-Microscopy-with-SHIM.html">Computer Performance Microscopy with SHIM</a>
             </h1>
         </header>
 
@@ -149,7 +181,7 @@ python src/python/setup.py -download
 
         <header class="article-header">
             <h1 itemprop="name">
-                <a class="article-title" href="/blogs/2018/00-sharix/sharix-3-process-and-thread.html">sharix-3-process-and-thread</a>
+                <a class="article-title" href="/blogs/2018/00-sharix/sharix-3-process-and-thread.html">sharix 3 process and thread</a>
             </h1>
         </header>
 
@@ -193,7 +225,7 @@ struct proc_struct {
 
         <header class="article-header">
             <h1 itemprop="name">
-                <a class="article-title" href="/blogs/2018/00-sharix/sharix-2-memory-management.html">sharix-2-memory-management</a>
+                <a class="article-title" href="/blogs/2018/00-sharix/sharix-2-memory-management.html">sharix 2 memory management</a>
             </h1>
         </header>
 
@@ -230,7 +262,7 @@ struct e820map
 
         <header class="article-header">
             <h1 itemprop="name">
-                <a class="article-title" href="/blogs/2018/00-sharix/sharix-1-boot-a-simple-os.html">sharix-1-boot-a-simple-os</a>
+                <a class="article-title" href="/blogs/2018/00-sharix/sharix-1-boot-a-simple-os.html">sharix 1 boot a simple os</a>
             </h1>
         </header>
 
@@ -253,7 +285,7 @@ struct e820map
 
         <header class="article-header">
             <h1 itemprop="name">
-                <a class="article-title" href="/blogs/2018/00-linux/Linux-profiling-with-performance-counters.html">Linux-profiling-with-performance-counters</a>
+                <a class="article-title" href="/blogs/2018/00-linux/Linux-profiling-with-performance-counters.html">Linux profiling with performance counters</a>
             </h1>
         </header>
 
@@ -268,31 +300,6 @@ struct e820map
 <h2><a data-uk-modal="{target:'#category-id'}">introduction</a></h2>
 
 <p>Perf a tool to analyze performance of program. We can use PMU,tracepoint and special counters in kernel to summarize the performance. With perf we can analyze the hardware event at the running time of programs, such as instructions retired and processor clock cycles. You can also analyze software events, such as Page Fault and the switch of process.</p>
-
-        </div>
-
-    </div>
-
-</article><article id="{article-id}" class="article article-type-post" itemscope itemprop="blogPost">
-    <div class="article-inner">
-
-        <header class="article-header">
-            <h1 itemprop="name">
-                <a class="article-title" href="/blogs/2018/00-linux/Linux-Kernel-Module.html">Linux-Kernel-Module</a>
-            </h1>
-        </header>
-
-        <div class="article-meta">
-            <a href="/blogs/2018/00-linux/Linux-Kernel-Module.html" class="article-date">
-                <time itemprop="datePublished">2018年00-linux月</time>
-            </a>
-        </div>
-
-        <div class="article-entry" itemprop="articleBody">
-            <p>LKM means linux kernel module.</p>
-<p>These days i am doing something about adding a kernel module to linux, so this blog is mainly about kernel module. This is the programming guide that i referenced</p>
-<p>https://www.tldp.org/LDP/lkmpg/2.6/html/lkmpg.html</p>
-<p>A kernel module extends  the functionality of the kernel without the need to reboot the system.Take device driver as an example, it allows the kernel to access hardware connected to the system. Without kernel module we have to add the code into the kernel source code, and rebuild and reboot the kernel, obviously this is complicated.</p>
 
         </div>
 

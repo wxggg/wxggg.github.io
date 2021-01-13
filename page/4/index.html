@@ -42,7 +42,38 @@
 
         <header class="article-header">
             <h1 itemprop="name">
-                <a class="article-title" href="/blogs/2018/05/Shielding-applications-from-an-untrusted-cloud-with-Haven.html">Shielding-applications-from-an-untrusted-cloud-with-Haven</a>
+                <a class="article-title" href="/blogs/2018/05/从卷积到 Convolutional Neural Network.html">从卷积到 Convolutional Neural Network</a>
+            </h1>
+        </header>
+
+        <div class="article-meta">
+            <a href="/blogs/2018/05/从卷积到 Convolutional Neural Network.html" class="article-date">
+                <time itemprop="datePublished">2018年05月</time>
+            </a>
+        </div>
+
+        <div class="article-entry" itemprop="articleBody">
+            <p>卷积神经网络cnn中最基本的操作是卷积和池化，而卷积操作又赋予了特征提取的功能，本文将从卷积操作的具体运算过程入手总结cnn的相关应用。我使用的数据集为mnist手写数字的dataset，每一个样本为28x28的数字灰度图像。卷积神经网络不仅在图像处理上应用广泛，现在在NLP领域也越来越多的使用cnn进行包括分类在内的各种应用。写这篇文章的目的主要是在学习的过程中同时对卷积cnn做一个梳理，如有不正之处敬请指出。本文涉及到的主要内容包括：</p>
+<ul><li>卷积及CNN</li>
+<li>VGG网络</li>
+<li>FCN与语义分割</li>
+<li>RCNN与目标检测</li>
+</ul>
+<h2><a data-uk-modal="{target:'#category-id'}">卷积</a></h2>
+
+<p>卷积操作在高等数学和概率论中均有介绍，但是当时学时并没有理解其本质的意义，关于卷积操作的具体解释可以参看知乎问题</p>
+<ul><li><a href="https://www.zhihu.com/question/22298352/answer/228543288">如何通俗易懂地解释卷积？</a></li>
+
+        </div>
+
+    </div>
+
+</article><article id="{article-id}" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+
+        <header class="article-header">
+            <h1 itemprop="name">
+                <a class="article-title" href="/blogs/2018/05/Shielding-applications-from-an-untrusted-cloud-with-Haven.html">Shielding applications from an untrusted cloud with Haven</a>
             </h1>
         </header>
 
@@ -158,7 +189,7 @@ content = re.sub('\W',' ',content).lower().replace('__','')
 
         <header class="article-header">
             <h1 itemprop="name">
-                <a class="article-title" href="/blogs/2018/04/Tensorflow-8之可视化工具Tensorboard.html">Tensorflow-8之可视化工具Tensorboard</a>
+                <a class="article-title" href="/blogs/2018/04/Tensorflow-8之可视化工具Tensorboard.html">Tensorflow 8之可视化工具Tensorboard</a>
             </h1>
         </header>
 
@@ -237,38 +268,6 @@ if graph is None:
 <pre class="brush: ;">
 pip install https://storage.googleapis.com/tensorflow/linux/cpu/tensorflow-0.5.0-cp27-none-linux_x86_64.whl
 </pre>
-
-        </div>
-
-    </div>
-
-</article><article id="{article-id}" class="article article-type-post" itemscope itemprop="blogPost">
-    <div class="article-inner">
-
-        <header class="article-header">
-            <h1 itemprop="name">
-                <a class="article-title" href="/blogs/2018/03/Tensorflow-7之建模及高级API Estimators.html">Tensorflow-7之建模及高级API Estimators</a>
-            </h1>
-        </header>
-
-        <div class="article-meta">
-            <a href="/blogs/2018/03/Tensorflow-7之建模及高级API Estimators.html" class="article-date">
-                <time itemprop="datePublished">2018年03月</time>
-            </a>
-        </div>
-
-        <div class="article-entry" itemprop="articleBody">
-            <p>本文主要通过官网实例花的分类来了解tensorflow建模过程，在github上tensorflow提供了很多model模可供学习。对于花的分类实例需要安装<code>pandas</code>，这是一个Python的数据处理库，可以直接处理csv格式文件。tensorflow实现了keras机器学习库，在这个实例中也被用到。</p>
-<p>可按如下步骤进行该实例的运行，并能看到取得了很好的分类效果，之后看看具体的建模训练及评测过程。</p>
-<pre class="brush: shell;">
-$pip install pandas
-$git clone https://github.com/tensorflow/models
-$cd models/samples/core/get_started/
-$python premade_estimator.py
-</pre>
-<h3><a data-uk-modal="{target:'#category-id'}">准备数据</a></h3>
-
-<p>本例使用的是csv格式的数据，可以使用<code>pandas</code>进行处理，如下为train的部分数据，从中可以看出来第一行主要是提供相关信息，比如数据行数等，可以在<code>read_csv</code>函数中说明header=0表示第一行为header，数据从第二行开始。</p>
 
         </div>
 

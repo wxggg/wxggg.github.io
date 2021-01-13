@@ -42,7 +42,32 @@
 
         <header class="article-header">
             <h1 itemprop="name">
-                <a class="article-title" href="/blogs/2018/12/libevent-cpp-5-封装epoll及epoll内核实现原理.html">libevent-cpp-5-封装epoll及epoll内核实现原理</a>
+                <a class="article-title" href="/blogs/2019/03/linux-0.01-初始化及进程调度.html">linux 0.01 初始化及进程调度</a>
+            </h1>
+        </header>
+
+        <div class="article-meta">
+            <a href="/blogs/2019/03/linux-0.01-初始化及进程调度.html" class="article-date">
+                <time itemprop="datePublished">2019年03月</time>
+            </a>
+        </div>
+
+        <div class="article-entry" itemprop="articleBody">
+            <p>Linux0.01时Linus在1991年发布的第一个Linux版本，最初的这个版本的Linux代码量并不多，但是很多开始的设计在之后的多个版本中都一直保留，一般来说操作系统的设计分块一般不会有大的改动，主要包括启动加载初始化、内存管理、进程调度以及文件系统等。在<a href="https://www.kernel.org/">The Linux Kernel Archive</a>可以下载Linux内核源代码，Linux0.01代码分块来说主要包括boot、fs、include、kernel、lib、mm、tools和Makefile文件，主要包含了启动、文件系统、头文件、内核、内存管理等。</p>
+<h2><a data-uk-modal="{target:'#category-id'}">1 引导启动</a></h2>
+
+<p>一般来说，绝大多数x86硬件上的系统启动过程应该都是相似的，都是在硬件通电之后执行BIOS硬件程序，BIOS将系统的引导扇区（512B）加载到0x7c00处，BIOS自检之类的事情做完之后就会跳转到0x7c00执行引导扇区的入口。需要注意的就是此时的代码均为16位，为了兼容以前的系统即使现在的系统可能都到64位了，但是启动的时候还是得从16位实模式开始，后面会经过一系列过程开启保护模式进入32位。几乎任何一个x86平台的os应该都要经历这样的过程，不同的就是在加载启动过程中，不同的系统在启动过程中处理的方式可能不同，如下是linux-0.01引导时的流程图。</p>
+
+        </div>
+
+    </div>
+
+</article><article id="{article-id}" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+
+        <header class="article-header">
+            <h1 itemprop="name">
+                <a class="article-title" href="/blogs/2018/12/libevent-cpp-5-封装epoll及epoll内核实现原理.html">libevent cpp 5 封装epoll及epoll内核实现原理</a>
             </h1>
         </header>
 
@@ -65,7 +90,7 @@
 
         <header class="article-header">
             <h1 itemprop="name">
-                <a class="article-title" href="/blogs/2018/12/libevent-cpp-4-封装poll及poll内核实现原理.html">libevent-cpp-4-封装poll及poll内核实现原理</a>
+                <a class="article-title" href="/blogs/2018/12/libevent-cpp-4-封装poll及poll内核实现原理.html">libevent cpp 4 封装poll及poll内核实现原理</a>
             </h1>
         </header>
 
@@ -92,7 +117,7 @@
 
         <header class="article-header">
             <h1 itemprop="name">
-                <a class="article-title" href="/blogs/2018/12/libevent-cpp-3-读写事件及Linux内核select机制实现原理.html">libevent-cpp-3-读写事件及Linux内核select机制实现原理</a>
+                <a class="article-title" href="/blogs/2018/12/libevent-cpp-3-读写事件及Linux内核select机制实现原理.html">libevent cpp 3 读写事件及Linux内核select机制实现原理</a>
             </h1>
         </header>
 
@@ -158,7 +183,7 @@
 
         <header class="article-header">
             <h1 itemprop="name">
-                <a class="article-title" href="/blogs/2018/11/libevent-cpp-2-事件重构及时间处理.html">libevent-cpp-2-事件重构及时间处理</a>
+                <a class="article-title" href="/blogs/2018/11/libevent-cpp-2-事件重构及时间处理.html">libevent cpp 2 事件重构及时间处理</a>
             </h1>
         </header>
 
@@ -208,7 +233,7 @@ class event
 
         <header class="article-header">
             <h1 itemprop="name">
-                <a class="article-title" href="/blogs/2018/11/libevent-cpp-1-基本架构及信号处理.html">libevent-cpp-1-基本架构及信号处理</a>
+                <a class="article-title" href="/blogs/2018/11/libevent-cpp-1-基本架构及信号处理.html">libevent cpp 1 基本架构及信号处理</a>
             </h1>
         </header>
 
@@ -234,7 +259,7 @@ class event
 
         <header class="article-header">
             <h1 itemprop="name">
-                <a class="article-title" href="/blogs/2018/11/Linux-信号机制-signal.html">Linux-信号机制-signal</a>
+                <a class="article-title" href="/blogs/2018/11/Linux-信号机制-signal.html">Linux 信号机制 signal</a>
             </h1>
         </header>
 
@@ -253,32 +278,6 @@ class event
 <li>用户从键盘中断程序时发送 SIGINT 信号</li>
 <li>当程序行为不正确时发送 SIGILL、SIGFPE和 SIGSEGV 之一</li>
 <li>当程序访问 <code>mmap</code> 映射的但是不可用的内存时</li>
-
-        </div>
-
-    </div>
-
-</article><article id="{article-id}" class="article article-type-post" itemscope itemprop="blogPost">
-    <div class="article-inner">
-
-        <header class="article-header">
-            <h1 itemprop="name">
-                <a class="article-title" href="/blogs/2018/11/C标准库-2-之工具.html">C标准库-2-之工具</a>
-            </h1>
-        </header>
-
-        <div class="article-meta">
-            <a href="/blogs/2018/11/C标准库-2-之工具.html" class="article-date">
-                <time itemprop="datePublished">2018年11月</time>
-            </a>
-        </div>
-
-        <div class="article-entry" itemprop="articleBody">
-            <p>GNU C标准库提供了很多工具用来简化编程，包括各种数学工具，对于时间的处理接口以及对系统资源的访问等等。本部分为GNU C标准库阅读记录第二部分，主要包括像随机数、浮点运算操作及定时时钟设置以及进程自己睡眠等操作。</p>
-<h2><a data-uk-modal="{target:'#category-id'}">Mathematics</a></h2>
-
-<p>标准库在<code>math.h</code> 头文件中声明了包括三角函数在内的很多数学函数用来计算，而在 <code>complex.h</code> 中提供了对复数的支持以及各种用于复数的计算。针对浮点类型的函数提供了三种变体，分别是对 <code>double</code>、<code>float</code>和<code>long double</code> 的支持，其中 <code>float</code>的计算是最快的，另外两个分别精度比较高。</p>
-<p>以三角函数为例，分别存在<code>sin</code> 、<code>sinf</code> 和<code>sinl</code> 这三个函数，针对 <code>double</code> 、<code>float</code> 和 <code>long double</code> 进行计算。对于复数的支持函数一般叫做如 <code>ccos</code>和 <code>ctan</code> 等，后缀如<code>ccosf</code>同样表示对<code>float</code>的支持。反三角函数如反正弦函数位 <code>asin</code> ，三角函数中还有如双曲正弦函数 <code>sanh</code>等。</p>
 
         </div>
 
