@@ -64,7 +64,7 @@ randomshuffle = sys.argv[9]
 由于论文需要利用perf来测试其它参数如 __receiveStamp, processStamp, finishStamp, retiredIns, unhaltedCycles__ 等，所以需要对原Lucene性能测试代码进行修改
 
 之前添加的`Affinity.java`代码，其实也是一个桥梁，用以勾通Java Lucene测试代码和`elfen_signal.c` C代码，C代码中用JNICALL来描述C函数，使得其能够被Java所调用，而C函数里面就可以直接进行性能测试perf了
-```java
+```c++
 package perf;
 public class Affinity{
   static {
@@ -83,7 +83,7 @@ public class Affinity{
 }
 ```
 在`SearchPerfTest.java`中需要添加如下代码，可比照yangxi的代码和原测试作者的代码
-```java
+```c++
 import perf.Affinity;
 
 Affinity.initPerf();
@@ -198,12 +198,12 @@ print "total cycles:%d, total wall cycles:%d, utilization:%f\n" % (nr_cycles, nr
 
 #### 添加perf测量CPU利用率和IPC
 查询服务程序入口在`SearchPerfTest.java`中，需要在这里就添加Affinity，
-```java
+```c++
 Affinity.initPerf();
 Affinity.initSignal();
 ```
 执行查询任务主要是在`TaskThread.java`中，所以也要添加`perf.Affinity`，在run函数中首先设置CPU的线程ID，并创建perf测量的各项事件。
-```java
+```c++
 Affinity.setCPUAffinity(threadID);
 String[] eventNames = {"INSTRUCTION_RETIRED:u:k","UNHALTED_CORE_CYCLES:u:k"};
 Affinity.createEvents(eventNames);

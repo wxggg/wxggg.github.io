@@ -43,7 +43,7 @@
 <p>a series of jobs and computers \</p>
 <p><strong>OUTPUT:</strong> \</p>
 <p>the minimum number of the max load</p>
-<pre class="brush: c;">
+<pre class="brush: python;">
 function minMaxLoad(jobs[], computers[])
   network = NetworkFlow()
   //construct a network use jobs and computers

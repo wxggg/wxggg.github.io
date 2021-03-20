@@ -1,6 +1,6 @@
 import os
 
-single_page = 8
+single_page = 16
 
 prev_page = '<a class="extend prev" rel="prev" {href}>&laquo; Prev</a>\r\n'
 page_ancher = '<a class="page-number" {href}>{id}</a>\r\n'
@@ -18,8 +18,21 @@ base = read_all('template/__base__.htm')
 item = read_all('template/__item__.htm')
 article = read_all('template/__article__.htm')
 
-
 def read_summary(path):
+    content = ""
+    i = 0
+    with open(path, 'r') as f:
+        for line in f:
+            if line[:3] != '<p>':
+                continue
+
+            i += 1
+            content += line
+            if len(content) > 100:
+                return content
+    return content
+
+def read_summary_deprecated(path):
     i = 0
     need_continue = False
     content = ""
@@ -32,7 +45,7 @@ def read_summary(path):
                 i -= 5
             if line[:6] == '</pre>':
                 need_continue = False
-            if need_continue != True and (i > 12 or len(content) > 500):
+            if need_continue != True and (i > 1 or len(content) > 100):
                 return content
     return content
 

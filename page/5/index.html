@@ -41,271 +41,188 @@
     <div class="article-inner">
 
         <header class="article-header">
-            <h1 itemprop="name">
-                <a class="article-title" href="/blogs/2018/03/Tensorflow-7之建模及高级API Estimators.html">Tensorflow 7之建模及高级API Estimators</a>
-            </h1>
+            <h3>
+		<a class="article-title" href="/blogs/2018/03/Tensorflow-7之建模及高级API Estimators.html" style="font-size:1.6em">Tensorflow 7之建模及高级API Estimators</a>
+            </h3>
         </header>
 
-        <div class="article-meta">
-            <a href="/blogs/2018/03/Tensorflow-7之建模及高级API Estimators.html" class="article-date">
-                <time itemprop="datePublished">2018年03月</time>
-            </a>
-        </div>
+        <!-- <div class="article-meta"> -->
+        <!--     <a href="/blogs/2018/03/Tensorflow-7之建模及高级API Estimators.html" class="article-date"> -->
+        <!--         <time itemprop="datePublished">2018年03月</time> -->
+        <!--     </a> -->
+        <!-- </div> -->
 
         <div class="article-entry" itemprop="articleBody">
             <p>本文主要通过官网实例花的分类来了解tensorflow建模过程，在github上tensorflow提供了很多model模可供学习。对于花的分类实例需要安装<code>pandas</code>，这是一个Python的数据处理库，可以直接处理csv格式文件。tensorflow实现了keras机器学习库，在这个实例中也被用到。</p>
-<p>可按如下步骤进行该实例的运行，并能看到取得了很好的分类效果，之后看看具体的建模训练及评测过程。</p>
-<pre class="brush: shell;">
-$pip install pandas
-$git clone https://github.com/tensorflow/models
-$cd models/samples/core/get_started/
-$python premade_estimator.py
-</pre>
-<h3><a data-uk-modal="{target:'#category-id'}">准备数据</a></h3>
-
-<p>本例使用的是csv格式的数据，可以使用<code>pandas</code>进行处理，如下为train的部分数据，从中可以看出来第一行主要是提供相关信息，比如数据行数等，可以在<code>read_csv</code>函数中说明header=0表示第一行为header，数据从第二行开始。</p>
 
         </div>
 
     </div>
 
-</article><article id="{article-id}" class="article article-type-post" itemscope itemprop="blogPost">
+</article>
+<article id="{article-id}" class="article article-type-post" itemscope itemprop="blogPost">
     <div class="article-inner">
 
         <header class="article-header">
-            <h1 itemprop="name">
-                <a class="article-title" href="/blogs/2018/03/Tensorflow-4之利用SWIG连接前端多语言环境与后端CC++.html">Tensorflow 4之利用SWIG连接前端多语言环境与后端CC++</a>
-            </h1>
+            <h3>
+		<a class="article-title" href="/blogs/2018/03/Tensorflow-4之利用SWIG连接前端多语言环境与后端CC++.html" style="font-size:1.6em">Tensorflow 4之利用SWIG连接前端多语言环境与后端CC++</a>
+            </h3>
         </header>
 
-        <div class="article-meta">
-            <a href="/blogs/2018/03/Tensorflow-4之利用SWIG连接前端多语言环境与后端CC++.html" class="article-date">
-                <time itemprop="datePublished">2018年03月</time>
-            </a>
-        </div>
+        <!-- <div class="article-meta"> -->
+        <!--     <a href="/blogs/2018/03/Tensorflow-4之利用SWIG连接前端多语言环境与后端CC++.html" class="article-date"> -->
+        <!--         <time itemprop="datePublished">2018年03月</time> -->
+        <!--     </a> -->
+        <!-- </div> -->
 
         <div class="article-entry" itemprop="articleBody">
             <p>Tensorflow 源码中python API和底层c/c++之间的关联主要是靠 <code>SWIG</code> 来完成的，这是一个用于把C/C++集成到其他语言中的编译器。本文主要介绍swig以及tensorflow如何利用swig关联前后端，另外主要介绍了一下Session的生命周期。</p>
-<p>http://www.swig.org/</p>
-<h2><a data-uk-modal="{target:'#category-id'}">SWIG实例之python调用C</a></h2>
-
-<p>首先准备C语言函数</p>
-<pre class="brush: c++;">
-/* File : example.c */
-#include < time.h>
-double My_variable = 3.0;
-
-int fact(int n) {
-    if (n < = 1) return 1;
-    else return n*fact(n-1);
-}
-int my_mod(int x, int y) {
-    return (x%y);
-}
-char *get_time()
-{
-    time_t ltime;
-    time(& ltime);
-    return ctime(& ltime);
-}
-</pre>
 
         </div>
 
     </div>
 
-</article><article id="{article-id}" class="article article-type-post" itemscope itemprop="blogPost">
+</article>
+<article id="{article-id}" class="article article-type-post" itemscope itemprop="blogPost">
     <div class="article-inner">
 
         <header class="article-header">
-            <h1 itemprop="name">
-                <a class="article-title" href="/blogs/2018/03/Elfen论文复现.html">Elfen论文复现</a>
-            </h1>
+            <h3>
+		<a class="article-title" href="/blogs/2018/03/Elfen论文复现.html" style="font-size:1.6em">Elfen论文复现</a>
+            </h3>
         </header>
 
-        <div class="article-meta">
-            <a href="/blogs/2018/03/Elfen论文复现.html" class="article-date">
-                <time itemprop="datePublished">2018年03月</time>
-            </a>
-        </div>
+        <!-- <div class="article-meta"> -->
+        <!--     <a href="/blogs/2018/03/Elfen论文复现.html" class="article-date"> -->
+        <!--         <time itemprop="datePublished">2018年03月</time> -->
+        <!--     </a> -->
+        <!-- </div> -->
 
         <div class="article-entry" itemprop="articleBody">
             <p>由于作者使用的是Lucene的开源代码以及另外一个Lucene性能测试的开源项目代码，而Lucene的代码会经常更新，幸好对应的性能测试代码也会对应更新，性能测试代码： https://github.com/mikemccand/luceneutil</p>
-<p>准备作者的ELFEN代码以及作者的Luceneutil代码，从github上可得到 https://github.com/yangxi</p>
-<p>然后根据作者的说明进行实验,<strong>准备实验数据</strong>，wiki的英文数据，利用如下</p>
-<pre class="brush: perl;">
-# Usage
-#1. Download the wikipedia data
-python src/python/setup.py -download
-</pre>
-<p><strong>准备Lucene引擎</strong>，clone最新的Lucene代码，并用ant编译，如下Apache的源码下载时容易掉线，用github上的镜像就不会出现下载掉线的问题</p>
-<pre class="brush: perl;">
-#2. Build the Lucene
-"cd ../; git clone git://git.apache.org/lucene-solr.git trunk;"
-"cd trunk; git checkout -b new_branch ceb66d34c0a6f840ec195f6da85e323de5e9a04d"
-"cd ./lucene; ant compile-test"
-</pre>
 
         </div>
 
     </div>
 
-</article><article id="{article-id}" class="article article-type-post" itemscope itemprop="blogPost">
+</article>
+<article id="{article-id}" class="article article-type-post" itemscope itemprop="blogPost">
     <div class="article-inner">
 
         <header class="article-header">
-            <h1 itemprop="name">
-                <a class="article-title" href="/blogs/2018/03/Computer-Performance-Microscopy-with-SHIM.html">Computer Performance Microscopy with SHIM</a>
-            </h1>
+            <h3>
+		<a class="article-title" href="/blogs/2018/03/Computer-Performance-Microscopy-with-SHIM.html" style="font-size:1.6em">Computer Performance Microscopy with SHIM</a>
+            </h3>
         </header>
 
-        <div class="article-meta">
-            <a href="/blogs/2018/03/Computer-Performance-Microscopy-with-SHIM.html" class="article-date">
-                <time itemprop="datePublished">2018年03月</time>
-            </a>
-        </div>
+        <!-- <div class="article-meta"> -->
+        <!--     <a href="/blogs/2018/03/Computer-Performance-Microscopy-with-SHIM.html" class="article-date"> -->
+        <!--         <time itemprop="datePublished">2018年03月</time> -->
+        <!--     </a> -->
+        <!-- </div> -->
 
         <div class="article-entry" itemprop="articleBody">
             <p>文章主要是关于细粒度高频率观测程序性能，作者yangxi，<a href="https://github.com/yangxi/SHIM">文章和实验代码</a>均可以在github上找到 。一般的程序性能观测采样是采用的linux的perf模块，但是perf只能观测较为宏观的程序性能参数，如果进行高频度的观测，观测程序就会对被观测程序进行影响，而这篇文章中的shim正是为解决这个问题而存在的。而shim之所以能在elfen论文中被使用也正是因为其高频度的准确观测程序数据，这一点使得其能够高频度观测到cpu空闲的区间，进而被elfen所用。</p>
-<p>实验代码主要包括两个部分，一个是一个linux内核模块ppid_module，另一个是shim的核心代码。文章中的实验数据是对一个java模拟器进行性能观测，这里我仅对ppid_module和shim的两个简单使用例子进行说明。</p>
-<h2><a data-uk-modal="{target:'#category-id'}">ppid 内核模块</a></h2>
-
-<p>这个模块的主要作用是任何时候显示哪个线程跑在哪个cpu上，主要方式是允许一个用户程序映射一段无cache的连续物理内存缓冲区，ppid主要的工作在初始化和映射，以及一个额外的在内核中schedule处被调用的一个回调函数</p>
 
         </div>
 
     </div>
 
-</article><article id="{article-id}" class="article article-type-post" itemscope itemprop="blogPost">
+</article>
+<article id="{article-id}" class="article article-type-post" itemscope itemprop="blogPost">
     <div class="article-inner">
 
         <header class="article-header">
-            <h1 itemprop="name">
-                <a class="article-title" href="/blogs/2018/00-sharix/sharix-3-process-and-thread.html">sharix 3 process and thread</a>
-            </h1>
+            <h3>
+		<a class="article-title" href="/blogs/2018/00-sharix/sharix-3-process-and-thread.html" style="font-size:1.6em">sharix 3 process and thread</a>
+            </h3>
         </header>
 
-        <div class="article-meta">
-            <a href="/blogs/2018/00-sharix/sharix-3-process-and-thread.html" class="article-date">
-                <time itemprop="datePublished">2018年00-sharix月</time>
-            </a>
-        </div>
+        <!-- <div class="article-meta"> -->
+        <!--     <a href="/blogs/2018/00-sharix/sharix-3-process-and-thread.html" class="article-date"> -->
+        <!--         <time itemprop="datePublished">2018年00-sharix月</time> -->
+        <!--     </a> -->
+        <!-- </div> -->
 
         <div class="article-entry" itemprop="articleBody">
             <p>The task switch method in sharix is software switch, so it is mainly about context switch and the change of the register value and there's nothing about TSS segments at the first time. When it is time to add the user process model in sharix, the TSS will be needed because we need it to change the esp0 and ss0 to change the privilege from ring3 to ring0.</p>
-<h2><a data-uk-modal="{target:'#category-id'}">init process structure</a></h2>
-
-<pre class="brush: c;">
-// process's state in his life cycle
-enum proc_state {
-    PROC_UNINIT = 0,  // uninitialized
-    PROC_SLEEPING,    // sleeping
-    PROC_RUNNABLE,    // runnable(maybe running)
-    PROC_ZOMBIE,      // almost dead, and wait parent proc to reclaim his resource
-};
-struct proc_struct {
-  enum proc_state state;
-  int pid;
-  uintptr_t kstack;               // kernel stack
-  struct proc_struct *parent;
-  struct mm_struct *mm;
-  struct context context;
-  struct trapframe *tf;
-  uintptr_t cr3;                  // address of PDT
-  list_entry_t list_link;
-};
-</pre>
 
         </div>
 
     </div>
 
-</article><article id="{article-id}" class="article article-type-post" itemscope itemprop="blogPost">
+</article>
+<article id="{article-id}" class="article article-type-post" itemscope itemprop="blogPost">
     <div class="article-inner">
 
         <header class="article-header">
-            <h1 itemprop="name">
-                <a class="article-title" href="/blogs/2018/00-sharix/sharix-2-memory-management.html">sharix 2 memory management</a>
-            </h1>
+            <h3>
+		<a class="article-title" href="/blogs/2018/00-sharix/sharix-2-memory-management.html" style="font-size:1.6em">sharix 2 memory management</a>
+            </h3>
         </header>
 
-        <div class="article-meta">
-            <a href="/blogs/2018/00-sharix/sharix-2-memory-management.html" class="article-date">
-                <time itemprop="datePublished">2018年00-sharix月</time>
-            </a>
-        </div>
+        <!-- <div class="article-meta"> -->
+        <!--     <a href="/blogs/2018/00-sharix/sharix-2-memory-management.html" class="article-date"> -->
+        <!--         <time itemprop="datePublished">2018年00-sharix月</time> -->
+        <!--     </a> -->
+        <!-- </div> -->
 
         <div class="article-entry" itemprop="articleBody">
             <p>As we have mentioned before, the sharix os kernel part has been divided to several segment, which combines just like a big and complex program. And then we will come with memory paging and virtual memory.</p>
-<h2><a data-uk-modal="{target:'#category-id'}">memory management</a></h2>
-
-<p>To probe the real physical memory,we use a struct E820 to store the memory information and this can be stored in 16bit mode and with help of bios interruption.</p>
-<pre class="brush: c;">
-struct e820map
-{
-	int nr_map;
-	struct
-	{
-		uint64_t addr;
-		uint64_t size;
-		uint32_t type;
-	}map[E820MAX];
-};
-</pre>
 
         </div>
 
     </div>
 
-</article><article id="{article-id}" class="article article-type-post" itemscope itemprop="blogPost">
+</article>
+<article id="{article-id}" class="article article-type-post" itemscope itemprop="blogPost">
     <div class="article-inner">
 
         <header class="article-header">
-            <h1 itemprop="name">
-                <a class="article-title" href="/blogs/2018/00-sharix/sharix-1-boot-a-simple-os.html">sharix 1 boot a simple os</a>
-            </h1>
+            <h3>
+		<a class="article-title" href="/blogs/2018/00-sharix/sharix-1-boot-a-simple-os.html" style="font-size:1.6em">sharix 1 boot a simple os</a>
+            </h3>
         </header>
 
-        <div class="article-meta">
-            <a href="/blogs/2018/00-sharix/sharix-1-boot-a-simple-os.html" class="article-date">
-                <time itemprop="datePublished">2018年00-sharix月</time>
-            </a>
-        </div>
+        <!-- <div class="article-meta"> -->
+        <!--     <a href="/blogs/2018/00-sharix/sharix-1-boot-a-simple-os.html" class="article-date"> -->
+        <!--         <time itemprop="datePublished">2018年00-sharix月</time> -->
+        <!--     </a> -->
+        <!-- </div> -->
 
         <div class="article-entry" itemprop="articleBody">
             <p>Sharix has the meaning of sharing, which means it is for everyone to learn and improve. The sharix os is mainly based on the <code>ucore os</code> of the tsinghua university, you can find it on github. So what i am doing is mainly about adding a graphical subsystem to it, and also makes some part of ucore as simple as possible.</p>
-<p>I will keep updating sharix os, and if you are interested in sharix, welcome to update it together. For now, the main purpose is to realize a simple desktop and window, and to realize terminal and text editing, maybe also realize the windows message mechanism.</p>
 
         </div>
 
     </div>
 
-</article><article id="{article-id}" class="article article-type-post" itemscope itemprop="blogPost">
+</article>
+<article id="{article-id}" class="article article-type-post" itemscope itemprop="blogPost">
     <div class="article-inner">
 
         <header class="article-header">
-            <h1 itemprop="name">
-                <a class="article-title" href="/blogs/2018/00-linux/Linux-profiling-with-performance-counters.html">Linux profiling with performance counters</a>
-            </h1>
+            <h3>
+		<a class="article-title" href="/blogs/2018/00-linux/Linux内核模块.html" style="font-size:1.6em">Linux内核模块</a>
+            </h3>
         </header>
 
-        <div class="article-meta">
-            <a href="/blogs/2018/00-linux/Linux-profiling-with-performance-counters.html" class="article-date">
-                <time itemprop="datePublished">2018年00-linux月</time>
-            </a>
-        </div>
+        <!-- <div class="article-meta"> -->
+        <!--     <a href="/blogs/2018/00-linux/Linux内核模块.html" class="article-date"> -->
+        <!--         <time itemprop="datePublished">2018年00-linux月</time> -->
+        <!--     </a> -->
+        <!-- </div> -->
 
         <div class="article-entry" itemprop="articleBody">
-            <p>Perf Event is a performance diagnostic tool that is released and maintained with the Linux kernel code. Perf can not only be used to analyze the performance of program, but it can also be used to analyze the performance of Linux kernel.</p>
-<h2><a data-uk-modal="{target:'#category-id'}">introduction</a></h2>
-
-<p>Perf a tool to analyze performance of program. We can use PMU,tracepoint and special counters in kernel to summarize the performance. With perf we can analyze the hardware event at the running time of programs, such as instructions retired and processor clock cycles. You can also analyze software events, such as Page Fault and the switch of process.</p>
+            <p>LKM means linux kernel module.</p>
+<p>A kernel module extends  the functionality of the kernel without the need to reboot the system.Take device driver as an example, it allows the kernel to access hardware connected to the system. Without kernel module we have to add the code into the kernel source code, and rebuild and reboot the kernel, obviously this is complicated.</p>
 
         </div>
 
     </div>
 
-</article><nav id="page-nav"><a class="extend prev" rel="prev" href="/page/4/">&laquo; Prev</a>
+</article>
+<nav id="page-nav"><a class="extend prev" rel="prev" href="/page/4/">&laquo; Prev</a>
 <a class="page-number" href="/">1</a>
 <a class="page-number" href="/page/2/">2</a>
 <a class="page-number" href="/page/3/">3</a>
@@ -319,8 +236,7 @@ struct e820map
 
             <div class="outer">
                 <div id="footer-info" class="inner">
-                    &copy; 2019 Wang Xingang.&nbsp; Powered by <a href="https://github.com/wxggg/libevent-cpp"
-                        target="_blank">libevent-cpp</a>, theme by <a href="http://github.com/ppoffice">PPOffice</a>
+                    &copy; 2017 ~ now Wang Xingang.&nbsp;, theme by <a href="http://github.com/ppoffice">PPOffice</a>
                 </div>
             </div>
         </footer>

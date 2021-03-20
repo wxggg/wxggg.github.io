@@ -1,9 +1,5 @@
 LKM means linux kernel module.
 
-These days i am doing something about adding a kernel module to linux, so this blog is mainly about kernel module. This is the programming guide that i referenced
-
-https://www.tldp.org/LDP/lkmpg/2.6/html/lkmpg.html
-
 A kernel module extends  the functionality of the kernel without the need to reboot the system.Take device driver as an example, it allows the kernel to access hardware connected to the system. Without kernel module we have to add the code into the kernel source code, and rebuild and reboot the kernel, obviously this is complicated.
 
 You can see the module that has already been loaded into the kernel by command `lsmod`, it reads information from `/proc/modules`.
@@ -404,3 +400,9 @@ Write something for the keyboard interrupt, and disable the regular keyboard int
 * intrpt.c - An interrupt handler
 
 and more for Symmetric Multi-Processing
+
+
+
+## Reference
+
+* https://www.tldp.org/LDP/lkmpg/2.6/html/lkmpg.html

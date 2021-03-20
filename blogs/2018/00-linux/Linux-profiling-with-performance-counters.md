@@ -210,7 +210,8 @@ we can get:
 # (Tip: Customize output of perf script with: perf script -F event,ip,sym)
 #
 ```
-###perf -g record
+### perf -g record
+
 ```c
 # Event count (approx.): 261500000
 #

@@ -41,254 +41,374 @@
     <div class="article-inner">
 
         <header class="article-header">
-            <h1 itemprop="name">
-                <a class="article-title" href="/blogs/2019/03/linux-0.01-初始化及进程调度.html">linux 0.01 初始化及进程调度</a>
-            </h1>
+            <h3>
+		<a class="article-title" href="/blogs/2018/11/C标准库-2-之工具.html" style="font-size:1.6em">C标准库 2 之工具</a>
+            </h3>
         </header>
 
-        <div class="article-meta">
-            <a href="/blogs/2019/03/linux-0.01-初始化及进程调度.html" class="article-date">
-                <time itemprop="datePublished">2019年03月</time>
-            </a>
-        </div>
+        <!-- <div class="article-meta"> -->
+        <!--     <a href="/blogs/2018/11/C标准库-2-之工具.html" class="article-date"> -->
+        <!--         <time itemprop="datePublished">2018年11月</time> -->
+        <!--     </a> -->
+        <!-- </div> -->
 
         <div class="article-entry" itemprop="articleBody">
-            <p>Linux0.01时Linus在1991年发布的第一个Linux版本，最初的这个版本的Linux代码量并不多，但是很多开始的设计在之后的多个版本中都一直保留，一般来说操作系统的设计分块一般不会有大的改动，主要包括启动加载初始化、内存管理、进程调度以及文件系统等。在<a href="https://www.kernel.org/">The Linux Kernel Archive</a>可以下载Linux内核源代码，Linux0.01代码分块来说主要包括boot、fs、include、kernel、lib、mm、tools和Makefile文件，主要包含了启动、文件系统、头文件、内核、内存管理等。</p>
-<h2><a data-uk-modal="{target:'#category-id'}">1 引导启动</a></h2>
-
-<p>一般来说，绝大多数x86硬件上的系统启动过程应该都是相似的，都是在硬件通电之后执行BIOS硬件程序，BIOS将系统的引导扇区（512B）加载到0x7c00处，BIOS自检之类的事情做完之后就会跳转到0x7c00执行引导扇区的入口。需要注意的就是此时的代码均为16位，为了兼容以前的系统即使现在的系统可能都到64位了，但是启动的时候还是得从16位实模式开始，后面会经过一系列过程开启保护模式进入32位。几乎任何一个x86平台的os应该都要经历这样的过程，不同的就是在加载启动过程中，不同的系统在启动过程中处理的方式可能不同，如下是linux-0.01引导时的流程图。</p>
+            <p>GNU C标准库提供了很多工具用来简化编程，包括各种数学工具，对于时间的处理接口以及对系统资源的访问等等。本部分为GNU C标准库阅读记录第二部分，主要包括像随机数、浮点运算操作及定时时钟设置以及进程自己睡眠等操作。</p>
 
         </div>
 
     </div>
 
-</article><article id="{article-id}" class="article article-type-post" itemscope itemprop="blogPost">
+</article>
+<article id="{article-id}" class="article article-type-post" itemscope itemprop="blogPost">
     <div class="article-inner">
 
         <header class="article-header">
-            <h1 itemprop="name">
-                <a class="article-title" href="/blogs/2018/12/libevent-cpp-5-封装epoll及epoll内核实现原理.html">libevent cpp 5 封装epoll及epoll内核实现原理</a>
-            </h1>
+            <h3>
+		<a class="article-title" href="/blogs/2018/11/C标准库-1-之输入输出IO.html" style="font-size:1.6em">C标准库 1 之输入输出IO</a>
+            </h3>
         </header>
 
-        <div class="article-meta">
-            <a href="/blogs/2018/12/libevent-cpp-5-封装epoll及epoll内核实现原理.html" class="article-date">
-                <time itemprop="datePublished">2018年12月</time>
-            </a>
-        </div>
+        <!-- <div class="article-meta"> -->
+        <!--     <a href="/blogs/2018/11/C标准库-1-之输入输出IO.html" class="article-date"> -->
+        <!--         <time itemprop="datePublished">2018年11月</time> -->
+        <!--     </a> -->
+        <!-- </div> -->
 
         <div class="article-entry" itemprop="articleBody">
-            <p>前面介绍了poll和select在内核中的实现原理，可以说本质上两者都是相同的，都是将用户空间的文件描述符及对应事件复制到内核空间，然后在内核空间轮询，如果轮询没有事件，则将当前进程置于该文件描述符的等待队列，如此，在之后该文件进行读写操作时就可以唤醒其等待队列，然后再次轮询时会发现发生了读或者写事件。但是轮询机制在大规模IO复用时会有着明显的缺陷，首先因为poll和select要不断的轮询，所以其时间复杂度为O(n)，随着文件描述符的增多会越来越慢，另外文件描述符的增多也会导致要从用户态拷贝到内核态的数据越来越多，在大规模IO复用中，这种拷贝多次执行显然是难以忍受的，可以说基于poll种种缺点，在Linux-2.6版本左右加入了epoll机制，能够非常高高效的进行IO复用。</p>
-<p>首先针对IO复用这一机制，从原理上来说其实主要的几个思路是不会改变的。首先是用户程序需要将其关注的文件描述符或者相应的读写事件传递给内核，不做处理的话这里存在从用户态到内核态的拷贝，select和poll就是这么做的，其次比较关键的其实就是内核在获取了相应的文件描述符及事件之后，如何有针对性的监控该文件描述符是否发生事件，并根据有无来进行当前进程睡眠和唤醒，因为如果没有发生事件的话是需要释放cpu资源的。在引入epoll之前的Linux版本中，或者说在2.6以前的版本中，poll对进程的睡眠是通过一个<code>poll_wait</code>函数实现的，只要是实现了poll函数的虚拟文件系统，都会在<code>poll</code>中调用<code>poll_wait</code>，poll会将当前进程置于该文件的等待队列，然后在该虚拟文件系统的读写接口中会相应的进行等待队列进程的唤醒。</p>
+            <p>在对文件进行读写之前需要与该文件建立一个通道，也就是打开一个文件。而打开文件的连接过程可以是一个流或者一个文件描述符。有些处理文件的函数需要流，而其它的可能会对文件描述符进行操作，在结束读写的时候需要关闭文件。文件描述符一般是 <code>int</code> 类型，而流则一般是 <code>FILE *</code> 对象。</p>
 
         </div>
 
     </div>
 
-</article><article id="{article-id}" class="article article-type-post" itemscope itemprop="blogPost">
+</article>
+<article id="{article-id}" class="article article-type-post" itemscope itemprop="blogPost">
     <div class="article-inner">
 
         <header class="article-header">
-            <h1 itemprop="name">
-                <a class="article-title" href="/blogs/2018/12/libevent-cpp-4-封装poll及poll内核实现原理.html">libevent cpp 4 封装poll及poll内核实现原理</a>
-            </h1>
+            <h3>
+		<a class="article-title" href="/blogs/2018/10/Elfen-Scheduling-Fine-Grain-Principled-Borrowing-from-Latency-Critical-Workloads-using-Simultaneous-Multithreading.html" style="font-size:1.6em">Elfen Scheduling Fine Grain Principled Borrowing from Latency Critical Workloads using Simultaneous Multithreading</a>
+            </h3>
         </header>
 
-        <div class="article-meta">
-            <a href="/blogs/2018/12/libevent-cpp-4-封装poll及poll内核实现原理.html" class="article-date">
-                <time itemprop="datePublished">2018年12月</time>
-            </a>
-        </div>
+        <!-- <div class="article-meta"> -->
+        <!--     <a href="/blogs/2018/10/Elfen-Scheduling-Fine-Grain-Principled-Borrowing-from-Latency-Critical-Workloads-using-Simultaneous-Multithreading.html" class="article-date"> -->
+        <!--         <time itemprop="datePublished">2018年10月</time> -->
+        <!--     </a> -->
+        <!-- </div> -->
 
         <div class="article-entry" itemprop="articleBody">
-            <p>随着Linux的更新在linux-2.1.23版本中加入了poll机制，因为poll的加入导致select的实现变得基于poll了，本文在上一个版本的基础上在libevent-cpp中加入了对poll机制的封装。总的来说，主要介绍libevent-cpp poll机制以及Linux内核对poll机制的实现原理，另外还会介绍到内核中select实现因为poll而做的改变。</p>
-<h2><a data-uk-modal="{target:'#category-id'}">读写事件管理及poll机制</a></h2>
-
-<h3><a data-uk-modal="{target:'#category-id'}">poll机制</a></h3>
-
-<p>如下为<code>poll</code>库函数，接收的数据<code>struct pollfd *fds</code> 其实是一个<code>strucct pollfd</code> 类型的数组，<code>nfds</code>对应着数组中元素的个数，最后一个为超时。与select最大的区别在于将关注的文件描述符以及对应的事件都抽取出来整合成<code>struct pollfd</code>类型了，而select需要一个很大的文件描述符集合数组，而其中可能只有很少的几个描述符是我们关注的可能会有读写事件。所以从功能上来说<code>poll</code>其实是更高效的。</p>
+            <p>论文全称《Elfen Scheduling: Fine-Grain Principled Borrowing from Latency-Critical Workloads using Simultaneous Multithreading》，标题翻译为《Elfen调度：使用同时多线程技术从时延关键型工作负载进行细粒度原则借用》，由ANU的Xi Yang博士发表于会议ATC-2016，github上可以找到实验代码：https://github.com/yangxi/elfen</p>
 
         </div>
 
     </div>
 
-</article><article id="{article-id}" class="article article-type-post" itemscope itemprop="blogPost">
+</article>
+<article id="{article-id}" class="article article-type-post" itemscope itemprop="blogPost">
     <div class="article-inner">
 
         <header class="article-header">
-            <h1 itemprop="name">
-                <a class="article-title" href="/blogs/2018/12/libevent-cpp-3-读写事件及Linux内核select机制实现原理.html">libevent cpp 3 读写事件及Linux内核select机制实现原理</a>
-            </h1>
+            <h3>
+		<a class="article-title" href="/blogs/2018/09/模拟MFC关键技术.html" style="font-size:1.6em">模拟MFC关键技术</a>
+            </h3>
         </header>
 
-        <div class="article-meta">
-            <a href="/blogs/2018/12/libevent-cpp-3-读写事件及Linux内核select机制实现原理.html" class="article-date">
-                <time itemprop="datePublished">2018年12月</time>
-            </a>
-        </div>
+        <!-- <div class="article-meta"> -->
+        <!--     <a href="/blogs/2018/09/模拟MFC关键技术.html" class="article-date"> -->
+        <!--         <time itemprop="datePublished">2018年09月</time> -->
+        <!--     </a> -->
+        <!-- </div> -->
 
         <div class="article-entry" itemprop="articleBody">
-            <p>关于libevent除了对于信号和超时的处理，最核心的部分其实是对于多路IO复用的封装。IO复用存在多种方式，包括select、poll、kqueue及epoll等多种接口。libevent的实现中用C语言以类似面向对象的方式来将这多种IO复用方式进行封装，对于我们的libevent-cpp而言，可以直接使用父子继承来实现各种不同的IO方式。本文主要介绍一下select机制以及libevent中使用select来处理IO读写事件的方式，然后深入Linux内核介绍一下select的实现机制。</p>
-<h2><a data-uk-modal="{target:'#category-id'}">读写事件管理及select机制</a></h2>
-
-<p></p>
-<h3><a data-uk-modal="{target:'#category-id'}">select机制</a></h3>
-
-<p>如下为select函数及对应的参数，参数中最重要的数据类型就是fd_set数组对应的读描述符集合和写描述符集合，其中分别保存着读写描述符的信息，进程首先会睡眠于select函数，之后一旦读或者写描述符集合中的某个fd满足读或者写了，那么select就会返回，然后进程处理对应描述符的读写。</p>
+            <p>MFC也就是Microsoft Foundation Class之前一直都是Windows平台软件开发的主要软件框架（Application Framework）， 随着新技术的不断产生，MFC也渐渐消失在主流开发者的眼中。诚然，MFC设计的晦涩确实是其一大弊端，正如《深入浅出MFC》的作者侯杰所提到的很多敌视者将MFC这个Application Framework视作Minotaur（希腊神话中的牛头怪，会吃掉迷失在迷宫中的人），但是考虑到MFC设计的时间，其很多设计思想其实很有意思，《深入浅出MFC》中所提到的MFC设计的六大关键技术在现在可能已经有了更好的实现方式，比如说运行时类型识别RTTI，MFC设计之初C++还没有引入运行时类型识别，所以对于此MFC便设计了一套专门的宏以及相应的数据结构进行处理，在今天看来，这着实很麻烦，因为现在C++的特性早已经可以直接进行运行时类型的识别以及转换了。无论怎样，相对于直接调用Windows的api进行界面程序的实现，MFC程序确实是有着相当大的进步，虽然这种进步在当今看来早已落伍，但是MFC作为一个Application Framework的设计思想却值得进行探究。</p>
 
         </div>
 
     </div>
 
-</article><article id="{article-id}" class="article article-type-post" itemscope itemprop="blogPost">
+</article>
+<article id="{article-id}" class="article article-type-post" itemscope itemprop="blogPost">
     <div class="article-inner">
 
         <header class="article-header">
-            <h1 itemprop="name">
-                <a class="article-title" href="/blogs/2018/11/中缀表达式转后缀求值并打印树结构.html">中缀表达式转后缀求值并打印树结构</a>
-            </h1>
+            <h3>
+		<a class="article-title" href="/blogs/2018/09/Linux-From-Scratch.html" style="font-size:1.6em">Linux From Scratch</a>
+            </h3>
         </header>
 
-        <div class="article-meta">
-            <a href="/blogs/2018/11/中缀表达式转后缀求值并打印树结构.html" class="article-date">
-                <time itemprop="datePublished">2018年11月</time>
-            </a>
-        </div>
+        <!-- <div class="article-meta"> -->
+        <!--     <a href="/blogs/2018/09/Linux-From-Scratch.html" class="article-date"> -->
+        <!--         <time itemprop="datePublished">2018年09月</time> -->
+        <!--     </a> -->
+        <!-- </div> -->
 
         <div class="article-entry" itemprop="articleBody">
-            <p>题目内容：众所周知，任何一个表达式，都可以用一棵表达式树来表示。例如，表达式a+b*c，可以表示为如下的表达式树。现在，给你一个中缀表达式，这个中缀表达式用变量来表示（不含数字），请你将这个中缀表达式用表达式二叉树的形式输出出来。</p>
-<pre class="brush: ;">
-   +
-  / \
- a   *
-    / \
-    b c
-</pre>
-<h4><a data-uk-modal="{target:'#category-id'}">输入格式:</a></h4>
-
-<p>输入分为三个部分。</p>
-<p>第一部分为一行，即中缀表达式(长度不大于50)。中缀表达式可能含有小写字母代表变量（a-z），也可能含有运算符（+、-、*、/、小括号），不含有数字，也不含有空格。</p>
-<p>第二部分为一个整数n(n < 10)，表示中缀表达式的变量数。</p>
-<p>第三部分有n行，每行格式为C　x，C为变量的字符，x为该变量的值。</p>
-<h4><a data-uk-modal="{target:'#category-id'}">输出格式：</a></h4>
-
-<p>输出分为三个部分，第一个部分为该表达式的逆波兰式，即该表达式树的后根遍历结果。占一行。</p>
+            <p>LFS（Linux From Scratch）也就是从零构建Linux系统，目的是为了完全通过源代码来构建一个Linux系统环境。当然从零构建并不是真正的从什么都没有来开始构建，毕竟没有鸡哪来的蛋，必须得有一个能够编译Linux源码以及Linux软件包源码的宿主系统才行，而这个宿主系统可以是物理机也可以是虚拟机，唯一的要求是至少得是Linux环境。至于LFS系统，得需要单独准备一个硬盘分区，LFS系统的构建过程也就是这个硬盘分区中文件不断增加的过程，这些文件包括Linux系统所必备的各种库文件（如在/lib中），Linux系统必备的一些命令对应的二进制可执行文件（如在/bin中）等等。要说一个能够启动并运行的Linux系统其实结构比较清晰，主要包括可执行文件、运行库、Linux内核以及各种配置文件，只需要在一个硬盘分区上包含有上述的各种内容就行。</p>
 
         </div>
 
     </div>
 
-</article><article id="{article-id}" class="article article-type-post" itemscope itemprop="blogPost">
+</article>
+<article id="{article-id}" class="article article-type-post" itemscope itemprop="blogPost">
     <div class="article-inner">
 
         <header class="article-header">
-            <h1 itemprop="name">
-                <a class="article-title" href="/blogs/2018/11/libevent-cpp-2-事件重构及时间处理.html">libevent cpp 2 事件重构及时间处理</a>
-            </h1>
+            <h3>
+		<a class="article-title" href="/blogs/2018/07/自然语言处理札记.html" style="font-size:1.6em">自然语言处理札记</a>
+            </h3>
         </header>
 
-        <div class="article-meta">
-            <a href="/blogs/2018/11/libevent-cpp-2-事件重构及时间处理.html" class="article-date">
-                <time itemprop="datePublished">2018年11月</time>
-            </a>
-        </div>
+        <!-- <div class="article-meta"> -->
+        <!--     <a href="/blogs/2018/07/自然语言处理札记.html" class="article-date"> -->
+        <!--         <time itemprop="datePublished">2018年07月</time> -->
+        <!--     </a> -->
+        <!-- </div> -->
 
         <div class="article-entry" itemprop="articleBody">
-            <p>上一篇介绍主要关于libevent的基本架构，并以C++的方式重写了其中的信号机制，在事件本身的结构还没有进行过多的抽象。在原本的libevent中，事件的类型是由 <code>ev_events</code> 来决定的，而事件所处的状态是由 <code>ev_flags</code> 来决定的。但是客观上来说，不同类型的事件之间的处理方式差别还是挺大的，因而可以分别以不同类进行抽象处理。这篇文章主要在进行事件抽象的基础上增加了时间处理，能够对超时事件进行响应。</p>
-<h2><a data-uk-modal="{target:'#category-id'}">重构事件的起源-event类</a></h2>
-
-<p>从重构的角度来看，对于信号事件、时间时间和读写事件应该分别进行抽象，并将尽可能相同的功能放到基类event中，所以就暂时有了如下的event：</p>
-<pre class="brush: c++;">
-class event
-{
-  public:
-	event_base *_base;
-	short _events; /* EV_TIMEOUT EV_READ EV_WRITE EV_SIGNAL EV_PERSIST */
-	short _ncalls = 0;
-	int _pri; /* smaller numbers means higher priority */
-
-	void (*_callback)(short, void *arg);
-	int _res; /* result passed to event callback */
-
-  public:
-	event(event_base *base);
-	virtual ~event() { std::cout < <  __func__ < <  std::endl; }
-
-	void set_base(event_base *base) { _base = base; }
-	void set_callback(void (*callback)(short, void *)) { _callback = callback; }
-
-	virtual void add() {}
-	virtual void del() {}
-
-	void activate(int res, short ncalls);
-};
-</pre>
+            <p>语言最主要的表达形式就是文字和语音，自然语言处理就是利用计算机自动或半自动地处理大量的文本信息，从中挖掘出有用的信息。自然语言处理研究的一些方面主要包括信息抽取、信息过滤、文档分类、情感分类等方面。自然语言处理中存在的一些基本的问题和困难包括语义歧义问题，比如对于句子</p>
 
         </div>
 
     </div>
 
-</article><article id="{article-id}" class="article article-type-post" itemscope itemprop="blogPost">
+</article>
+<article id="{article-id}" class="article article-type-post" itemscope itemprop="blogPost">
     <div class="article-inner">
 
         <header class="article-header">
-            <h1 itemprop="name">
-                <a class="article-title" href="/blogs/2018/11/libevent-cpp-1-基本架构及信号处理.html">libevent cpp 1 基本架构及信号处理</a>
-            </h1>
+            <h3>
+		<a class="article-title" href="/blogs/2018/06/河西走廊历史变迁.html" style="font-size:1.6em">河西走廊历史变迁</a>
+            </h3>
         </header>
 
-        <div class="article-meta">
-            <a href="/blogs/2018/11/libevent-cpp-1-基本架构及信号处理.html" class="article-date">
-                <time itemprop="datePublished">2018年11月</time>
-            </a>
-        </div>
+        <!-- <div class="article-meta"> -->
+        <!--     <a href="/blogs/2018/06/河西走廊历史变迁.html" class="article-date"> -->
+        <!--         <time itemprop="datePublished">2018年06月</time> -->
+        <!--     </a> -->
+        <!-- </div> -->
 
         <div class="article-entry" itemprop="articleBody">
-            <p>Libevent是一个事件通知库，其API提供了一种机制用于在文件描述符上发生特定事件或者超时之后执行回调函数，此外，libevent还支持因为信号或常规超时引起的回调操作。libevent 旨在替换事件驱动的网络f服务器中的事件循环，应用程序只需要调用 <code>event_dispatch</code> ，然后动态添加或删除事件，而不需要更改事件循环。</p>
-<p>Libevent 是用C语言编写的高性能网路库，这里尝试使用C++进行封装其中的接口，目前主要基于 libevent-1.1b 版本的代码。本文在简介libevent基本架构的同时主要分析libevent中对于信号的处理方式。本文C++封装代码可在<a href="https://github.com/sharixos/libevent-cpp">libevent-cpp</a> 找到。</p>
-<h2><a data-uk-modal="{target:'#category-id'}">Libevent 基本架构</a></h2>
-
-<p>Libevent中最关键的数据类型就是事件<code>event</code>和事件管理器，事件管理器其实就是<code>event_bas</code>。</p>
+            <p>河西走廊是今甘肃西北部狭长的堆积平原，位于祁连山以东，乌鞘岭以北，在中国的历史长河中，河西走廊无论在文化、宗教、经贸以及军事战略地位上都起着重要的作用，对于中国历史上历代中原王朝来说，河西走廊的安危几乎就决定了华夏腹地平原的安危，中国历史上几乎所有盛世王朝都牢牢的掌握着河西走廊咽喉要道，进而西出新疆、经略西域。从河西走廊的历史变迁可以一窥中国代代盛世兴衰的演化史，从西汉开始到如今，数千年的历史风云，历经历代名士大家，河西走廊洗尽铅华，给我们留下无与伦比的敦煌莫高窟，历经金戈铁马黄沙漫漫，玉门阳关犹在，不见当年骠骑司马。河西走廊的风如今依然萧萧，浩瀚星空下的这片土地，似乎也有着记忆，记忆着曾经的驼铃阵阵，记忆着繁华盛世商旅如潮，也同样记忆着曾经的萧瑟寂寥。</p>
 
         </div>
 
     </div>
 
-</article><article id="{article-id}" class="article article-type-post" itemscope itemprop="blogPost">
+</article>
+<article id="{article-id}" class="article article-type-post" itemscope itemprop="blogPost">
     <div class="article-inner">
 
         <header class="article-header">
-            <h1 itemprop="name">
-                <a class="article-title" href="/blogs/2018/11/Linux-信号机制-signal.html">Linux 信号机制 signal</a>
-            </h1>
+            <h3>
+		<a class="article-title" href="/blogs/2018/06/手写识别综述.html" style="font-size:1.6em">手写识别综述</a>
+            </h3>
         </header>
 
-        <div class="article-meta">
-            <a href="/blogs/2018/11/Linux-信号机制-signal.html" class="article-date">
-                <time itemprop="datePublished">2018年11月</time>
-            </a>
-        </div>
+        <!-- <div class="article-meta"> -->
+        <!--     <a href="/blogs/2018/06/手写识别综述.html" class="article-date"> -->
+        <!--         <time itemprop="datePublished">2018年06月</time> -->
+        <!--     </a> -->
+        <!-- </div> -->
 
         <div class="article-entry" itemprop="articleBody">
-            <p>信号是类Unix系统中一种常用的IPC机制，信号是发送到进程或同一进程内的特定线程的异步通知，以便通知它发生的事件。当信号发出时，操作系统会终端目标进程的执行流来传递信号，任何非原子的执行过程都可以被中断，如果进程之前已经注册过信号处理函数，该处理函数就会被调用，否则会执行默认的信号处理函数。信号和中断类似，区别是中断是由硬件调停并由内核处理，而信号是由内核调停而由进程处理。内核可能将某些中断当作信号传给进程，比如 SIGSEGV、SIGBUS、SIGILL以及SIGFPE等。</p>
-<ul><li>当其它进程调用像 <code>kill</code> 这样的函数时</li>
-<li>使用 <code>abort</code> 之类的函数从进程自身发送信号</li>
-<li>子进程退出时操作系统发送 SIGCHLD 信号</li>
-<li>父进程死亡或在控制终端监测到挂起时发送 SIGHUP 信号</li>
-<li>用户从键盘中断程序时发送 SIGINT 信号</li>
-<li>当程序行为不正确时发送 SIGILL、SIGFPE和 SIGSEGV 之一</li>
-<li>当程序访问 <code>mmap</code> 映射的但是不可用的内存时</li>
+            <p>关于手写识别已经有很多方法被研究使用，近年来随着深度学习的应用越来越广泛，RNN以及MDLSTM循环神经网络等方法在手写识别中取得了很好的效果，逐渐取代以前的HMM隐马尔可夫或CRF条件随机场的方法，主要得益于RNN在序列标注问题上的几个关键部分得到解决，包括CTC和MDRNN的提出。本文将从手写识别的描述、方法进行介绍，主要介绍深度学习方法在手写识别中的应用。</p>
 
         </div>
 
     </div>
 
-</article><nav id="page-nav"><a class="extend prev" rel="prev" href="/">&laquo; Prev</a>
+</article>
+<article id="{article-id}" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+
+        <header class="article-header">
+            <h3>
+		<a class="article-title" href="/blogs/2018/05/从卷积到 Convolutional Neural Network.html" style="font-size:1.6em">从卷积到 Convolutional Neural Network</a>
+            </h3>
+        </header>
+
+        <!-- <div class="article-meta"> -->
+        <!--     <a href="/blogs/2018/05/从卷积到 Convolutional Neural Network.html" class="article-date"> -->
+        <!--         <time itemprop="datePublished">2018年05月</time> -->
+        <!--     </a> -->
+        <!-- </div> -->
+
+        <div class="article-entry" itemprop="articleBody">
+            <p>卷积神经网络cnn中最基本的操作是卷积和池化，而卷积操作又赋予了特征提取的功能，本文将从卷积操作的具体运算过程入手总结cnn的相关应用。我使用的数据集为mnist手写数字的dataset，每一个样本为28x28的数字灰度图像。卷积神经网络不仅在图像处理上应用广泛，现在在NLP领域也越来越多的使用cnn进行包括分类在内的各种应用。写这篇文章的目的主要是在学习的过程中同时对卷积cnn做一个梳理，如有不正之处敬请指出。本文涉及到的主要内容包括：</p>
+
+        </div>
+
+    </div>
+
+</article>
+<article id="{article-id}" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+
+        <header class="article-header">
+            <h3>
+		<a class="article-title" href="/blogs/2018/05/Shielding-applications-from-an-untrusted-cloud-with-Haven.html" style="font-size:1.6em">Shielding applications from an untrusted cloud with Haven</a>
+            </h3>
+        </header>
+
+        <!-- <div class="article-meta"> -->
+        <!--     <a href="/blogs/2018/05/Shielding-applications-from-an-untrusted-cloud-with-Haven.html" class="article-date"> -->
+        <!--         <time itemprop="datePublished">2018年05月</time> -->
+        <!--     </a> -->
+        <!-- </div> -->
+
+        <div class="article-entry" itemprop="articleBody">
+            <p>这篇文章全称《Shielding applications from an untrusted cloud with Haven》，是Microsoft在2014年发表在USENIX OSDI上的一篇文章，主要考虑的问题是云计算基础架构的安全性，云计算的用户希望云计算软硬件提供商能够保证数据的隐私及安全。这篇文章引入了shielded execution的概念，也就是屏蔽执行，能够保护程序和数据的运行平台的机密性和完整性，主要是云OS、虚拟机和firmware的安全，文章基于Windows设计了Haven原型，利用Intel的SGX的硬件保护来抵御内存探测等特权代码和物理攻击，这项工作促使了SGX规范的改进。</p>
+
+        </div>
+
+    </div>
+
+</article>
+<article id="{article-id}" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+
+        <header class="article-header">
+            <h3>
+		<a class="article-title" href="/blogs/2018/05/MNIST 手写数字多分类方法.html" style="font-size:1.6em">MNIST 手写数字多分类方法</a>
+            </h3>
+        </header>
+
+        <!-- <div class="article-meta"> -->
+        <!--     <a href="/blogs/2018/05/MNIST 手写数字多分类方法.html" class="article-date"> -->
+        <!--         <time itemprop="datePublished">2018年05月</time> -->
+        <!--     </a> -->
+        <!-- </div> -->
+
+        <div class="article-entry" itemprop="articleBody">
+            <p>本例主要测试不同的统计学习方法对于mnist手写数字识别的应用，包括机器学习方法和深度学习神经网络的方法，主要应用了机器学习框架sklearn和深度学习框架tensorflow，暂时使用如下方法进行测试</p>
+
+        </div>
+
+    </div>
+
+</article>
+<article id="{article-id}" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+
+        <header class="article-header">
+            <h3>
+		<a class="article-title" href="/blogs/2018/04/自建博客本地中英文搜索引擎.html" style="font-size:1.6em">自建博客本地中英文搜索引擎</a>
+            </h3>
+        </header>
+
+        <!-- <div class="article-meta"> -->
+        <!--     <a href="/blogs/2018/04/自建博客本地中英文搜索引擎.html" class="article-date"> -->
+        <!--         <time itemprop="datePublished">2018年04月</time> -->
+        <!--     </a> -->
+        <!-- </div> -->
+
+        <div class="article-entry" itemprop="articleBody">
+            <p>博客中一直都没有搜索功能，之前学过信息检索的课程，所以现在尝试着利用现代信息检索的方式给博客增加一个本地搜索引擎。主要的步骤包括中英文分词、建立词典和倒排索引表以及根据TF-IDF来进行搜索返回结果的排序。</p>
+
+        </div>
+
+    </div>
+
+</article>
+<article id="{article-id}" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+
+        <header class="article-header">
+            <h3>
+		<a class="article-title" href="/blogs/2018/04/统计学习方法札记.html" style="font-size:1.6em">统计学习方法札记</a>
+            </h3>
+        </header>
+
+        <!-- <div class="article-meta"> -->
+        <!--     <a href="/blogs/2018/04/统计学习方法札记.html" class="article-date"> -->
+        <!--         <time itemprop="datePublished">2018年04月</time> -->
+        <!--     </a> -->
+        <!-- </div> -->
+
+        <div class="article-entry" itemprop="articleBody">
+            <p>统计学习方法其实就是学习已有的大量数据（输入空间）用模型来总结出规律（特征空间），并对未知类似事件做出预测（输出空间）的一个过程（不知道自己的这个理解有没有问题）。主要的问题包括分类问题和回归问题，核心的步骤其实就是：模型+策略+算法=方法。</p>
+
+        </div>
+
+    </div>
+
+</article>
+<article id="{article-id}" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+
+        <header class="article-header">
+            <h3>
+		<a class="article-title" href="/blogs/2018/04/Tensorflow-8之可视化工具Tensorboard.html" style="font-size:1.6em">Tensorflow 8之可视化工具Tensorboard</a>
+            </h3>
+        </header>
+
+        <!-- <div class="article-meta"> -->
+        <!--     <a href="/blogs/2018/04/Tensorflow-8之可视化工具Tensorboard.html" class="article-date"> -->
+        <!--         <time itemprop="datePublished">2018年04月</time> -->
+        <!--     </a> -->
+        <!-- </div> -->
+
+        <div class="article-entry" itemprop="articleBody">
+            <p>Tensorboard是一个用于可视化和理解tensorflow训练过程的一个web工具，可以通过保存tensorflow在训练过程中的graph的信息，然后利用tensorboard进行可视化，并在浏览器中显示出来。一般在安装tensorflow的过程中会默认安装tensorboard，可以在github上找到tensorboard的源码。</p>
+
+        </div>
+
+    </div>
+
+</article>
+<article id="{article-id}" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+
+        <header class="article-header">
+            <h3>
+		<a class="article-title" href="/blogs/2018/03/Tensorflow之计算图及OP节点.html" style="font-size:1.6em">Tensorflow之计算图及OP节点</a>
+            </h3>
+        </header>
+
+        <!-- <div class="article-meta"> -->
+        <!--     <a href="/blogs/2018/03/Tensorflow之计算图及OP节点.html" class="article-date"> -->
+        <!--         <time itemprop="datePublished">2018年03月</time> -->
+        <!--     </a> -->
+        <!-- </div> -->
+
+        <div class="article-entry" itemprop="articleBody">
+            <p>计算图graph就是节点与边的集合，是一个有向无环图（DAG）按照DAG图的拓扑排序依次执行OP运算，若存在多个度为0的节点可以进行并发运算</p>
+<p>之前提到过会话Session初始化到其父类BaseSession初始化时，若graph为空会调用默认图</p>
+
+        </div>
+
+    </div>
+
+</article>
+<article id="{article-id}" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+
+        <header class="article-header">
+            <h3>
+		<a class="article-title" href="/blogs/2018/03/Tensorflow之简介及系统架构.html" style="font-size:1.6em">Tensorflow之简介及系统架构</a>
+            </h3>
+        </header>
+
+        <!-- <div class="article-meta"> -->
+        <!--     <a href="/blogs/2018/03/Tensorflow之简介及系统架构.html" class="article-date"> -->
+        <!--         <time itemprop="datePublished">2018年03月</time> -->
+        <!--     </a> -->
+        <!-- </div> -->
+
+        <div class="article-entry" itemprop="articleBody">
+            <p>Tensorflow 是由谷歌开源的人工智能学习系统，Tensor意即张量表示多维数组，flow意味着基于数据流图的计算，支持异构设备分布式计算，它能够在各个平台上自动运行模型，从手机、单个CPU / GPU到成百上千GPU卡组成的分布式系统。TensorFlow支持CNN、RNN和LSTM算法，可应用于语音识别，自然语言理解，计算机视觉，广告等等。tensorflow官网： https://www.tensorflow.org （可能需要VPN访问）</p>
+
+        </div>
+
+    </div>
+
+</article>
+<nav id="page-nav"><a class="extend prev" rel="prev" href="/">&laquo; Prev</a>
 <a class="page-number" href="/">1</a>
 <span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a>
-<a class="page-number" href="/page/4/">4</a>
-<a class="page-number" href="/page/5/">5</a>
-<a class="page-number" href="/page/6/">6</a>
 <a class="extend next" rel="next" href="/page/3/">Next &raquo;</a>
 </nav>
 
@@ -297,8 +417,7 @@ class event
 
             <div class="outer">
                 <div id="footer-info" class="inner">
-                    &copy; 2019 Wang Xingang.&nbsp; Powered by <a href="https://github.com/wxggg/libevent-cpp"
-                        target="_blank">libevent-cpp</a>, theme by <a href="http://github.com/ppoffice">PPOffice</a>
+                    &copy; 2017 ~ now Wang Xingang.&nbsp;, theme by <a href="http://github.com/ppoffice">PPOffice</a>
                 </div>
             </div>
         </footer>

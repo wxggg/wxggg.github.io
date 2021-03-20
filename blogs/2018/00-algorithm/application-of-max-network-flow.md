@@ -1,4 +1,4 @@
-##Load balance
+## Load balance
 You have some different computers and jobs. For each job, it can only be done on one of two specified computers. The load of a computer is the number of jobs which have been done on the computer. Give the number of jobs and two computer ID for each job. You task is to minimize the max load.
 (hint: binary search)
 
@@ -44,7 +44,8 @@ __INPUT:__ \
 a series of jobs and computers \
 __OUTPUT:__ \
 the minimum number of the max load
-```c
+
+```python
 function minMaxLoad(jobs[], computers[])
   network = NetworkFlow()
   //construct a network use jobs and computers
@@ -78,7 +79,7 @@ The delta-scaling Ford-Fulkerson complexity is \\(O(m^2log_2C)\\), and bi-search
 
 
 
-##Matrix
+## Matrix
 For a matrix filled with 0 and 1, you know the sum of every row and column. You are asked to give such a matrix which satisfys the conditions.
 
 Implement push-relabel algorithm to find the maximum flow of a network, and list your intermediate steps. Use your implementation to solve problem 2 and write a check problem to see if your answer is right. INPUT: Numbers of rows and columns. And the sum of them. See more detial in the file problem2.data. OUTPUT: The matrix you get. Any one satisfy the conditions will be accept.
@@ -150,7 +151,8 @@ The push-relabel algorithm complexity is \\(O(mn)\\), and to form the network th
 
 
 
-##Unique Cut
+## Unique Cut
+
 >Let G = (V, E) be a directed graph, with source s ∈ V , sink t ∈ V , and nonnegative edge capacities ce. Give a polynomial-time algorithm to decide whether G has a unique minimum st cut.
 
 ### solution

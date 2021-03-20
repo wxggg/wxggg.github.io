@@ -1,8 +1,4 @@
-<p>搭建Linux内核开发环境</p>
-<ul><li>Linux 内核编译</li>
-<li>Qemu + GDB 启动调试</li>
-<li>buildroot 构建根文件系统</li>
-</ul>
+<p>对于Linux内核开发而言使用qemu是很方便的手段，本文主要介绍linux内核开发环境的搭建过程，主要包括内核编译、使用qemu启动编译好的内核，以及构建根文件系统，使用GDB来调试内核等内容。</p>
 <h2><a data-uk-modal="{target:'#category-id'}">Linux内核编译</a></h2>
 
 <pre class="brush: ;">

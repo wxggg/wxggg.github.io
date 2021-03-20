@@ -41,211 +41,330 @@
     <div class="article-inner">
 
         <header class="article-header">
-            <h1 itemprop="name">
-                <a class="article-title" href="/blogs/2018/11/C标准库-2-之工具.html">C标准库 2 之工具</a>
-            </h1>
+            <h3>
+		<a class="article-title" href="/blogs/2018/03/Tensorflow-7之建模及高级API Estimators.html" style="font-size:1.6em">Tensorflow 7之建模及高级API Estimators</a>
+            </h3>
         </header>
 
-        <div class="article-meta">
-            <a href="/blogs/2018/11/C标准库-2-之工具.html" class="article-date">
-                <time itemprop="datePublished">2018年11月</time>
-            </a>
-        </div>
+        <!-- <div class="article-meta"> -->
+        <!--     <a href="/blogs/2018/03/Tensorflow-7之建模及高级API Estimators.html" class="article-date"> -->
+        <!--         <time itemprop="datePublished">2018年03月</time> -->
+        <!--     </a> -->
+        <!-- </div> -->
 
         <div class="article-entry" itemprop="articleBody">
-            <p>GNU C标准库提供了很多工具用来简化编程，包括各种数学工具，对于时间的处理接口以及对系统资源的访问等等。本部分为GNU C标准库阅读记录第二部分，主要包括像随机数、浮点运算操作及定时时钟设置以及进程自己睡眠等操作。</p>
-<h2><a data-uk-modal="{target:'#category-id'}">Mathematics</a></h2>
-
-<p>标准库在<code>math.h</code> 头文件中声明了包括三角函数在内的很多数学函数用来计算，而在 <code>complex.h</code> 中提供了对复数的支持以及各种用于复数的计算。针对浮点类型的函数提供了三种变体，分别是对 <code>double</code>、<code>float</code>和<code>long double</code> 的支持，其中 <code>float</code>的计算是最快的，另外两个分别精度比较高。</p>
-<p>以三角函数为例，分别存在<code>sin</code> 、<code>sinf</code> 和<code>sinl</code> 这三个函数，针对 <code>double</code> 、<code>float</code> 和 <code>long double</code> 进行计算。对于复数的支持函数一般叫做如 <code>ccos</code>和 <code>ctan</code> 等，后缀如<code>ccosf</code>同样表示对<code>float</code>的支持。反三角函数如反正弦函数位 <code>asin</code> ，三角函数中还有如双曲正弦函数 <code>sanh</code>等。</p>
+            <p>本文主要通过官网实例花的分类来了解tensorflow建模过程，在github上tensorflow提供了很多model模可供学习。对于花的分类实例需要安装<code>pandas</code>，这是一个Python的数据处理库，可以直接处理csv格式文件。tensorflow实现了keras机器学习库，在这个实例中也被用到。</p>
 
         </div>
 
     </div>
 
-</article><article id="{article-id}" class="article article-type-post" itemscope itemprop="blogPost">
+</article>
+<article id="{article-id}" class="article article-type-post" itemscope itemprop="blogPost">
     <div class="article-inner">
 
         <header class="article-header">
-            <h1 itemprop="name">
-                <a class="article-title" href="/blogs/2018/11/C标准库-1-之输入输出IO.html">C标准库 1 之输入输出IO</a>
-            </h1>
+            <h3>
+		<a class="article-title" href="/blogs/2018/03/Tensorflow-4之利用SWIG连接前端多语言环境与后端CC++.html" style="font-size:1.6em">Tensorflow 4之利用SWIG连接前端多语言环境与后端CC++</a>
+            </h3>
         </header>
 
-        <div class="article-meta">
-            <a href="/blogs/2018/11/C标准库-1-之输入输出IO.html" class="article-date">
-                <time itemprop="datePublished">2018年11月</time>
-            </a>
-        </div>
+        <!-- <div class="article-meta"> -->
+        <!--     <a href="/blogs/2018/03/Tensorflow-4之利用SWIG连接前端多语言环境与后端CC++.html" class="article-date"> -->
+        <!--         <time itemprop="datePublished">2018年03月</time> -->
+        <!--     </a> -->
+        <!-- </div> -->
 
         <div class="article-entry" itemprop="articleBody">
-            <p>在对文件进行读写之前需要与该文件建立一个通道，也就是打开一个文件。而打开文件的连接过程可以是一个流或者一个文件描述符。有些处理文件的函数需要流，而其它的可能会对文件描述符进行操作，在结束读写的时候需要关闭文件。文件描述符一般是 <code>int</code> 类型，而流则一般是 <code>FILE *</code> 对象。</p>
-<p>文件描述符给 I/O 提供了一个原始的底层的接口。文件描述符和流都能表示对如 terminal 这样的设备的连接，也可以作为普通的文件或者被管道和 socket 用来与其它进程进行连接。但是如果要对特殊的设备执行特定的控制操作则只能使用文件描述符，因为没有流提供这种支持。如果需要进行特殊种类的输入或输出比如非阻塞I/O，那么也只能使用文件描述符。</p>
-<p>流提供了基于原始文件描述符设备的高层接口，使用流的优点是对于流上面的输入输出操作存在更丰富且强大的工具。文件描述符接口只提供了操作字符块的简单函数，而流接口则提供了强大的格式化输入输出函数比如 <code>printf</code> 和 <code>scanf</code> ，也提供了对于字符和面向行的输入输出。既然流是基于文件描述符来实现的，故而可以将流解开并使用对于文件描述符的底层操作。相对应的也可以将一个连接打开为文件描述符然后让一个流与该文件描述符相关联。</p>
+            <p>Tensorflow 源码中python API和底层c/c++之间的关联主要是靠 <code>SWIG</code> 来完成的，这是一个用于把C/C++集成到其他语言中的编译器。本文主要介绍swig以及tensorflow如何利用swig关联前后端，另外主要介绍了一下Session的生命周期。</p>
 
         </div>
 
     </div>
 
-</article><article id="{article-id}" class="article article-type-post" itemscope itemprop="blogPost">
+</article>
+<article id="{article-id}" class="article article-type-post" itemscope itemprop="blogPost">
     <div class="article-inner">
 
         <header class="article-header">
-            <h1 itemprop="name">
-                <a class="article-title" href="/blogs/2018/10/Elfen-Scheduling-Fine-Grain-Principled-Borrowing-from-Latency-Critical-Workloads-using-Simultaneous-Multithreading.html">Elfen Scheduling Fine Grain Principled Borrowing from Latency Critical Workloads using Simultaneous Multithreading</a>
-            </h1>
+            <h3>
+		<a class="article-title" href="/blogs/2018/03/Elfen论文复现.html" style="font-size:1.6em">Elfen论文复现</a>
+            </h3>
         </header>
 
-        <div class="article-meta">
-            <a href="/blogs/2018/10/Elfen-Scheduling-Fine-Grain-Principled-Borrowing-from-Latency-Critical-Workloads-using-Simultaneous-Multithreading.html" class="article-date">
-                <time itemprop="datePublished">2018年10月</time>
-            </a>
-        </div>
+        <!-- <div class="article-meta"> -->
+        <!--     <a href="/blogs/2018/03/Elfen论文复现.html" class="article-date"> -->
+        <!--         <time itemprop="datePublished">2018年03月</time> -->
+        <!--     </a> -->
+        <!-- </div> -->
 
         <div class="article-entry" itemprop="articleBody">
-            <p>论文全称《Elfen Scheduling: Fine-Grain Principled Borrowing from Latency-Critical Workloads using Simultaneous Multithreading》，标题翻译为《Elfen调度：使用同时多线程技术从时延关键型工作负载进行细粒度原则借用》，由ANU的Xi Yang博士发表于会议ATC-2016，github上可以找到实验代码：https://github.com/yangxi/elfen</p>
-<p>文章主要介绍了一种新的细粒度调度CPU的方法，使得对于低延迟要求的服务能够利用这些服务未执行的时候来执行系统其他普通任务，用以提高SMT同时多线程CPU的利用率。</p>
-<h2><a data-uk-modal="{target:'#category-id'}">Abstract 摘要</a></h2>
-
-<p>摘要部分说明了Web服务器的一个现状，对于<code>tail latency</code>要求较高的一些服务如游戏或股票等会关闭同时多线程（SMT），在一个核上只运行一个服务，使得CPU的利用率很低。所以就希望能够同时运行批处理任务和时延关键型请求来利用SMT的多个硬件环境（论文中称为lanes，也就是通道），但是如果完全共享CPU资源的话又会对<code>tail latency</code>和违反 <code>SLO</code>（Service Level Objectives即服务水平目标）产生非线性的影响。</p>
+            <p>由于作者使用的是Lucene的开源代码以及另外一个Lucene性能测试的开源项目代码，而Lucene的代码会经常更新，幸好对应的性能测试代码也会对应更新，性能测试代码： https://github.com/mikemccand/luceneutil</p>
 
         </div>
 
     </div>
 
-</article><article id="{article-id}" class="article article-type-post" itemscope itemprop="blogPost">
+</article>
+<article id="{article-id}" class="article article-type-post" itemscope itemprop="blogPost">
     <div class="article-inner">
 
         <header class="article-header">
-            <h1 itemprop="name">
-                <a class="article-title" href="/blogs/2018/09/模拟MFC关键技术.html">模拟MFC关键技术</a>
-            </h1>
+            <h3>
+		<a class="article-title" href="/blogs/2018/03/Computer-Performance-Microscopy-with-SHIM.html" style="font-size:1.6em">Computer Performance Microscopy with SHIM</a>
+            </h3>
         </header>
 
-        <div class="article-meta">
-            <a href="/blogs/2018/09/模拟MFC关键技术.html" class="article-date">
-                <time itemprop="datePublished">2018年09月</time>
-            </a>
-        </div>
+        <!-- <div class="article-meta"> -->
+        <!--     <a href="/blogs/2018/03/Computer-Performance-Microscopy-with-SHIM.html" class="article-date"> -->
+        <!--         <time itemprop="datePublished">2018年03月</time> -->
+        <!--     </a> -->
+        <!-- </div> -->
 
         <div class="article-entry" itemprop="articleBody">
-            <p>MFC也就是Microsoft Foundation Class之前一直都是Windows平台软件开发的主要软件框架（Application Framework）， 随着新技术的不断产生，MFC也渐渐消失在主流开发者的眼中。诚然，MFC设计的晦涩确实是其一大弊端，正如《深入浅出MFC》的作者侯杰所提到的很多敌视者将MFC这个Application Framework视作Minotaur（希腊神话中的牛头怪，会吃掉迷失在迷宫中的人），但是考虑到MFC设计的时间，其很多设计思想其实很有意思，《深入浅出MFC》中所提到的MFC设计的六大关键技术在现在可能已经有了更好的实现方式，比如说运行时类型识别RTTI，MFC设计之初C++还没有引入运行时类型识别，所以对于此MFC便设计了一套专门的宏以及相应的数据结构进行处理，在今天看来，这着实很麻烦，因为现在C++的特性早已经可以直接进行运行时类型的识别以及转换了。无论怎样，相对于直接调用Windows的api进行界面程序的实现，MFC程序确实是有着相当大的进步，虽然这种进步在当今看来早已落伍，但是MFC作为一个Application Framework的设计思想却值得进行探究。</p>
+            <p>文章主要是关于细粒度高频率观测程序性能，作者yangxi，<a href="https://github.com/yangxi/SHIM">文章和实验代码</a>均可以在github上找到 。一般的程序性能观测采样是采用的linux的perf模块，但是perf只能观测较为宏观的程序性能参数，如果进行高频度的观测，观测程序就会对被观测程序进行影响，而这篇文章中的shim正是为解决这个问题而存在的。而shim之所以能在elfen论文中被使用也正是因为其高频度的准确观测程序数据，这一点使得其能够高频度观测到cpu空闲的区间，进而被elfen所用。</p>
 
         </div>
 
     </div>
 
-</article><article id="{article-id}" class="article article-type-post" itemscope itemprop="blogPost">
+</article>
+<article id="{article-id}" class="article article-type-post" itemscope itemprop="blogPost">
     <div class="article-inner">
 
         <header class="article-header">
-            <h1 itemprop="name">
-                <a class="article-title" href="/blogs/2018/09/Linux-From-Scratch.html">Linux From Scratch</a>
-            </h1>
+            <h3>
+		<a class="article-title" href="/blogs/2018/00-sharix/sharix-3-process-and-thread.html" style="font-size:1.6em">sharix 3 process and thread</a>
+            </h3>
         </header>
 
-        <div class="article-meta">
-            <a href="/blogs/2018/09/Linux-From-Scratch.html" class="article-date">
-                <time itemprop="datePublished">2018年09月</time>
-            </a>
-        </div>
+        <!-- <div class="article-meta"> -->
+        <!--     <a href="/blogs/2018/00-sharix/sharix-3-process-and-thread.html" class="article-date"> -->
+        <!--         <time itemprop="datePublished">2018年00-sharix月</time> -->
+        <!--     </a> -->
+        <!-- </div> -->
 
         <div class="article-entry" itemprop="articleBody">
-            <p>LFS（Linux From Scratch）也就是从零构建Linux系统，目的是为了完全通过源代码来构建一个Linux系统环境。当然从零构建并不是真正的从什么都没有来开始构建，毕竟没有鸡哪来的蛋，必须得有一个能够编译Linux源码以及Linux软件包源码的宿主系统才行，而这个宿主系统可以是物理机也可以是虚拟机，唯一的要求是至少得是Linux环境。至于LFS系统，得需要单独准备一个硬盘分区，LFS系统的构建过程也就是这个硬盘分区中文件不断增加的过程，这些文件包括Linux系统所必备的各种库文件（如在/lib中），Linux系统必备的一些命令对应的二进制可执行文件（如在/bin中）等等。要说一个能够启动并运行的Linux系统其实结构比较清晰，主要包括可执行文件、运行库、Linux内核以及各种配置文件，只需要在一个硬盘分区上包含有上述的各种内容就行。</p>
-<p>关于具体的操作过程，LFS官网 （http://www.linuxfromscratch.org/） 提供了详细的教程，一般来说，按照步骤一步步走一般不会出错，但是其实也没必要太过严格执行其中的步骤，毕竟有些操作会浪费时间。我实验的过程都是基于VirtualBox，首先安装Ubuntu16.04虚拟机，然后添加一个40GB大小的虚拟机磁盘，接下来需要将磁盘挂载到宿主系统的固定目录，如/mnt/lfs，可以在/etc/fstab中添加设置，使得每次启动都自动挂载。在挂载前非常重要的一步就是需要对挂载的磁盘进行分区，这里如果不进行分区的话在最后grub引导启动的时候会产生错误，其实道理也比较明显，一般在安装系统之前都需要指定对应的分区，而不是指定对应的硬盘。分区可以使用fdisk /dev/sdb直接对挂载的sdb硬盘进行分区。</p>
+            <p>The task switch method in sharix is software switch, so it is mainly about context switch and the change of the register value and there's nothing about TSS segments at the first time. When it is time to add the user process model in sharix, the TSS will be needed because we need it to change the esp0 and ss0 to change the privilege from ring3 to ring0.</p>
 
         </div>
 
     </div>
 
-</article><article id="{article-id}" class="article article-type-post" itemscope itemprop="blogPost">
+</article>
+<article id="{article-id}" class="article article-type-post" itemscope itemprop="blogPost">
     <div class="article-inner">
 
         <header class="article-header">
-            <h1 itemprop="name">
-                <a class="article-title" href="/blogs/2018/07/自然语言处理札记.html">自然语言处理札记</a>
-            </h1>
+            <h3>
+		<a class="article-title" href="/blogs/2018/00-sharix/sharix-2-memory-management.html" style="font-size:1.6em">sharix 2 memory management</a>
+            </h3>
         </header>
 
-        <div class="article-meta">
-            <a href="/blogs/2018/07/自然语言处理札记.html" class="article-date">
-                <time itemprop="datePublished">2018年07月</time>
-            </a>
-        </div>
+        <!-- <div class="article-meta"> -->
+        <!--     <a href="/blogs/2018/00-sharix/sharix-2-memory-management.html" class="article-date"> -->
+        <!--         <time itemprop="datePublished">2018年00-sharix月</time> -->
+        <!--     </a> -->
+        <!-- </div> -->
 
         <div class="article-entry" itemprop="articleBody">
-            <p>语言最主要的表达形式就是文字和语音，自然语言处理就是利用计算机自动或半自动地处理大量的文本信息，从中挖掘出有用的信息。自然语言处理研究的一些方面主要包括信息抽取、信息过滤、文档分类、情感分类等方面。自然语言处理中存在的一些基本的问题和困难包括语义歧义问题，比如对于句子</p>
-<p>$$张老师和李老师的朋友过来了。$$</p>
-<p>可以理解为</p>
-$$张老师/和/李老师的朋友/过来了。\\张老师和李老师/的/朋友过来了。$$
-<p>这样的例子还有很多，包括比如“关于鲁迅的文章”。对于句子歧义的组合种类，英语句子歧义有一个开塔兰数(Catalan Numbers) \(Catalan_n\)</p>
-$$Catalan_n = \frac{C_{2n}^n}{n+1}$$
-<p>自然语言处理中一般的研究方法包括基于规则的方法、基于数据驱动的方法以及基于统计的方法。其中最基本的原理来源于信息论，熵是信息论中重要的一个概念，其描述了随机变量的不确定性，熵的单位一般为bits，对于概率为P的随机变量X其熵为</p>
-$$H(X) = -\sum{p(x)}log_2p(x)$$
-<p>比如对于随机变量X其概率分布为，</p>
+            <p>As we have mentioned before, the sharix os kernel part has been divided to several segment, which combines just like a big and complex program. And then we will come with memory paging and virtual memory.</p>
 
         </div>
 
     </div>
 
-</article><article id="{article-id}" class="article article-type-post" itemscope itemprop="blogPost">
+</article>
+<article id="{article-id}" class="article article-type-post" itemscope itemprop="blogPost">
     <div class="article-inner">
 
         <header class="article-header">
-            <h1 itemprop="name">
-                <a class="article-title" href="/blogs/2018/06/河西走廊历史变迁.html">河西走廊历史变迁</a>
-            </h1>
+            <h3>
+		<a class="article-title" href="/blogs/2018/00-sharix/sharix-1-boot-a-simple-os.html" style="font-size:1.6em">sharix 1 boot a simple os</a>
+            </h3>
         </header>
 
-        <div class="article-meta">
-            <a href="/blogs/2018/06/河西走廊历史变迁.html" class="article-date">
-                <time itemprop="datePublished">2018年06月</time>
-            </a>
-        </div>
+        <!-- <div class="article-meta"> -->
+        <!--     <a href="/blogs/2018/00-sharix/sharix-1-boot-a-simple-os.html" class="article-date"> -->
+        <!--         <time itemprop="datePublished">2018年00-sharix月</time> -->
+        <!--     </a> -->
+        <!-- </div> -->
 
         <div class="article-entry" itemprop="articleBody">
-            <p>河西走廊是今甘肃西北部狭长的堆积平原，位于祁连山以东，乌鞘岭以北，在中国的历史长河中，河西走廊无论在文化、宗教、经贸以及军事战略地位上都起着重要的作用，对于中国历史上历代中原王朝来说，河西走廊的安危几乎就决定了华夏腹地平原的安危，中国历史上几乎所有盛世王朝都牢牢的掌握着河西走廊咽喉要道，进而西出新疆、经略西域。从河西走廊的历史变迁可以一窥中国代代盛世兴衰的演化史，从西汉开始到如今，数千年的历史风云，历经历代名士大家，河西走廊洗尽铅华，给我们留下无与伦比的敦煌莫高窟，历经金戈铁马黄沙漫漫，玉门阳关犹在，不见当年骠骑司马。河西走廊的风如今依然萧萧，浩瀚星空下的这片土地，似乎也有着记忆，记忆着曾经的驼铃阵阵，记忆着繁华盛世商旅如潮，也同样记忆着曾经的萧瑟寂寥。</p>
-<p>河西走廊最早在东周春秋时期被西戎占领，到战国先秦时又先后被月氏和匈奴占领。汉武帝以前，匈奴一直是西汉北部最大的威胁，汉高祖刘邦在建立西汉之初与匈奴交战大败而归，之后一直采取妥协退让的政策。之后历经文景之治，大汉王朝国力日渐昌盛，及至武帝刘彻登基，便开始着手解决北方匈奴的威胁。此时，虽然汉朝日渐繁盛，但匈奴占据河西，对汉朝不断包围袭扰。汉武帝派遣张骞穿越河西走廊，前往西域寻求军事同盟共同应对匈奴的威胁，张骞历经艰险回到汉朝，虽然没有带回与月氏的同盟，却坚定了汉武帝打通河西走廊的决心，一年之内，年仅19岁的霍去病三次出击匈奴，全线打通河西走廊，河西走廊自此并入大汉版图。汉武帝最初设河西走廊二郡武威和酒泉，而后武威郡分张掖，酒泉郡分敦煌，并称河西四郡。匈奴人在失去了祁连山和河西走廊之后这么说道，“失我祁连山,使我六畜不蕃息;失我焉支山,使我嫁妇无颜色”，可以一窥当年卫青霍去病出击匈奴的豪情万丈，匈奴未灭、何以家为，年轻的霍去病在河西走廊留下了铮铮铁骨战马长嘶，也为中原王朝经略西域的蓝图画下了浓重的一笔。掌握河西走廊这一战略通道，大汉开始经略西域，通使西域各国的同时也开始了商贸的往来，河西走廊开始繁盛。</p>
+            <p>Sharix has the meaning of sharing, which means it is for everyone to learn and improve. The sharix os is mainly based on the <code>ucore os</code> of the tsinghua university, you can find it on github. So what i am doing is mainly about adding a graphical subsystem to it, and also makes some part of ucore as simple as possible.</p>
 
         </div>
 
     </div>
 
-</article><article id="{article-id}" class="article article-type-post" itemscope itemprop="blogPost">
+</article>
+<article id="{article-id}" class="article article-type-post" itemscope itemprop="blogPost">
     <div class="article-inner">
 
         <header class="article-header">
-            <h1 itemprop="name">
-                <a class="article-title" href="/blogs/2018/06/手写识别综述.html">手写识别综述</a>
-            </h1>
+            <h3>
+		<a class="article-title" href="/blogs/2018/00-linux/Linux内核模块.html" style="font-size:1.6em">Linux内核模块</a>
+            </h3>
         </header>
 
-        <div class="article-meta">
-            <a href="/blogs/2018/06/手写识别综述.html" class="article-date">
-                <time itemprop="datePublished">2018年06月</time>
-            </a>
-        </div>
+        <!-- <div class="article-meta"> -->
+        <!--     <a href="/blogs/2018/00-linux/Linux内核模块.html" class="article-date"> -->
+        <!--         <time itemprop="datePublished">2018年00-linux月</time> -->
+        <!--     </a> -->
+        <!-- </div> -->
 
         <div class="article-entry" itemprop="articleBody">
-            <h2><a data-uk-modal="{target:'#category-id'}">摘要</a></h2>
-
-<p>关于手写识别已经有很多方法被研究使用，近年来随着深度学习的应用越来越广泛，RNN以及MDLSTM循环神经网络等方法在手写识别中取得了很好的效果，逐渐取代以前的HMM隐马尔可夫或CRF条件随机场的方法，主要得益于RNN在序列标注问题上的几个关键部分得到解决，包括CTC和MDRNN的提出。本文将从手写识别的描述、方法进行介绍，主要介绍深度学习方法在手写识别中的应用。</p>
-<p>关键词：手写识别方法 RNN MDLSTM 序列标注</p>
-<h2><a data-uk-modal="{target:'#category-id'}">介绍</a></h2>
-
-<p>手写识别即 Handwriting recognition(HWR)[1]是计算机接收来自文章文档、照片以及触摸屏或其它设备的手写输入并识别其中的文字的一种能力。输入的包含文本的图片可以来自于离线的包含手写文本的图片，这些图片可以是来自于OCR光学扫描的图片，OCR是Optical character recognition[2]，也就是光学字符识别，是用想扫描仪或数码相机这样的电子设备来检查纸上的字符，然后用字符识别方法将其翻译成计算机文字的过程，OCR是模式识别、人工智能及计算机视觉中的一个研究领域。手写识别另一个方向就是在线手写识别，这里的在线指的是在笔写的过程中进行实时的识别，识别的方法可以考虑笔移动的信息。</p>
+            <p>LKM means linux kernel module.</p>
+<p>A kernel module extends  the functionality of the kernel without the need to reboot the system.Take device driver as an example, it allows the kernel to access hardware connected to the system. Without kernel module we have to add the code into the kernel source code, and rebuild and reboot the kernel, obviously this is complicated.</p>
 
         </div>
 
     </div>
 
-</article><nav id="page-nav"><a class="extend prev" rel="prev" href="/page/2/">&laquo; Prev</a>
+</article>
+<article id="{article-id}" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+
+        <header class="article-header">
+            <h3>
+		<a class="article-title" href="/blogs/2018/00-linux/Linux-profiling-with-performance-counters.html" style="font-size:1.6em">Linux profiling with performance counters</a>
+            </h3>
+        </header>
+
+        <!-- <div class="article-meta"> -->
+        <!--     <a href="/blogs/2018/00-linux/Linux-profiling-with-performance-counters.html" class="article-date"> -->
+        <!--         <time itemprop="datePublished">2018年00-linux月</time> -->
+        <!--     </a> -->
+        <!-- </div> -->
+
+        <div class="article-entry" itemprop="articleBody">
+            <p>Perf Event is a performance diagnostic tool that is released and maintained with the Linux kernel code. Perf can not only be used to analyze the performance of program, but it can also be used to analyze the performance of Linux kernel.</p>
+
+        </div>
+
+    </div>
+
+</article>
+<article id="{article-id}" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+
+        <header class="article-header">
+            <h3>
+		<a class="article-title" href="/blogs/2018/00-linux/Linux-Kernel-Module.html" style="font-size:1.6em">Linux Kernel Module</a>
+            </h3>
+        </header>
+
+        <!-- <div class="article-meta"> -->
+        <!--     <a href="/blogs/2018/00-linux/Linux-Kernel-Module.html" class="article-date"> -->
+        <!--         <time itemprop="datePublished">2018年00-linux月</time> -->
+        <!--     </a> -->
+        <!-- </div> -->
+
+        <div class="article-entry" itemprop="articleBody">
+            <p>LKM means linux kernel module.</p>
+<p>These days i am doing something about adding a kernel module to linux, so this blog is mainly about kernel module. This is the programming guide that i referenced</p>
+
+        </div>
+
+    </div>
+
+</article>
+<article id="{article-id}" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+
+        <header class="article-header">
+            <h3>
+		<a class="article-title" href="/blogs/2018/00-algorithm/application-of-max-network-flow.html" style="font-size:1.6em">application of max network flow</a>
+            </h3>
+        </header>
+
+        <!-- <div class="article-meta"> -->
+        <!--     <a href="/blogs/2018/00-algorithm/application-of-max-network-flow.html" class="article-date"> -->
+        <!--         <time itemprop="datePublished">2018年00-algorithm月</time> -->
+        <!--     </a> -->
+        <!-- </div> -->
+
+        <div class="article-entry" itemprop="articleBody">
+            <p>You have some different computers and jobs. For each job, it can only be done on one of two specified computers. The load of a computer is the number of jobs which have been done on the computer. Give the number of jobs and two computer ID for each job. You task is to minimize the max load.</p>
+
+        </div>
+
+    </div>
+
+</article>
+<article id="{article-id}" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+
+        <header class="article-header">
+            <h3>
+		<a class="article-title" href="/blogs/2018/00-algorithm/algorithm-max-network-flow.html" style="font-size:1.6em">algorithm max network flow</a>
+            </h3>
+        </header>
+
+        <!-- <div class="article-meta"> -->
+        <!--     <a href="/blogs/2018/00-algorithm/algorithm-max-network-flow.html" class="article-date"> -->
+        <!--         <time itemprop="datePublished">2018年00-algorithm月</time> -->
+        <!--     </a> -->
+        <!-- </div> -->
+
+        <div class="article-entry" itemprop="articleBody">
+            <p>The network flow problem is to seek the max flow of a network, there are several property of a network.</p>
+
+        </div>
+
+    </div>
+
+</article>
+<article id="{article-id}" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+
+        <header class="article-header">
+            <h3>
+		<a class="article-title" href="/blogs/2018/00-algorithm/algorithm-dynamic-programing.html" style="font-size:1.6em">algorithm dynamic programing</a>
+            </h3>
+        </header>
+
+        <!-- <div class="article-meta"> -->
+        <!--     <a href="/blogs/2018/00-algorithm/algorithm-dynamic-programing.html" class="article-date"> -->
+        <!--         <time itemprop="datePublished">2018年00-algorithm月</time> -->
+        <!--     </a> -->
+        <!-- </div> -->
+
+        <div class="article-entry" itemprop="articleBody">
+            <p>Given a set of distinct positive integers, find the largest subset such that every pair \((Si, Sj)\) of elements in this subset satisfies:Si%Sj = 0 or Sj%Si = 0.</p>
+
+        </div>
+
+    </div>
+
+</article>
+<article id="{article-id}" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+
+        <header class="article-header">
+            <h3>
+		<a class="article-title" href="/blogs/2018/00-algorithm/algorithm-divide-and-conquer.html" style="font-size:1.6em">algorithm divide and conquer</a>
+            </h3>
+        </header>
+
+        <!-- <div class="article-meta"> -->
+        <!--     <a href="/blogs/2018/00-algorithm/algorithm-divide-and-conquer.html" class="article-date"> -->
+        <!--         <time itemprop="datePublished">2018年00-algorithm月</time> -->
+        <!--     </a> -->
+        <!-- </div> -->
+
+        <div class="article-entry" itemprop="articleBody">
+            <p>You are interested in analyzing some hard-to-obtain data from two separate databases. Each database contains n numerical values, so there are \(2n\) values total and you may assume that no two values are the same. You’d like to determine the median of this set of \(2n\) values, which we will define here to be the nth smallest value.</p>
+
+        </div>
+
+    </div>
+
+</article>
+<nav id="page-nav"><a class="extend prev" rel="prev" href="/page/2/">&laquo; Prev</a>
 <a class="page-number" href="/">1</a>
 <a class="page-number" href="/page/2/">2</a>
-<span class="page-number current">3</span><a class="page-number" href="/page/4/">4</a>
-<a class="page-number" href="/page/5/">5</a>
-<a class="page-number" href="/page/6/">6</a>
-<a class="extend next" rel="next" href="/page/4/">Next &raquo;</a>
+<span class="page-number current">3</span><a class="extend next" rel="next" href="/">Next &raquo;</a>
 </nav>
 
         </section>
@@ -253,8 +372,7 @@ $$H(X) = -\sum{p(x)}log_2p(x)$$
 
             <div class="outer">
                 <div id="footer-info" class="inner">
-                    &copy; 2019 Wang Xingang.&nbsp; Powered by <a href="https://github.com/wxggg/libevent-cpp"
-                        target="_blank">libevent-cpp</a>, theme by <a href="http://github.com/ppoffice">PPOffice</a>
+                    &copy; 2017 ~ now Wang Xingang.&nbsp;, theme by <a href="http://github.com/ppoffice">PPOffice</a>
                 </div>
             </div>
         </footer>

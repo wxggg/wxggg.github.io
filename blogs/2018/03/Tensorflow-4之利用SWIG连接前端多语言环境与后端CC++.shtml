@@ -166,4 +166,3 @@ Status NewSession(const SessionOptions&  options, Session** out_session) {
 <p>参考文章：</p>
 <ul><li>https://www.jianshu.com/p/667cbb20d802</li>
 </ul>
-<blockquote><p>声明：本文中所使用图片来源于参考文章或网络中，如有侵权，请通知将立即删除</p></blockquote>

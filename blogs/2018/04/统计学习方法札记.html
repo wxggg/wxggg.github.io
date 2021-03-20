@@ -41,7 +41,7 @@
     <div class="article-inner">
 
         <header class="article-header">
-            <h1 class="article-title" itemprop="name">统计学习方法札记</h1>
+            <h2 class="article-title" itemprop="name">统计学习方法札记</h2>
         </header>
 
         <div class="article-meta">
@@ -51,12 +51,7 @@
         </div>
 
         <div class="article-entry" itemprop="articleBody">
-            <p>最近抽时间补看了下李航的《统计学习方法》，这本书很薄，但是内容还是很全的，虽然还没看完也没看透有些算法的具体学习过程，这里先作个札记，在总结的同时也先把坑都挖好，后面用到的时候再回来看。</p>
-<p><strong>更新</strong>，最近根据吴恩达的机器学习视频受到启发，希望能对基本的ML方法作一些简单实现，欢迎访问我的github项目。</p>
-<ul><li><a href="https://github.com/sharixos/sharix-ml">sharix-ml</a></li>
-<li><a href="https://github.com/sharixos/sharix-ml/tree/master/example">实例地址</a></li>
-</ul>
-<h2><a data-uk-modal="{target:'#category-id'}">统计学习方法概论</a></h2>
+            <h2><a data-uk-modal="{target:'#category-id'}">统计学习方法概论</a></h2>
 
 <p>统计学习方法其实就是学习已有的大量数据（输入空间）用模型来总结出规律（特征空间），并对未知类似事件做出预测（输出空间）的一个过程（不知道自己的这个理解有没有问题）。主要的问题包括分类问题和回归问题，核心的步骤其实就是：模型+策略+算法=方法。</p>
 <p>相对于非监督学习，现在应用较为广泛的为监督学习，监督学习的模型为条件概率分布或者决策函数。对于模型需要考虑的几点包括：损失函数、泛化能力以及防止过拟合。模型选择的方法包括：正则化和交叉验证。正则化是结构风险最小化的实现，而交叉验证在数据集较多时把数据分为训练集、验证集和测试集，验证集用于对训练得到的多个模型进行选择而测试集用于评估。对于数据集较小时可采用</p>
@@ -324,6 +319,11 @@ $$f(x) = sign(w^* * x+b^*)$$
 </ul>
 <p>对于第三个问题，也就是隐马尔科夫模型的训练方法，一般来说对于模型的训练如kNN、SVM等都采用监督学习方法，对于HMM就是利用大量的人工标注数据来训练状态转移概率，而HMM的应用场景决定了这种方式很难实现，无论是语音识别还是中英文机器翻译，都很难产生这种对于每一个状态转移都进行人工标注的数据。所以就产生了无监督的训练方法，主要就是鲍姆-韦尔奇算法。</p>
 <p>李航的《统计学习方法》中给出了鲍姆-韦尔奇算法的具体公式，而吴军在《数学之美》中则描述了这个算法的原理。对于一组输出序列O，首先找到一组模型参数（例如概率均匀分布的模型肯定满足）使其能够输出序列O，然后根据这个model和输出序列，可以找到模型产生O的所有可能的路径以及这些路径的概率，而这些路径实际上是记录了状态的变换过程，可以将其看做是“标注好的训练数据”，用来计算出一组新的更好的模型参数，然后不断迭代。鲍姆-韦尔奇算法的每一次迭代都是一个估计新的模型参数的过程，称为期望值最大化（Expectation-Maximization），简称为EM过程，能够收敛到一个局部最优点，但不能保证找到全局最优点。</p>
+<h2><a data-uk-modal="{target:'#category-id'}">Reference</a></h2>
+
+<ul><li><a href="https://github.com/sharixos/sharix-ml">sharix-ml</a></li>
+<li><a href="https://github.com/sharixos/sharix-ml/tree/master/example">实例地址</a></li>
+</ul>
 
         </div>
 
@@ -348,13 +348,13 @@ $$f(x) = sign(w^* * x+b^*)$$
 
 </article>
 
+
         </section>
         <footer id="footer">
 
             <div class="outer">
                 <div id="footer-info" class="inner">
-                    &copy; 2019 Wang Xingang.&nbsp; Powered by <a href="https://github.com/wxggg/libevent-cpp"
-                        target="_blank">libevent-cpp</a>, theme by <a href="http://github.com/ppoffice">PPOffice</a>
+                    &copy; 2017 ~ now Wang Xingang.&nbsp;, theme by <a href="http://github.com/ppoffice">PPOffice</a>
                 </div>
             </div>
         </footer>

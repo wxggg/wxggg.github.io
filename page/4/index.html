@@ -41,245 +41,30 @@
     <div class="article-inner">
 
         <header class="article-header">
-            <h1 itemprop="name">
-                <a class="article-title" href="/blogs/2018/05/从卷积到 Convolutional Neural Network.html">从卷积到 Convolutional Neural Network</a>
-            </h1>
+            <h3>
+		<a class="article-title" href="/blogs/2018/00-algorithm/algorithm-divide-and-conquer.html" style="font-size:1.6em">algorithm divide and conquer</a>
+            </h3>
         </header>
 
-        <div class="article-meta">
-            <a href="/blogs/2018/05/从卷积到 Convolutional Neural Network.html" class="article-date">
-                <time itemprop="datePublished">2018年05月</time>
-            </a>
-        </div>
+        <!-- <div class="article-meta"> -->
+        <!--     <a href="/blogs/2018/00-algorithm/algorithm-divide-and-conquer.html" class="article-date"> -->
+        <!--         <time itemprop="datePublished">2018年00-algorithm月</time> -->
+        <!--     </a> -->
+        <!-- </div> -->
 
         <div class="article-entry" itemprop="articleBody">
-            <p>卷积神经网络cnn中最基本的操作是卷积和池化，而卷积操作又赋予了特征提取的功能，本文将从卷积操作的具体运算过程入手总结cnn的相关应用。我使用的数据集为mnist手写数字的dataset，每一个样本为28x28的数字灰度图像。卷积神经网络不仅在图像处理上应用广泛，现在在NLP领域也越来越多的使用cnn进行包括分类在内的各种应用。写这篇文章的目的主要是在学习的过程中同时对卷积cnn做一个梳理，如有不正之处敬请指出。本文涉及到的主要内容包括：</p>
-<ul><li>卷积及CNN</li>
-<li>VGG网络</li>
-<li>FCN与语义分割</li>
-<li>RCNN与目标检测</li>
-</ul>
-<h2><a data-uk-modal="{target:'#category-id'}">卷积</a></h2>
-
-<p>卷积操作在高等数学和概率论中均有介绍，但是当时学时并没有理解其本质的意义，关于卷积操作的具体解释可以参看知乎问题</p>
-<ul><li><a href="https://www.zhihu.com/question/22298352/answer/228543288">如何通俗易懂地解释卷积？</a></li>
+            <p>You are interested in analyzing some hard-to-obtain data from two separate databases. Each database contains n numerical values, so there are \(2n\) values total and you may assume that no two values are the same. You’d like to determine the median of this set of \(2n\) values, which we will define here to be the nth smallest value.</p>
 
         </div>
 
     </div>
 
-</article><article id="{article-id}" class="article article-type-post" itemscope itemprop="blogPost">
-    <div class="article-inner">
-
-        <header class="article-header">
-            <h1 itemprop="name">
-                <a class="article-title" href="/blogs/2018/05/Shielding-applications-from-an-untrusted-cloud-with-Haven.html">Shielding applications from an untrusted cloud with Haven</a>
-            </h1>
-        </header>
-
-        <div class="article-meta">
-            <a href="/blogs/2018/05/Shielding-applications-from-an-untrusted-cloud-with-Haven.html" class="article-date">
-                <time itemprop="datePublished">2018年05月</time>
-            </a>
-        </div>
-
-        <div class="article-entry" itemprop="articleBody">
-            <p>这篇文章全称《Shielding applications from an untrusted cloud with Haven》，是Microsoft在2014年发表在USENIX OSDI上的一篇文章，主要考虑的问题是云计算基础架构的安全性，云计算的用户希望云计算软硬件提供商能够保证数据的隐私及安全。这篇文章引入了shielded execution的概念，也就是屏蔽执行，能够保护程序和数据的运行平台的机密性和完整性，主要是云OS、虚拟机和firmware的安全，文章基于Windows设计了Haven原型，利用Intel的SGX的硬件保护来抵御内存探测等特权代码和物理攻击，这项工作促使了SGX规范的改进。</p>
-<h2><a data-uk-modal="{target:'#category-id'}">简介 & Introduction</a></h2>
-
-<p>现在的云计算系统使用传统的分层安全模型构建，目的是为了保护云提供商的特权代码不受不可信代码的影响，比如不被用户的虚拟机代码影响，但是缺点是不能够保护用户的数据被特权代码访问。目前保护隐私最好的方式是使用硬件安全模块HSM，支持一系列加功能，但是成本高，不通用。之前的相关研究是依赖可靠的VM管理程序来保护应用程序免受恶意OS的攻击，但无法防范受感染的虚拟机管理程序，另外通用计算的加密方案具有严重的性能限制。</p>
-
-        </div>
-
-    </div>
-
-</article><article id="{article-id}" class="article article-type-post" itemscope itemprop="blogPost">
-    <div class="article-inner">
-
-        <header class="article-header">
-            <h1 itemprop="name">
-                <a class="article-title" href="/blogs/2018/05/MNIST 手写数字多分类方法.html">MNIST 手写数字多分类方法</a>
-            </h1>
-        </header>
-
-        <div class="article-meta">
-            <a href="/blogs/2018/05/MNIST 手写数字多分类方法.html" class="article-date">
-                <time itemprop="datePublished">2018年05月</time>
-            </a>
-        </div>
-
-        <div class="article-entry" itemprop="articleBody">
-            <p>本例主要测试不同的统计学习方法对于mnist手写数字识别的应用，包括机器学习方法和深度学习神经网络的方法，主要应用了机器学习框架sklearn和深度学习框架tensorflow，暂时使用如下方法进行测试</p>
-<ul><li>朴素贝叶斯-sklearn</li>
-<li>logistic回归-sklearn</li>
-<li>单层神经网络-softmax全连接-tensorflow</li>
-</ul>
-<h2><a data-uk-modal="{target:'#category-id'}">数据集简介</a></h2>
-
-<p>mnist的数据为灰度图片，分为训练数据和测试数据，数据的形式比较简单，数据标签为0-9之间的数字，mnist的数据可以使用多种方式获得，这里直接采用tensorflow的keras框架api来获取</p>
-<pre class="brush: python;">
-mnist = tf.keras.datasets.mnist.load_data()
-</pre>
-<img src="http://www.sharix.site/static/img/tensorflow/tensorflow2_0.png" alt="">
-
-        </div>
-
-    </div>
-
-</article><article id="{article-id}" class="article article-type-post" itemscope itemprop="blogPost">
-    <div class="article-inner">
-
-        <header class="article-header">
-            <h1 itemprop="name">
-                <a class="article-title" href="/blogs/2018/04/自建博客本地中英文搜索引擎.html">自建博客本地中英文搜索引擎</a>
-            </h1>
-        </header>
-
-        <div class="article-meta">
-            <a href="/blogs/2018/04/自建博客本地中英文搜索引擎.html" class="article-date">
-                <time itemprop="datePublished">2018年04月</time>
-            </a>
-        </div>
-
-        <div class="article-entry" itemprop="articleBody">
-            <p>博客中一直都没有搜索功能，之前学过信息检索的课程，所以现在尝试着利用现代信息检索的方式给博客增加一个本地搜索引擎。主要的步骤包括中英文分词、建立词典和倒排索引表以及根据TF-IDF来进行搜索返回结果的排序。</p>
-<h2><a data-uk-modal="{target:'#category-id'}">分词</a></h2>
-
-<p>进行分词之前需要先读取blog的内容，这里采取直接读markdown文件的方式而不是读HTML，可以直接读取关键信息。读取时选择性读取对检索有用的信息，比如对于图片链接或是代码框都应该省去，读完内容后还应该利用正则表达式去除无用的字符，同时进行英文转小写字母的处理。</p>
-<pre class="brush: python;">
-content = re.sub('\W',' ',content).lower().replace('__','')
-</pre>
-<p>对于分词，由于要进行中文的分词，所以这里选择jieba分词，是目前最好用的中文分词工具了，在github上面有其详细介绍：<a href="https://github.com/fxsjy/jieba">jieba</a>，可利用<code>pip3 install jieba</code>直接进行安装。jieba可以根据不同的使用场景选择不同的分词方法，这里我们用于搜索引擎构建倒排索引，所以选择<code>jieba.cut_for_search</code>方法，返回一个可迭代的generator，对应的有相同方法<code>jieba.lcut_for_search</code>直接返回list。另外jieba分词提供了依据TF-IDF的 <strong>关键词提取</strong>，并去除停用词，可以替换tf-idf库和停用词表为自定义语料库。如下为分词和提取关键词的操作，由于存在大量英文使用jieba分词会产生大量空格，因此需要专门去除。</p>
-
-        </div>
-
-    </div>
-
-</article><article id="{article-id}" class="article article-type-post" itemscope itemprop="blogPost">
-    <div class="article-inner">
-
-        <header class="article-header">
-            <h1 itemprop="name">
-                <a class="article-title" href="/blogs/2018/04/统计学习方法札记.html">统计学习方法札记</a>
-            </h1>
-        </header>
-
-        <div class="article-meta">
-            <a href="/blogs/2018/04/统计学习方法札记.html" class="article-date">
-                <time itemprop="datePublished">2018年04月</time>
-            </a>
-        </div>
-
-        <div class="article-entry" itemprop="articleBody">
-            <p>最近抽时间补看了下李航的《统计学习方法》，这本书很薄，但是内容还是很全的，虽然还没看完也没看透有些算法的具体学习过程，这里先作个札记，在总结的同时也先把坑都挖好，后面用到的时候再回来看。</p>
-<p><strong>更新</strong>，最近根据吴恩达的机器学习视频受到启发，希望能对基本的ML方法作一些简单实现，欢迎访问我的github项目。</p>
-<ul><li><a href="https://github.com/sharixos/sharix-ml">sharix-ml</a></li>
-<li><a href="https://github.com/sharixos/sharix-ml/tree/master/example">实例地址</a></li>
-</ul>
-<h2><a data-uk-modal="{target:'#category-id'}">统计学习方法概论</a></h2>
-
-<p>统计学习方法其实就是学习已有的大量数据（输入空间）用模型来总结出规律（特征空间），并对未知类似事件做出预测（输出空间）的一个过程（不知道自己的这个理解有没有问题）。主要的问题包括分类问题和回归问题，核心的步骤其实就是：模型+策略+算法=方法。</p>
-
-        </div>
-
-    </div>
-
-</article><article id="{article-id}" class="article article-type-post" itemscope itemprop="blogPost">
-    <div class="article-inner">
-
-        <header class="article-header">
-            <h1 itemprop="name">
-                <a class="article-title" href="/blogs/2018/04/Tensorflow-8之可视化工具Tensorboard.html">Tensorflow 8之可视化工具Tensorboard</a>
-            </h1>
-        </header>
-
-        <div class="article-meta">
-            <a href="/blogs/2018/04/Tensorflow-8之可视化工具Tensorboard.html" class="article-date">
-                <time itemprop="datePublished">2018年04月</time>
-            </a>
-        </div>
-
-        <div class="article-entry" itemprop="articleBody">
-            <p>Tensorboard是一个用于可视化和理解tensorflow训练过程的一个web工具，可以通过保存tensorflow在训练过程中的graph的信息，然后利用tensorboard进行可视化，并在浏览器中显示出来。一般在安装tensorflow的过程中会默认安装tensorboard，可以在github上找到tensorboard的源码。</p>
-<p><a href="https://github.com/tensorflow/tensorboard">github tensorboard</a></p>
-<img src="http://www.sharix.site/static/img/tensorflow/tensorflow7_2.png" alt="">
-<p>本文主要以tensorflow提供的MNIST例子来进行了解tensorboard的使用</p>
-<h2><a data-uk-modal="{target:'#category-id'}">tf.summary API介绍</a></h2>
-
-<p>对于tensorboard而言，用于其可视化的数据是利用tensorflow在训练过程中保存下来的一些event信息，可以利用tensorflow的<code>summary API</code>来进行收集。比如MNIST利用cnn来训练的例子，这个例子主要是训练一个卷积神经网络cnn来识别MNIST数据中的像素点，我们需要记录学习率和目标函数的变化，就可以使用<code>tf.summary.scalar</code>操作来收集信息，可以获得如<code>学习率</code>和<code>损失函数</code>等信息。</p>
-
-        </div>
-
-    </div>
-
-</article><article id="{article-id}" class="article article-type-post" itemscope itemprop="blogPost">
-    <div class="article-inner">
-
-        <header class="article-header">
-            <h1 itemprop="name">
-                <a class="article-title" href="/blogs/2018/03/Tensorflow之计算图及OP节点.html">Tensorflow之计算图及OP节点</a>
-            </h1>
-        </header>
-
-        <div class="article-meta">
-            <a href="/blogs/2018/03/Tensorflow之计算图及OP节点.html" class="article-date">
-                <time itemprop="datePublished">2018年03月</time>
-            </a>
-        </div>
-
-        <div class="article-entry" itemprop="articleBody">
-            <p>计算图graph就是节点与边的集合，是一个有向无环图（DAG）按照DAG图的拓扑排序依次执行OP运算，若存在多个度为0的节点可以进行并发运算</p>
-<img src="https://upload-images.jianshu.io/upload_images/2254249-41f78682c2a03ef1.png" alt="">
-<h2><a data-uk-modal="{target:'#category-id'}">计算图graph从python传到底层C++</a></h2>
-
-<p>之前提到过会话Session初始化到其父类BaseSession初始化时，若graph为空会调用默认图</p>
-<pre class="brush: python;">
-#tensorflow/python/client/session.py
-#class BaseSession(SessionInterface):
-if graph is None:
-  self._graph = ops.get_default_graph()
-</pre>
-<p>之后调用<code>get_default_graph</code>函数并进一步调用<code>_default_graph_stack.get_default()</code>，而这里的<code>_default_graph_stack</code>被实例化为一个<code>_DefaultGraphStack</code>对象 <code>_default_graph_stack = _DefaultGraphStack()</code>在其父类<code>_DefaultStack</code>初始化可以看到</p>
-
-        </div>
-
-    </div>
-
-</article><article id="{article-id}" class="article article-type-post" itemscope itemprop="blogPost">
-    <div class="article-inner">
-
-        <header class="article-header">
-            <h1 itemprop="name">
-                <a class="article-title" href="/blogs/2018/03/Tensorflow之简介及系统架构.html">Tensorflow之简介及系统架构</a>
-            </h1>
-        </header>
-
-        <div class="article-meta">
-            <a href="/blogs/2018/03/Tensorflow之简介及系统架构.html" class="article-date">
-                <time itemprop="datePublished">2018年03月</time>
-            </a>
-        </div>
-
-        <div class="article-entry" itemprop="articleBody">
-            <p>Tensorflow 是由谷歌开源的人工智能学习系统，Tensor意即张量表示多维数组，flow意味着基于数据流图的计算，支持异构设备分布式计算，它能够在各个平台上自动运行模型，从手机、单个CPU / GPU到成百上千GPU卡组成的分布式系统。TensorFlow支持CNN、RNN和LSTM算法，可应用于语音识别，自然语言理解，计算机视觉，广告等等。tensorflow官网： https://www.tensorflow.org （可能需要VPN访问）</p>
-<p>使用的系统: Ubuntu16.04</p>
-<p>python版本：python2.7</p>
-<p>中文社区介绍了多种安装方式，包括针对不同系统，使用源码或直接使用pip安装，或者使用docker。这里使用最简单的安装方式，中文社区提供了使用GPU版本的安装方式，这里暂时仅使用CPU版本的安装</p>
-<pre class="brush: ;">
-pip install https://storage.googleapis.com/tensorflow/linux/cpu/tensorflow-0.5.0-cp27-none-linux_x86_64.whl
-</pre>
-
-        </div>
-
-    </div>
-
-</article><nav id="page-nav"><a class="extend prev" rel="prev" href="/page/3/">&laquo; Prev</a>
+</article>
+<nav id="page-nav"><a class="extend prev" rel="prev" href="/page/3/">&laquo; Prev</a>
 <a class="page-number" href="/">1</a>
 <a class="page-number" href="/page/2/">2</a>
 <a class="page-number" href="/page/3/">3</a>
-<span class="page-number current">4</span><a class="page-number" href="/page/5/">5</a>
-<a class="page-number" href="/page/6/">6</a>
-<a class="extend next" rel="next" href="/page/5/">Next &raquo;</a>
+<span class="page-number current">4</span><a class="extend next" rel="next" href="/">Next &raquo;</a>
 </nav>
 
         </section>
@@ -287,8 +72,7 @@ pip install https://storage.googleapis.com/tensorflow/linux/cpu/tensorflow-0.5.0
 
             <div class="outer">
                 <div id="footer-info" class="inner">
-                    &copy; 2019 Wang Xingang.&nbsp; Powered by <a href="https://github.com/wxggg/libevent-cpp"
-                        target="_blank">libevent-cpp</a>, theme by <a href="http://github.com/ppoffice">PPOffice</a>
+                    &copy; 2017 ~ now Wang Xingang.&nbsp;, theme by <a href="http://github.com/ppoffice">PPOffice</a>
                 </div>
             </div>
         </footer>

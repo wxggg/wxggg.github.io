@@ -41,262 +41,378 @@
     <div class="article-inner">
 
         <header class="article-header">
-            <h1 itemprop="name">
-                <a class="article-title" href="/blogs/2021/01/搭建Linux内核开发环境.html">搭建Linux内核开发环境</a>
-            </h1>
+            <h3>
+		<a class="article-title" href="/blogs/2021/01/搭建Linux内核开发环境.html" style="font-size:1.6em">搭建Linux内核开发环境</a>
+            </h3>
         </header>
 
-        <div class="article-meta">
-            <a href="/blogs/2021/01/搭建Linux内核开发环境.html" class="article-date">
-                <time itemprop="datePublished">2021年01月</time>
-            </a>
-        </div>
+        <!-- <div class="article-meta"> -->
+        <!--     <a href="/blogs/2021/01/搭建Linux内核开发环境.html" class="article-date"> -->
+        <!--         <time itemprop="datePublished">2021年01月</time> -->
+        <!--     </a> -->
+        <!-- </div> -->
 
         <div class="article-entry" itemprop="articleBody">
-            <p>搭建Linux内核开发环境</p>
-<ul><li>Linux 内核编译</li>
-<li>Qemu + GDB 启动调试</li>
-<li>buildroot 构建根文件系统</li>
-</ul>
-<h2><a data-uk-modal="{target:'#category-id'}">Linux内核编译</a></h2>
-
-<pre class="brush: ;">
-git clone https://github.com/torvalds/linux.git
-</pre>
-<pre class="brush: ;">
-make ARCH=x86_64 x86_64_defconfig
-make ARCH=x86_64 menuconfig
-</pre>
-<p>使用编译选项增加debug信息</p>
-<pre class="brush: ;">
-Kernel hacking
-	Compile-time checks and compiler options  --->
-		[*] Compile-time checks and compiler options  --->
-		[ ]   Reduce debugging information
-		[*]   Provide GDB scripts for kernel debugging
-</pre>
+            <p>对于Linux内核开发而言使用qemu是很方便的手段，本文主要介绍linux内核开发环境的搭建过程，主要包括内核编译、使用qemu启动编译好的内核，以及构建根文件系统，使用GDB来调试内核等内容。</p>
 
         </div>
 
     </div>
 
-</article><article id="{article-id}" class="article article-type-post" itemscope itemprop="blogPost">
+</article>
+<article id="{article-id}" class="article article-type-post" itemscope itemprop="blogPost">
     <div class="article-inner">
 
         <header class="article-header">
-            <h1 itemprop="name">
-                <a class="article-title" href="/blogs/2019/06/图论基本算法实现.html">图论基本算法实现</a>
-            </h1>
+            <h3>
+		<a class="article-title" href="/blogs/2019/06/图论基本算法实现.html" style="font-size:1.6em">图论基本算法实现</a>
+            </h3>
         </header>
 
-        <div class="article-meta">
-            <a href="/blogs/2019/06/图论基本算法实现.html" class="article-date">
-                <time itemprop="datePublished">2019年06月</time>
-            </a>
-        </div>
+        <!-- <div class="article-meta"> -->
+        <!--     <a href="/blogs/2019/06/图论基本算法实现.html" class="article-date"> -->
+        <!--         <time itemprop="datePublished">2019年06月</time> -->
+        <!--     </a> -->
+        <!-- </div> -->
 
         <div class="article-entry" itemprop="articleBody">
             <p>图分为有向图和无向图，相关常见问题及算法有最短路径算法、拓扑排序、关键路径以及最短路径等。本文介绍相关算法的C++实现，完整源码直接参看文末。</p>
-<h2><a data-uk-modal="{target:'#category-id'}">广度优先BFS和深度优先DFS搜索</a></h2>
-
 <p>与图相关的问题中大多数的节点遍历方式都采用BFS或DFS，顾名思义，广度优先就是先将节点相邻的节点全部遍历，然后递归搜索相邻接点的相邻接点，这一特点与队列比较类似因此在广度优先搜索时一般使用队列作为辅助结构，二叉树的层序遍历实际上就是BFS，而在二叉树的层序遍历中借助的正是队列。</p>
-<p>与树不同的是，在图的遍历过程中都需要借助一个额外的数据结构来保存已经遍历过的节点，避免节点的重复遍历，这里借助一个名为visited的set来记录。</p>
-<p>为了是的bfs能够多次被使用，这里借助template传入一个functor来操作x，便于代码重用。</p>
-<pre class="brush: c++;">
-template < class Func>
-void bfs(node_t start, Func & & func) {
-    que.push(start);
-    visited.insert(start);
-    while (!que.empty()) 
-        auto x = que.front();
-        func(x);
-        que.pop();
-        for (auto & & e : adjacent[x])
-            if (!visited.count(e->v)) 
-                visited.insert(e->v);
-                que.push(e->v);
-}
-</pre>
 
         </div>
 
     </div>
 
-</article><article id="{article-id}" class="article article-type-post" itemscope itemprop="blogPost">
+</article>
+<article id="{article-id}" class="article article-type-post" itemscope itemprop="blogPost">
     <div class="article-inner">
 
         <header class="article-header">
-            <h1 itemprop="name">
-                <a class="article-title" href="/blogs/2019/06/nginx工作模式与惊群现象.html">nginx工作模式与惊群现象</a>
-            </h1>
+            <h3>
+		<a class="article-title" href="/blogs/2019/06/nginx工作模式与惊群现象.html" style="font-size:1.6em">nginx工作模式与惊群现象</a>
+            </h3>
         </header>
 
-        <div class="article-meta">
-            <a href="/blogs/2019/06/nginx工作模式与惊群现象.html" class="article-date">
-                <time itemprop="datePublished">2019年06月</time>
-            </a>
-        </div>
+        <!-- <div class="article-meta"> -->
+        <!--     <a href="/blogs/2019/06/nginx工作模式与惊群现象.html" class="article-date"> -->
+        <!--         <time itemprop="datePublished">2019年06月</time> -->
+        <!--     </a> -->
+        <!-- </div> -->
 
         <div class="article-entry" itemprop="articleBody">
             <p>本文主要介绍了nginx的不同工作模式的初始化过程,并针对性的介绍了nginx如何优先处理accept事件,并借助进程锁来解决惊群现象.</p>
-<h2><a data-uk-modal="{target:'#category-id'}">初始化</a></h2>
-
 <p>Nginx入口在core/nginx.c中，开始时会进行debug和错误信息的初始化，然后读入启动参数，之后进行时间和日志的初始化。然后会初始化一个非常重要的全局变量ngx_cycle，其中保存了全局可用的非常重要的变量，包括内存池、连接池、日志指针等信息。之后会处理读入的参数，进行os相关的初始化，读入并解析配置文件。</p>
-<h3><a data-uk-modal="{target:'#category-id'}">平滑升级 ngx_add_inherited_sockets</a></h3>
-
-<p>在初始化时一个比较有意思的就是sockets的继承，在进行不重启服务升级nginx时，原来运行的nginx会通过 NGINX 环境变量来来传递需要监听的端口，新启动的nginx会通过  gx_add_inherited_sockets 来使用已经打开的端口，如果不这样的话，会报错端口已经被bind。</p>
 
         </div>
 
     </div>
 
-</article><article id="{article-id}" class="article article-type-post" itemscope itemprop="blogPost">
+</article>
+<article id="{article-id}" class="article article-type-post" itemscope itemprop="blogPost">
     <div class="article-inner">
 
         <header class="article-header">
-            <h1 itemprop="name">
-                <a class="article-title" href="/blogs/2019/06/Linux下asio如何利用reactor来模拟proactor模式.html">Linux下asio如何利用reactor来模拟proactor模式</a>
-            </h1>
+            <h3>
+		<a class="article-title" href="/blogs/2019/06/Linux下asio如何利用reactor来模拟proactor模式.html" style="font-size:1.6em">Linux下asio如何利用reactor来模拟proactor模式</a>
+            </h3>
         </header>
 
-        <div class="article-meta">
-            <a href="/blogs/2019/06/Linux下asio如何利用reactor来模拟proactor模式.html" class="article-date">
-                <time itemprop="datePublished">2019年06月</time>
-            </a>
-        </div>
+        <!-- <div class="article-meta"> -->
+        <!--     <a href="/blogs/2019/06/Linux下asio如何利用reactor来模拟proactor模式.html" class="article-date"> -->
+        <!--         <time itemprop="datePublished">2019年06月</time> -->
+        <!--     </a> -->
+        <!-- </div> -->
 
         <div class="article-entry" itemprop="articleBody">
             <p>高并发网络有reactor和proactor两种模式,reactor基于非阻塞io多路复用,本质上属于同步io,而proactor模式则基于异步io. 类unix平台一般都采用reactor模式,如epoll和kqueue等.而Windows平台因为对于reactor模式的支持不好,但是对于异步io有IOCP非常高效. 作为有可能在c++20中进入标准的网络库,asio需要对不同平台都提供支持,这样就造成了只能用一种模式去模拟另一种模式,asio选择在linux下面使用reactor模拟proactor模式.</p>
-<p>言归正传,本文就一个主题:在linux下面asio到底是如何借助reactor如epoll来模拟proactor异步模式的.</p>
-<h2><a data-uk-modal="{target:'#category-id'}">1. reactor和proactor模式之间到底有什么区别</a></h2>
-
-<p>首先reactor模式依赖于epoll这样的io多路复用机制,能监听大量文件描述符的读写,在有可读写时发生超时或收到信号时从阻塞状态退出,用户程序根据发生的事件进行相应的处理. 本质上来看reactor模式还是同步模式,当前进程一直监控一个事件集合,可读就读,可写就写.</p>
 
         </div>
 
     </div>
 
-</article><article id="{article-id}" class="article article-type-post" itemscope itemprop="blogPost">
+</article>
+<article id="{article-id}" class="article article-type-post" itemscope itemprop="blogPost">
     <div class="article-inner">
 
         <header class="article-header">
-            <h1 itemprop="name">
-                <a class="article-title" href="/blogs/2019/05/平衡二叉树和红黑树.html">平衡二叉树和红黑树</a>
-            </h1>
+            <h3>
+		<a class="article-title" href="/blogs/2019/05/平衡二叉树和红黑树.html" style="font-size:1.6em">平衡二叉树和红黑树</a>
+            </h3>
         </header>
 
-        <div class="article-meta">
-            <a href="/blogs/2019/05/平衡二叉树和红黑树.html" class="article-date">
-                <time itemprop="datePublished">2019年05月</time>
-            </a>
-        </div>
+        <!-- <div class="article-meta"> -->
+        <!--     <a href="/blogs/2019/05/平衡二叉树和红黑树.html" class="article-date"> -->
+        <!--         <time itemprop="datePublished">2019年05月</time> -->
+        <!--     </a> -->
+        <!-- </div> -->
 
         <div class="article-entry" itemprop="articleBody">
             <p>本文主要介绍了平衡二叉树（AVL）和红黑树（rbtree）的特点以及实现，具体而言在树的插入删除平衡修复过程介绍篇幅较大。</p>
-<h2><a data-uk-modal="{target:'#category-id'}">一、平衡二叉树和红黑树</a></h2>
-
 <p><strong>平衡二叉树（AVL）：</strong> 作为二叉查找树而言，平衡二叉树具备快速查找、插入、删除的特点，并且在平衡二叉树中任何节点的左右子树高度之差不超过1，这一特点使得平衡二叉树具备非常好的平衡性。</p>
-<p><strong>红黑树（RB）：</strong> 红黑树的特点是利用节点的颜色来控制树的平衡，根节点为黑，其余的节点可以为红或者黑，并且不能够存在父子节点同时为红的情况。最重要的一点是，每个节点到其叶节点的路径上的黑色节点的个数相等，这保证了红黑树具备平衡性。</p>
-<p>红黑树广泛应用于Linux内核、STL关联容器及nginx中，具备非常好的查找、插入删除特性。</p>
-<h2><a data-uk-modal="{target:'#category-id'}">二、为什么红黑树比平衡二叉树应用更广泛</a></h2>
 
         </div>
 
     </div>
 
-</article><article id="{article-id}" class="article article-type-post" itemscope itemprop="blogPost">
+</article>
+<article id="{article-id}" class="article article-type-post" itemscope itemprop="blogPost">
     <div class="article-inner">
 
         <header class="article-header">
-            <h1 itemprop="name">
-                <a class="article-title" href="/blogs/2019/05/b树和b+树实现.html">b树和b+树实现</a>
-            </h1>
+            <h3>
+		<a class="article-title" href="/blogs/2019/05/b树和b+树实现.html" style="font-size:1.6em">b树和b+树实现</a>
+            </h3>
         </header>
 
-        <div class="article-meta">
-            <a href="/blogs/2019/05/b树和b+树实现.html" class="article-date">
-                <time itemprop="datePublished">2019年05月</time>
-            </a>
-        </div>
+        <!-- <div class="article-meta"> -->
+        <!--     <a href="/blogs/2019/05/b树和b+树实现.html" class="article-date"> -->
+        <!--         <time itemprop="datePublished">2019年05月</time> -->
+        <!--     </a> -->
+        <!-- </div> -->
 
         <div class="article-entry" itemprop="articleBody">
             <p>本文主要介绍了b/b+树的特点以及为什么b/b+树在数据库中应用广泛，另外介绍了b/b+树基本操作的c++实现，并附完整源代码</p>
-<h2><a data-uk-modal="{target:'#category-id'}">一、 b树和b+树</a></h2>
-
 <p><strong>共同点：</strong> 首先b/b+树每个节点能够保存多个关键字，数量上限为M-1，这里M为b/b+树的度，限制了键的数量和子节点的数目，当一个非叶子节点有n个键的时候，必定有n+1个子节点。</p>
-<p>其次节点内及节点间的键值按顺序排列</p>
-<p>除根节点外的其它节点最少有 ceil(M/2)-1 个关键字</p>
-<p><strong>不同点：</strong> b树的每个节点都既能保存键(Key)又能保存值(Value)，而b+树只有叶子节点能够保存值，内部节点只保存键和子节点的指针</p>
-<p>b+树叶节点采用链表结构</p>
-<h2><a data-uk-modal="{target:'#category-id'}">二、 为什么用b/b+树</a></h2>
-
-<p>数据库如MySQL的数据一般放在磁盘中，而读盘的过程包括两次机械运动盘片旋转和磁头移动，这一过程比较耗时，所以对数据的访问性能受限于访问磁盘的次数。</p>
 
         </div>
 
     </div>
 
-</article><article id="{article-id}" class="article article-type-post" itemscope itemprop="blogPost">
+</article>
+<article id="{article-id}" class="article article-type-post" itemscope itemprop="blogPost">
     <div class="article-inner">
 
         <header class="article-header">
-            <h1 itemprop="name">
-                <a class="article-title" href="/blogs/2019/04/An-Implementation-Of-Multiprocessor-Linux-译.html">An Implementation Of Multiprocessor Linux 译</a>
-            </h1>
+            <h3>
+		<a class="article-title" href="/blogs/2019/04/An-Implementation-Of-Multiprocessor-Linux-译.html" style="font-size:1.6em">An Implementation Of Multiprocessor Linux 译</a>
+            </h3>
         </header>
 
-        <div class="article-meta">
-            <a href="/blogs/2019/04/An-Implementation-Of-Multiprocessor-Linux-译.html" class="article-date">
-                <time itemprop="datePublished">2019年04月</time>
-            </a>
-        </div>
+        <!-- <div class="article-meta"> -->
+        <!--     <a href="/blogs/2019/04/An-Implementation-Of-Multiprocessor-Linux-译.html" class="article-date"> -->
+        <!--         <time itemprop="datePublished">2019年04月</time> -->
+        <!--     </a> -->
+        <!-- </div> -->
 
         <div class="article-entry" itemprop="articleBody">
-            <h2><a data-uk-modal="{target:'#category-id'}">1 背景：Intel多处理器规范</a></h2>
-
-<p>Intel 奔腾处理器对支持多处理器有着很多内置的组建，包括硬件cache一致性、内置的处理器间中断处理和一套原子的test和set、exchange等类似操作。</p>
-<h2><a data-uk-modal="{target:'#category-id'}">2 单处理器内核中的互斥</a></h2>
-
+            <p>Intel 奔腾处理器对支持多处理器有着很多内置的组建，包括硬件cache一致性、内置的处理器间中断处理和一套原子的test和set、exchange等类似操作。</p>
 <p>内核要正确执行的话就得提供内部的锁来保护自己的各种表，以避免两个进程同时更新它们，比如分配同一个内存块。目前的Unix和类Unix内核有两种策略，传统早期的Unix系统采用粗粒度的锁，用少量的锁来保护整个内核。一些现代的系统使用细粒度的锁，因为细粒度锁有更多的开销其一般只用在多处理器内核和实时内核中。在实时内核中细粒度锁减少了锁被持有的事件，并且减少了严格的延迟时间。</p>
-<p>Linux内核中有些保证必须被确保。除非自愿睡眠，否则在内核中执行的进程不会被另一个内核中执行的进程抢占。这样确保了内核代码块相对于进程而言是原子的，极大地简化了很多操作。其次中断可能会抢占一个正在执行的内核态进程，但是永远都会返回到该进程。一个在内核态中的进程有可能禁用处理器上的中断并保证不会发生这种中断。最后的保证是内核任务不会抢占中断，也就是中断只有可能被其它中断抢占。</p>
 
         </div>
 
     </div>
 
-</article><article id="{article-id}" class="article article-type-post" itemscope itemprop="blogPost">
+</article>
+<article id="{article-id}" class="article article-type-post" itemscope itemprop="blogPost">
     <div class="article-inner">
 
         <header class="article-header">
-            <h1 itemprop="name">
-                <a class="article-title" href="/blogs/2019/03/linux-0.x-初始化及进程调度.html">linux 0.x 初始化及进程调度</a>
-            </h1>
+            <h3>
+		<a class="article-title" href="/blogs/2019/03/linux-0.x-初始化及进程调度.html" style="font-size:1.6em">linux 0.x 初始化及进程调度</a>
+            </h3>
         </header>
 
-        <div class="article-meta">
-            <a href="/blogs/2019/03/linux-0.x-初始化及进程调度.html" class="article-date">
-                <time itemprop="datePublished">2019年03月</time>
-            </a>
-        </div>
+        <!-- <div class="article-meta"> -->
+        <!--     <a href="/blogs/2019/03/linux-0.x-初始化及进程调度.html" class="article-date"> -->
+        <!--         <time itemprop="datePublished">2019年03月</time> -->
+        <!--     </a> -->
+        <!-- </div> -->
 
         <div class="article-entry" itemprop="articleBody">
             <p>Linux早期版本变化主要体现在启动及初始化的过程中，这一部分在后面则基本不会改动，前面提到linux-0.01版本的启动过程中包含多次内存移动过程，既有引导扇区将自己移动到0x90000，也有引导扇区将系统加载到0x10000后又移动到0x0000。这样做的目的主要是为了避免在加载的过程中覆盖bios的中断处理程序。这样的特点在后面的linux版本中也得以保留，以linux-0.11为例，主要变化就是将启动过程中的一部分代码抽取出来作为setup.s文件，这是因为引导扇区的大小固定为512B。</p>
-<img src="/blogs/2019/03/img/linux-0.x-boot.png" alt="">
-<p>到linux-0.99版本的变化主要是在如上setup.s代码获取到显卡数据之后立即进行显示模式的切换，当然这一切仍然在实模式下，因为显示模式的切换是需要调用bios中断的。</p>
-<h2><a data-uk-modal="{target:'#category-id'}">1 linux-0.99 初始化</a></h2>
-
-<p>前面setup.s跳转的32位入口是32位汇编程序head.s，head.s需要再次重建gdt、idt等分段和中断机制，之后执行初始化代码也就是start_kernel，相对于0.01版本而言，这里初始化的内容多了硬件中断初始化、软盘初始化、socket初始化、以及进程间通信ipc初始化，并且这里使用idle函数替代了0.01中的pause函数。</p>
 
         </div>
 
     </div>
 
-</article><nav id="page-nav"><a class="extend prev" rel="prev" href="/">&laquo; Prev</a>
+</article>
+<article id="{article-id}" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+
+        <header class="article-header">
+            <h3>
+		<a class="article-title" href="/blogs/2019/03/linux-0.01-初始化及进程调度.html" style="font-size:1.6em">linux 0.01 初始化及进程调度</a>
+            </h3>
+        </header>
+
+        <!-- <div class="article-meta"> -->
+        <!--     <a href="/blogs/2019/03/linux-0.01-初始化及进程调度.html" class="article-date"> -->
+        <!--         <time itemprop="datePublished">2019年03月</time> -->
+        <!--     </a> -->
+        <!-- </div> -->
+
+        <div class="article-entry" itemprop="articleBody">
+            <p>Linux0.01时Linus在1991年发布的第一个Linux版本，最初的这个版本的Linux代码量并不多，但是很多开始的设计在之后的多个版本中都一直保留，一般来说操作系统的设计分块一般不会有大的改动，主要包括启动加载初始化、内存管理、进程调度以及文件系统等。在<a href="https://www.kernel.org/">The Linux Kernel Archive</a>可以下载Linux内核源代码，Linux0.01代码分块来说主要包括boot、fs、include、kernel、lib、mm、tools和Makefile文件，主要包含了启动、文件系统、头文件、内核、内存管理等。</p>
+
+        </div>
+
+    </div>
+
+</article>
+<article id="{article-id}" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+
+        <header class="article-header">
+            <h3>
+		<a class="article-title" href="/blogs/2018/12/libevent-cpp-5-封装epoll及epoll内核实现原理.html" style="font-size:1.6em">libevent cpp 5 封装epoll及epoll内核实现原理</a>
+            </h3>
+        </header>
+
+        <!-- <div class="article-meta"> -->
+        <!--     <a href="/blogs/2018/12/libevent-cpp-5-封装epoll及epoll内核实现原理.html" class="article-date"> -->
+        <!--         <time itemprop="datePublished">2018年12月</time> -->
+        <!--     </a> -->
+        <!-- </div> -->
+
+        <div class="article-entry" itemprop="articleBody">
+            <p>前面介绍了poll和select在内核中的实现原理，可以说本质上两者都是相同的，都是将用户空间的文件描述符及对应事件复制到内核空间，然后在内核空间轮询，如果轮询没有事件，则将当前进程置于该文件描述符的等待队列，如此，在之后该文件进行读写操作时就可以唤醒其等待队列，然后再次轮询时会发现发生了读或者写事件。但是轮询机制在大规模IO复用时会有着明显的缺陷，首先因为poll和select要不断的轮询，所以其时间复杂度为O(n)，随着文件描述符的增多会越来越慢，另外文件描述符的增多也会导致要从用户态拷贝到内核态的数据越来越多，在大规模IO复用中，这种拷贝多次执行显然是难以忍受的，可以说基于poll种种缺点，在Linux-2.6版本左右加入了epoll机制，能够非常高高效的进行IO复用。</p>
+
+        </div>
+
+    </div>
+
+</article>
+<article id="{article-id}" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+
+        <header class="article-header">
+            <h3>
+		<a class="article-title" href="/blogs/2018/12/libevent-cpp-4-封装poll及poll内核实现原理.html" style="font-size:1.6em">libevent cpp 4 封装poll及poll内核实现原理</a>
+            </h3>
+        </header>
+
+        <!-- <div class="article-meta"> -->
+        <!--     <a href="/blogs/2018/12/libevent-cpp-4-封装poll及poll内核实现原理.html" class="article-date"> -->
+        <!--         <time itemprop="datePublished">2018年12月</time> -->
+        <!--     </a> -->
+        <!-- </div> -->
+
+        <div class="article-entry" itemprop="articleBody">
+            <p>随着Linux的更新在linux-2.1.23版本中加入了poll机制，因为poll的加入导致select的实现变得基于poll了，本文在上一个版本的基础上在libevent-cpp中加入了对poll机制的封装。总的来说，主要介绍libevent-cpp poll机制以及Linux内核对poll机制的实现原理，另外还会介绍到内核中select实现因为poll而做的改变。</p>
+
+        </div>
+
+    </div>
+
+</article>
+<article id="{article-id}" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+
+        <header class="article-header">
+            <h3>
+		<a class="article-title" href="/blogs/2018/12/libevent-cpp-3-读写事件及Linux内核select机制实现原理.html" style="font-size:1.6em">libevent cpp 3 读写事件及Linux内核select机制实现原理</a>
+            </h3>
+        </header>
+
+        <!-- <div class="article-meta"> -->
+        <!--     <a href="/blogs/2018/12/libevent-cpp-3-读写事件及Linux内核select机制实现原理.html" class="article-date"> -->
+        <!--         <time itemprop="datePublished">2018年12月</time> -->
+        <!--     </a> -->
+        <!-- </div> -->
+
+        <div class="article-entry" itemprop="articleBody">
+            <p>关于libevent除了对于信号和超时的处理，最核心的部分其实是对于多路IO复用的封装。IO复用存在多种方式，包括select、poll、kqueue及epoll等多种接口。libevent的实现中用C语言以类似面向对象的方式来将这多种IO复用方式进行封装，对于我们的libevent-cpp而言，可以直接使用父子继承来实现各种不同的IO方式。本文主要介绍一下select机制以及libevent中使用select来处理IO读写事件的方式，然后深入Linux内核介绍一下select的实现机制。</p>
+
+        </div>
+
+    </div>
+
+</article>
+<article id="{article-id}" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+
+        <header class="article-header">
+            <h3>
+		<a class="article-title" href="/blogs/2018/11/中缀表达式转后缀求值并打印树结构.html" style="font-size:1.6em">中缀表达式转后缀求值并打印树结构</a>
+            </h3>
+        </header>
+
+        <!-- <div class="article-meta"> -->
+        <!--     <a href="/blogs/2018/11/中缀表达式转后缀求值并打印树结构.html" class="article-date"> -->
+        <!--         <time itemprop="datePublished">2018年11月</time> -->
+        <!--     </a> -->
+        <!-- </div> -->
+
+        <div class="article-entry" itemprop="articleBody">
+            <p>题目内容：众所周知，任何一个表达式，都可以用一棵表达式树来表示。例如，表达式a+b*c，可以表示为如下的表达式树。现在，给你一个中缀表达式，这个中缀表达式用变量来表示（不含数字），请你将这个中缀表达式用表达式二叉树的形式输出出来。</p>
+
+        </div>
+
+    </div>
+
+</article>
+<article id="{article-id}" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+
+        <header class="article-header">
+            <h3>
+		<a class="article-title" href="/blogs/2018/11/libevent-cpp-2-事件重构及时间处理.html" style="font-size:1.6em">libevent cpp 2 事件重构及时间处理</a>
+            </h3>
+        </header>
+
+        <!-- <div class="article-meta"> -->
+        <!--     <a href="/blogs/2018/11/libevent-cpp-2-事件重构及时间处理.html" class="article-date"> -->
+        <!--         <time itemprop="datePublished">2018年11月</time> -->
+        <!--     </a> -->
+        <!-- </div> -->
+
+        <div class="article-entry" itemprop="articleBody">
+            <p>上一篇介绍主要关于libevent的基本架构，并以C++的方式重写了其中的信号机制，在事件本身的结构还没有进行过多的抽象。在原本的libevent中，事件的类型是由 <code>ev_events</code> 来决定的，而事件所处的状态是由 <code>ev_flags</code> 来决定的。但是客观上来说，不同类型的事件之间的处理方式差别还是挺大的，因而可以分别以不同类进行抽象处理。这篇文章主要在进行事件抽象的基础上增加了时间处理，能够对超时事件进行响应。</p>
+
+        </div>
+
+    </div>
+
+</article>
+<article id="{article-id}" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+
+        <header class="article-header">
+            <h3>
+		<a class="article-title" href="/blogs/2018/11/libevent-cpp-1-基本架构及信号处理.html" style="font-size:1.6em">libevent cpp 1 基本架构及信号处理</a>
+            </h3>
+        </header>
+
+        <!-- <div class="article-meta"> -->
+        <!--     <a href="/blogs/2018/11/libevent-cpp-1-基本架构及信号处理.html" class="article-date"> -->
+        <!--         <time itemprop="datePublished">2018年11月</time> -->
+        <!--     </a> -->
+        <!-- </div> -->
+
+        <div class="article-entry" itemprop="articleBody">
+            <p>Libevent是一个事件通知库，其API提供了一种机制用于在文件描述符上发生特定事件或者超时之后执行回调函数，此外，libevent还支持因为信号或常规超时引起的回调操作。libevent 旨在替换事件驱动的网络f服务器中的事件循环，应用程序只需要调用 <code>event_dispatch</code> ，然后动态添加或删除事件，而不需要更改事件循环。</p>
+
+        </div>
+
+    </div>
+
+</article>
+<article id="{article-id}" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+
+        <header class="article-header">
+            <h3>
+		<a class="article-title" href="/blogs/2018/11/Linux-信号机制-signal.html" style="font-size:1.6em">Linux 信号机制 signal</a>
+            </h3>
+        </header>
+
+        <!-- <div class="article-meta"> -->
+        <!--     <a href="/blogs/2018/11/Linux-信号机制-signal.html" class="article-date"> -->
+        <!--         <time itemprop="datePublished">2018年11月</time> -->
+        <!--     </a> -->
+        <!-- </div> -->
+
+        <div class="article-entry" itemprop="articleBody">
+            <p>信号是类Unix系统中一种常用的IPC机制，信号是发送到进程或同一进程内的特定线程的异步通知，以便通知它发生的事件。当信号发出时，操作系统会终端目标进程的执行流来传递信号，任何非原子的执行过程都可以被中断，如果进程之前已经注册过信号处理函数，该处理函数就会被调用，否则会执行默认的信号处理函数。信号和中断类似，区别是中断是由硬件调停并由内核处理，而信号是由内核调停而由进程处理。内核可能将某些中断当作信号传给进程，比如 SIGSEGV、SIGBUS、SIGILL以及SIGFPE等。</p>
+
+        </div>
+
+    </div>
+
+</article>
+<nav id="page-nav"><a class="extend prev" rel="prev" href="/">&laquo; Prev</a>
 <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a>
 <a class="page-number" href="/page/3/">3</a>
-<a class="page-number" href="/page/4/">4</a>
-<a class="page-number" href="/page/5/">5</a>
-<a class="page-number" href="/page/6/">6</a>
 <a class="extend next" rel="next" href="/page/2/">Next &raquo;</a>
 </nav>
 
@@ -305,8 +421,7 @@ void bfs(node_t start, Func & & func) {
 
             <div class="outer">
                 <div id="footer-info" class="inner">
-                    &copy; 2019 Wang Xingang.&nbsp; Powered by <a href="https://github.com/wxggg/libevent-cpp"
-                        target="_blank">libevent-cpp</a>, theme by <a href="http://github.com/ppoffice">PPOffice</a>
+                    &copy; 2017 ~ now Wang Xingang.&nbsp;, theme by <a href="http://github.com/ppoffice">PPOffice</a>
                 </div>
             </div>
         </footer>

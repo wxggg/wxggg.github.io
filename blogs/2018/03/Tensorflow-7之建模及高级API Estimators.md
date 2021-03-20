@@ -1,7 +1,7 @@
 本文主要通过官网实例花的分类来了解tensorflow建模过程，在github上tensorflow提供了很多model模可供学习。对于花的分类实例需要安装`pandas`，这是一个Python的数据处理库，可以直接处理csv格式文件。tensorflow实现了keras机器学习库，在这个实例中也被用到。
 
 可按如下步骤进行该实例的运行，并能看到取得了很好的分类效果，之后看看具体的建模训练及评测过程。
-```shell
+```python
 $pip install pandas
 $git clone https://github.com/tensorflow/models
 $cd models/samples/core/get_started/
