@@ -42,6 +42,29 @@
 
         <header class="article-header">
             <h3>
+		<a class="article-title" href="/blogs/2018/11/Linux-信号机制-signal.html" style="font-size:1.6em">Linux 信号机制 signal</a>
+            </h3>
+        </header>
+
+        <!-- <div class="article-meta"> -->
+        <!--     <a href="/blogs/2018/11/Linux-信号机制-signal.html" class="article-date"> -->
+        <!--         <time itemprop="datePublished">2018年11月</time> -->
+        <!--     </a> -->
+        <!-- </div> -->
+
+        <div class="article-entry" itemprop="articleBody">
+            <p>信号是类Unix系统中一种常用的IPC机制，信号是发送到进程或同一进程内的特定线程的异步通知，以便通知它发生的事件。当信号发出时，操作系统会终端目标进程的执行流来传递信号，任何非原子的执行过程都可以被中断，如果进程之前已经注册过信号处理函数，该处理函数就会被调用，否则会执行默认的信号处理函数。信号和中断类似，区别是中断是由硬件调停并由内核处理，而信号是由内核调停而由进程处理。内核可能将某些中断当作信号传给进程，比如 SIGSEGV、SIGBUS、SIGILL以及SIGFPE等。</p>
+
+        </div>
+
+    </div>
+
+</article>
+<article id="{article-id}" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+
+        <header class="article-header">
+            <h3>
 		<a class="article-title" href="/blogs/2018/11/C标准库-2-之工具.html" style="font-size:1.6em">C标准库 2 之工具</a>
             </h3>
         </header>
@@ -377,29 +400,6 @@
         <div class="article-entry" itemprop="articleBody">
             <p>计算图graph就是节点与边的集合，是一个有向无环图（DAG）按照DAG图的拓扑排序依次执行OP运算，若存在多个度为0的节点可以进行并发运算</p>
 <p>之前提到过会话Session初始化到其父类BaseSession初始化时，若graph为空会调用默认图</p>
-
-        </div>
-
-    </div>
-
-</article>
-<article id="{article-id}" class="article article-type-post" itemscope itemprop="blogPost">
-    <div class="article-inner">
-
-        <header class="article-header">
-            <h3>
-		<a class="article-title" href="/blogs/2018/03/Tensorflow之简介及系统架构.html" style="font-size:1.6em">Tensorflow之简介及系统架构</a>
-            </h3>
-        </header>
-
-        <!-- <div class="article-meta"> -->
-        <!--     <a href="/blogs/2018/03/Tensorflow之简介及系统架构.html" class="article-date"> -->
-        <!--         <time itemprop="datePublished">2018年03月</time> -->
-        <!--     </a> -->
-        <!-- </div> -->
-
-        <div class="article-entry" itemprop="articleBody">
-            <p>Tensorflow 是由谷歌开源的人工智能学习系统，Tensor意即张量表示多维数组，flow意味着基于数据流图的计算，支持异构设备分布式计算，它能够在各个平台上自动运行模型，从手机、单个CPU / GPU到成百上千GPU卡组成的分布式系统。TensorFlow支持CNN、RNN和LSTM算法，可应用于语音识别，自然语言理解，计算机视觉，广告等等。tensorflow官网： https://www.tensorflow.org （可能需要VPN访问）</p>
 
         </div>
 
