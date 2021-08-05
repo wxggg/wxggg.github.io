@@ -177,7 +177,7 @@ def generate(dirs):
 
 
 if __name__ == '__main__':
-    dirs = ["blogs/2018", "blogs/2019", "blogs/2021"]
+    dirs = ["blogs/2018", "blogs/2019", "blogs/2020", "blogs/2021"]
     generate(dirs)
 
     generate_single_article('blogs/me')

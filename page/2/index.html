@@ -42,6 +42,75 @@
 
         <header class="article-header">
             <h3>
+		<a class="article-title" href="/blogs/2018/11/中缀表达式转后缀求值并打印树结构.html" style="font-size:1.6em">中缀表达式转后缀求值并打印树结构</a>
+            </h3>
+        </header>
+
+        <!-- <div class="article-meta"> -->
+        <!--     <a href="/blogs/2018/11/中缀表达式转后缀求值并打印树结构.html" class="article-date"> -->
+        <!--         <time itemprop="datePublished">2018年11月</time> -->
+        <!--     </a> -->
+        <!-- </div> -->
+
+        <div class="article-entry" itemprop="articleBody">
+            <p>题目内容：众所周知，任何一个表达式，都可以用一棵表达式树来表示。例如，表达式a+b*c，可以表示为如下的表达式树。现在，给你一个中缀表达式，这个中缀表达式用变量来表示（不含数字），请你将这个中缀表达式用表达式二叉树的形式输出出来。</p>
+
+        </div>
+
+    </div>
+
+</article>
+<article id="{article-id}" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+
+        <header class="article-header">
+            <h3>
+		<a class="article-title" href="/blogs/2018/11/libevent-cpp-2-事件重构及时间处理.html" style="font-size:1.6em">libevent cpp 2 事件重构及时间处理</a>
+            </h3>
+        </header>
+
+        <!-- <div class="article-meta"> -->
+        <!--     <a href="/blogs/2018/11/libevent-cpp-2-事件重构及时间处理.html" class="article-date"> -->
+        <!--         <time itemprop="datePublished">2018年11月</time> -->
+        <!--     </a> -->
+        <!-- </div> -->
+
+        <div class="article-entry" itemprop="articleBody">
+            <p>上一篇介绍主要关于libevent的基本架构，并以C++的方式重写了其中的信号机制，在事件本身的结构还没有进行过多的抽象。在原本的libevent中，事件的类型是由 <code>ev_events</code> 来决定的，而事件所处的状态是由 <code>ev_flags</code> 来决定的。但是客观上来说，不同类型的事件之间的处理方式差别还是挺大的，因而可以分别以不同类进行抽象处理。这篇文章主要在进行事件抽象的基础上增加了时间处理，能够对超时事件进行响应。</p>
+
+        </div>
+
+    </div>
+
+</article>
+<article id="{article-id}" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+
+        <header class="article-header">
+            <h3>
+		<a class="article-title" href="/blogs/2018/11/libevent-cpp-1-基本架构及信号处理.html" style="font-size:1.6em">libevent cpp 1 基本架构及信号处理</a>
+            </h3>
+        </header>
+
+        <!-- <div class="article-meta"> -->
+        <!--     <a href="/blogs/2018/11/libevent-cpp-1-基本架构及信号处理.html" class="article-date"> -->
+        <!--         <time itemprop="datePublished">2018年11月</time> -->
+        <!--     </a> -->
+        <!-- </div> -->
+
+        <div class="article-entry" itemprop="articleBody">
+            <p>Libevent是一个事件通知库，其API提供了一种机制用于在文件描述符上发生特定事件或者超时之后执行回调函数，此外，libevent还支持因为信号或常规超时引起的回调操作。libevent 旨在替换事件驱动的网络f服务器中的事件循环，应用程序只需要调用 <code>event_dispatch</code> ，然后动态添加或删除事件，而不需要更改事件循环。</p>
+
+        </div>
+
+    </div>
+
+</article>
+<article id="{article-id}" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+
+        <header class="article-header">
+            <h3>
 		<a class="article-title" href="/blogs/2018/11/Linux-信号机制-signal.html" style="font-size:1.6em">Linux 信号机制 signal</a>
             </h3>
         </header>
@@ -336,79 +405,10 @@
     </div>
 
 </article>
-<article id="{article-id}" class="article article-type-post" itemscope itemprop="blogPost">
-    <div class="article-inner">
-
-        <header class="article-header">
-            <h3>
-		<a class="article-title" href="/blogs/2018/04/统计学习方法札记.html" style="font-size:1.6em">统计学习方法札记</a>
-            </h3>
-        </header>
-
-        <!-- <div class="article-meta"> -->
-        <!--     <a href="/blogs/2018/04/统计学习方法札记.html" class="article-date"> -->
-        <!--         <time itemprop="datePublished">2018年04月</time> -->
-        <!--     </a> -->
-        <!-- </div> -->
-
-        <div class="article-entry" itemprop="articleBody">
-            <p>统计学习方法其实就是学习已有的大量数据（输入空间）用模型来总结出规律（特征空间），并对未知类似事件做出预测（输出空间）的一个过程（不知道自己的这个理解有没有问题）。主要的问题包括分类问题和回归问题，核心的步骤其实就是：模型+策略+算法=方法。</p>
-
-        </div>
-
-    </div>
-
-</article>
-<article id="{article-id}" class="article article-type-post" itemscope itemprop="blogPost">
-    <div class="article-inner">
-
-        <header class="article-header">
-            <h3>
-		<a class="article-title" href="/blogs/2018/04/Tensorflow-8之可视化工具Tensorboard.html" style="font-size:1.6em">Tensorflow 8之可视化工具Tensorboard</a>
-            </h3>
-        </header>
-
-        <!-- <div class="article-meta"> -->
-        <!--     <a href="/blogs/2018/04/Tensorflow-8之可视化工具Tensorboard.html" class="article-date"> -->
-        <!--         <time itemprop="datePublished">2018年04月</time> -->
-        <!--     </a> -->
-        <!-- </div> -->
-
-        <div class="article-entry" itemprop="articleBody">
-            <p>Tensorboard是一个用于可视化和理解tensorflow训练过程的一个web工具，可以通过保存tensorflow在训练过程中的graph的信息，然后利用tensorboard进行可视化，并在浏览器中显示出来。一般在安装tensorflow的过程中会默认安装tensorboard，可以在github上找到tensorboard的源码。</p>
-
-        </div>
-
-    </div>
-
-</article>
-<article id="{article-id}" class="article article-type-post" itemscope itemprop="blogPost">
-    <div class="article-inner">
-
-        <header class="article-header">
-            <h3>
-		<a class="article-title" href="/blogs/2018/03/Tensorflow之计算图及OP节点.html" style="font-size:1.6em">Tensorflow之计算图及OP节点</a>
-            </h3>
-        </header>
-
-        <!-- <div class="article-meta"> -->
-        <!--     <a href="/blogs/2018/03/Tensorflow之计算图及OP节点.html" class="article-date"> -->
-        <!--         <time itemprop="datePublished">2018年03月</time> -->
-        <!--     </a> -->
-        <!-- </div> -->
-
-        <div class="article-entry" itemprop="articleBody">
-            <p>计算图graph就是节点与边的集合，是一个有向无环图（DAG）按照DAG图的拓扑排序依次执行OP运算，若存在多个度为0的节点可以进行并发运算</p>
-<p>之前提到过会话Session初始化到其父类BaseSession初始化时，若graph为空会调用默认图</p>
-
-        </div>
-
-    </div>
-
-</article>
 <nav id="page-nav"><a class="extend prev" rel="prev" href="/">&laquo; Prev</a>
 <a class="page-number" href="/">1</a>
 <span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a>
+<a class="page-number" href="/page/4/">4</a>
 <a class="extend next" rel="next" href="/page/3/">Next &raquo;</a>
 </nav>
 

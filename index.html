@@ -88,6 +88,75 @@
 
         <header class="article-header">
             <h3>
+		<a class="article-title" href="/blogs/2020/12/VFIO-DMA-remapping-and-IO-remapping.html" style="font-size:1.6em">VFIO DMA remapping and IO remapping</a>
+            </h3>
+        </header>
+
+        <!-- <div class="article-meta"> -->
+        <!--     <a href="/blogs/2020/12/VFIO-DMA-remapping-and-IO-remapping.html" class="article-date"> -->
+        <!--         <time itemprop="datePublished">2020年12月</time> -->
+        <!--     </a> -->
+        <!-- </div> -->
+
+        <div class="article-entry" itemprop="articleBody">
+            <p>设备直通给虚拟机能够极大提升虚拟机对物理设备访问的性能,本文通过vfio内核模块和qemu用户态实现介绍vfio设备直通时的关键部分,包括:用户态访问设备IO地址空间,DMA重映射,中断重映射等.</p>
+
+        </div>
+
+    </div>
+
+</article>
+<article id="{article-id}" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+
+        <header class="article-header">
+            <h3>
+		<a class="article-title" href="/blogs/2020/12/Introduction-to-IOMMU-and-SMMU.html" style="font-size:1.6em">Introduction to IOMMU and SMMU</a>
+            </h3>
+        </header>
+
+        <!-- <div class="article-meta"> -->
+        <!--     <a href="/blogs/2020/12/Introduction-to-IOMMU-and-SMMU.html" class="article-date"> -->
+        <!--         <time itemprop="datePublished">2020年12月</time> -->
+        <!--     </a> -->
+        <!-- </div> -->
+
+        <div class="article-entry" itemprop="articleBody">
+            <p>在计算机体系结构中IOMMU（Input Output Memory Management Unit）是将设备直接内存访问（DMA）的IO总线和物理内存连接的内存管理单元，和传统的MMU一样，IOMMU将设备可见的虚拟地址（IOVA）映射到物理地址。不同的平台有不同的IOMMU，如Intel的IOMMU，PCIE图形卡使用的图形重映射表（GART），Arm平台的IOMMU是SMMU（System Memory Management），它们主要功能都是完成设备可见的IOVA到物理地址的映射。</p>
+
+        </div>
+
+    </div>
+
+</article>
+<article id="{article-id}" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+
+        <header class="article-header">
+            <h3>
+		<a class="article-title" href="/blogs/2020/12/Introduction-VFIO-Device-Passthrough.html" style="font-size:1.6em">Introduction VFIO Device Passthrough</a>
+            </h3>
+        </header>
+
+        <!-- <div class="article-meta"> -->
+        <!--     <a href="/blogs/2020/12/Introduction-VFIO-Device-Passthrough.html" class="article-date"> -->
+        <!--         <time itemprop="datePublished">2020年12月</time> -->
+        <!--     </a> -->
+        <!-- </div> -->
+
+        <div class="article-entry" itemprop="articleBody">
+            <p>现代系统大多提供DMA和中断重映射功能来确保I/O设备在有限的范围内运行，比如x86平台的AMD-Vi和Intel VT-d。VFIO（Virtual Function I/O）是一个可以将设备I/O、中断和DMA等能力安全的暴露到用户态空间，从而使用用户态驱动实现设备驱动的框架。通过VFIO进行设备直通到虚拟机，可以获得更高的设备I/O性能。</p>
+
+        </div>
+
+    </div>
+
+</article>
+<article id="{article-id}" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+
+        <header class="article-header">
+            <h3>
 		<a class="article-title" href="/blogs/2019/06/图论基本算法实现.html" style="font-size:1.6em">图论基本算法实现</a>
             </h3>
         </header>
@@ -341,78 +410,10 @@
     </div>
 
 </article>
-<article id="{article-id}" class="article article-type-post" itemscope itemprop="blogPost">
-    <div class="article-inner">
-
-        <header class="article-header">
-            <h3>
-		<a class="article-title" href="/blogs/2018/11/中缀表达式转后缀求值并打印树结构.html" style="font-size:1.6em">中缀表达式转后缀求值并打印树结构</a>
-            </h3>
-        </header>
-
-        <!-- <div class="article-meta"> -->
-        <!--     <a href="/blogs/2018/11/中缀表达式转后缀求值并打印树结构.html" class="article-date"> -->
-        <!--         <time itemprop="datePublished">2018年11月</time> -->
-        <!--     </a> -->
-        <!-- </div> -->
-
-        <div class="article-entry" itemprop="articleBody">
-            <p>题目内容：众所周知，任何一个表达式，都可以用一棵表达式树来表示。例如，表达式a+b*c，可以表示为如下的表达式树。现在，给你一个中缀表达式，这个中缀表达式用变量来表示（不含数字），请你将这个中缀表达式用表达式二叉树的形式输出出来。</p>
-
-        </div>
-
-    </div>
-
-</article>
-<article id="{article-id}" class="article article-type-post" itemscope itemprop="blogPost">
-    <div class="article-inner">
-
-        <header class="article-header">
-            <h3>
-		<a class="article-title" href="/blogs/2018/11/libevent-cpp-2-事件重构及时间处理.html" style="font-size:1.6em">libevent cpp 2 事件重构及时间处理</a>
-            </h3>
-        </header>
-
-        <!-- <div class="article-meta"> -->
-        <!--     <a href="/blogs/2018/11/libevent-cpp-2-事件重构及时间处理.html" class="article-date"> -->
-        <!--         <time itemprop="datePublished">2018年11月</time> -->
-        <!--     </a> -->
-        <!-- </div> -->
-
-        <div class="article-entry" itemprop="articleBody">
-            <p>上一篇介绍主要关于libevent的基本架构，并以C++的方式重写了其中的信号机制，在事件本身的结构还没有进行过多的抽象。在原本的libevent中，事件的类型是由 <code>ev_events</code> 来决定的，而事件所处的状态是由 <code>ev_flags</code> 来决定的。但是客观上来说，不同类型的事件之间的处理方式差别还是挺大的，因而可以分别以不同类进行抽象处理。这篇文章主要在进行事件抽象的基础上增加了时间处理，能够对超时事件进行响应。</p>
-
-        </div>
-
-    </div>
-
-</article>
-<article id="{article-id}" class="article article-type-post" itemscope itemprop="blogPost">
-    <div class="article-inner">
-
-        <header class="article-header">
-            <h3>
-		<a class="article-title" href="/blogs/2018/11/libevent-cpp-1-基本架构及信号处理.html" style="font-size:1.6em">libevent cpp 1 基本架构及信号处理</a>
-            </h3>
-        </header>
-
-        <!-- <div class="article-meta"> -->
-        <!--     <a href="/blogs/2018/11/libevent-cpp-1-基本架构及信号处理.html" class="article-date"> -->
-        <!--         <time itemprop="datePublished">2018年11月</time> -->
-        <!--     </a> -->
-        <!-- </div> -->
-
-        <div class="article-entry" itemprop="articleBody">
-            <p>Libevent是一个事件通知库，其API提供了一种机制用于在文件描述符上发生特定事件或者超时之后执行回调函数，此外，libevent还支持因为信号或常规超时引起的回调操作。libevent 旨在替换事件驱动的网络f服务器中的事件循环，应用程序只需要调用 <code>event_dispatch</code> ，然后动态添加或删除事件，而不需要更改事件循环。</p>
-
-        </div>
-
-    </div>
-
-</article>
 <nav id="page-nav"><a class="extend prev" rel="prev" href="/">&laquo; Prev</a>
 <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a>
 <a class="page-number" href="/page/3/">3</a>
+<a class="page-number" href="/page/4/">4</a>
 <a class="extend next" rel="next" href="/page/2/">Next &raquo;</a>
 </nav>
 
