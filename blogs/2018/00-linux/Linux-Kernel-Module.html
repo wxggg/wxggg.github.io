@@ -5,7 +5,7 @@
     <meta charset="utf-8">
 
     <title>wxg的小站</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1,
+    <meta name="viewport" content="width=device-width, initial-scale=0.5,
             maximum-scale=1">
 
     <link type="text/css" rel="stylesheet" href="/syntaxhighlighter/styles/shCoreDefault.css">
@@ -52,8 +52,6 @@
 
         <div class="article-entry" itemprop="articleBody">
             <p>LKM means linux kernel module.</p>
-<p>These days i am doing something about adding a kernel module to linux, so this blog is mainly about kernel module. This is the programming guide that i referenced</p>
-<p>https://www.tldp.org/LDP/lkmpg/2.6/html/lkmpg.html</p>
 <p>A kernel module extends  the functionality of the kernel without the need to reboot the system.Take device driver as an example, it allows the kernel to access hardware connected to the system. Without kernel module we have to add the code into the kernel source code, and rebuild and reboot the kernel, obviously this is complicated.</p>
 <p>You can see the module that has already been loaded into the kernel by command <code>lsmod</code>, it reads information from <code>/proc/modules</code>.</p>
 <h2><a data-uk-modal="{target:'#category-id'}">Hello World</a></h2>
@@ -419,6 +417,10 @@ Last input:
 <ul><li>intrpt.c - An interrupt handler</li>
 </ul>
 <p>and more for Symmetric Multi-Processing</p>
+<h2><a data-uk-modal="{target:'#category-id'}">Reference</a></h2>
+
+<ul><li>https://www.tldp.org/LDP/lkmpg/2.6/html/lkmpg.html</li>
+</ul>
 
         </div>
 
