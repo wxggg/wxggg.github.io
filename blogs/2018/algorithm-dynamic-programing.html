@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+
+    <title>wxg的小站</title>
+    <meta name="viewport" content="width=device-width, initial-scale=0.5,
+            maximum-scale=1">
+
+    <link type="text/css" rel="stylesheet" href="/syntaxhighlighter/styles/shCoreDefault.css">
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/webfonts/ptserif/main.css">
+    <script src="/js/jquery.min.js"></script>
+    <script src="/js/script.js"></script>
+    <!-- <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=default"></script> -->
+	<script src="//cdn.bootcss.com/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/javascript" src="/syntaxhighlighter/scripts/shCore.js"></script>
+    <script type="text/javascript" src="/syntaxhighlighter/scripts/shBrushCpp.js"></script>
+    <script type="text/javascript" src="/syntaxhighlighter/scripts/shBrushPython.js"></script>
+    <script type="text/javascript" src="/syntaxhighlighter/scripts/shBrushPerl.js"></script>
+
+    <script type="text/javascript">
+        SyntaxHighlighter.all();
+    </script>
+    <style>
+        .syntaxhighlighter table {
+            font-size: 14px !important;
+            overflow: hidden !important;
+            background-color: aliceblue !important;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="container">
+        <header id="header">
+        </header>
+        <section id="main" class="outer">
+
+            <article id="post-hello-world" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+
+        <header class="article-header">
+            <h2 class="article-title" itemprop="name">algorithm dynamic programing</h2>
+        </header>
+
+        <div class="article-meta">
+            <a href="/blogs/2018/algorithm-dynamic-programing.html" class="article-date">
+                <time itemprop="datePublished">2018年 by wxg.xingang@outlook.com </time>
+            </a>
+        </div>
+
+        <div class="article-entry" itemprop="articleBody">
+            <h2><a data-uk-modal="{target:'#category-id'}">1 Largest Divisible Subset</a></h2>
+
+<p>Given a set of distinct positive integers, find the largest subset such that every pair \((Si, Sj)\) of elements in this subset satisfies:Si%Sj = 0 or Sj%Si = 0.</p>
+<h3><a data-uk-modal="{target:'#category-id'}">solution</a></h3>
+
+<p>the optimal structure is</p>
+<p>$$ OPT(i) = max{OPT(other(i)+Si), OPT(i-1)}$$</p>
+<p>other(i) demotes all the values that satisfy Si%v == 0, if Si is already in the OPT(i-1), then there is no need to do the repeated work.</p>
+<pre class="brush: python;">
+function subset(S)
+    sub = []
+    for i from 0 to len(S)
+        v = S[i]
+        if v in sub continue // already in opt
+        for j from 0 to len(S)
+            if j != i and satisfy(Sj,v)
+                ss.append(S[j])
+        subsub = subset(ss)
+        if len(subsub)+1 > len(sub)
+            sub = subsub + 1 // update opt
+    end for
+end function
+</pre>
+<h3><a data-uk-modal="{target:'#category-id'}">correctness</a></h3>
+
+<p>every value and its subset will be calculated, there is an optimal array, if the value tested is already in, there is no need to do repeated work</p>
+<p>every value will be tested its subset, so the complexity is \(O(n^2)\)</p>
+<h2><a data-uk-modal="{target:'#category-id'}">2 Money robbing</a></h2>
+
+<p>A robber is planning to rob houses along a street. Each house has a certain amount of money stashed, the only constraint stopping you from robbing each of them is that adjacent houses have security system connected and it will automatically contact the police if two adjacent houses were broken into on the same night.</p>
+<p>1. Given a list of non-negative integers representing the amount of money of each house, determine the maximum amount of money you can rob tonight without alerting the police</p>
+<p>2. What if all houses are arranged in a circle?</p>
+<h3><a data-uk-modal="{target:'#category-id'}">solution</a></h3>
+
+<p>the optimal structure is</p>
+<p>$$ OPT(i) = max<value(i)+OPT(i-2), OPT(i-1)>$$</p>
+<p>the value(i) denotes the money in room i, OPT(i) denotes the total rob money of the before i rooms</p>
+<pre class="brush: python;">
+function rob(i)
+    if i==0 then
+        return value[0]
+    return max{value[i]+rob(i-2), rob(i-1)}
+</pre>
+<h3><a data-uk-modal="{target:'#category-id'}">correctness</a></h3>
+
+<p>if we rob room i, then we can only rob the before i-2 rooms, if not, then we can rob the before i-1 rooms, to compare the sum, we can always choose the most money to rob</p>
+<p>the problem is \(T(n) = T(n-1) + T(n-2) + C)\), use array to store the past result, then the final time complexity is \(O(n)\)</p>
+<h3><a data-uk-modal="{target:'#category-id'}">solution for circle</a></h3>
+
+<p>compare these two situations, and get the optimal solution</p>
+<p>1. rob 1~n-1 rooms</p>
+<p>2. rob 2~n rooms</p>
+<h2><a data-uk-modal="{target:'#category-id'}">3 Partition</a></h2>
+
+<p>Given a string s, partition s such that every substring of the partition is a palindrome. Return the minimum cuts needed for a palindrome partitioning of s.</p>
+<p>For example, given \(s = “aab”\), return 1 since the palindrome partitioning \([“aa”, “b”]\) could be produced using 1 cut.</p>
+<h3><a data-uk-modal="{target:'#category-id'}">solution</a></h3>
+
+<p>the optimal sub structure: \(OPT(S)\)</p>
+<p>$$ OPT(S[left:right]+left+right) $$</p>
+<p>$$ min<OPT(left(S))+right, OPT(right(S))+left>$$</p>
+<p>$$ left $$</p>
+<p>the left and right denotes the position of the longest palindrome from the left and right</p>
+<p>1. so if left is smaller then right, then cut the 2 parts</p>
+<p>2. if left is larger then right, can only cut one, so compare the two situations</p>
+<p>3. if left == right, then 1 cut will satisfy</p>
+<pre class="brush: python;">
+function cut(S)
+    //find the left and right longest palindrome
+    if left == right then
+        return left
+    else if left <  right then
+        return left + right + cut(S[left:right])
+    else
+        return min{left + cut(S[:right]), right + cut(S[left:])}
+end function
+</pre>
+<h3><a data-uk-modal="{target:'#category-id'}">correctness</a></h3>
+
+<p>every time we cut as many palindrome as possible, so this will make sure that the cuts will be least</p>
+<p><strong>good situation:</strong> \</p>
+<p>if the string is cut half and half, the problem is \(T(n) = T(n/2) + cn\), so the complexity is \(O(n)\)</p>
+<p><strong>bad situation:</strong> \</p>
+<p>if the string is cut 1 each time, the complexity will be \(O(n^2)\)</p>
+<h2><a data-uk-modal="{target:'#category-id'}">4 Decoding</a></h2>
+
+<p>A message containing letters from A-Z is being encoded to numbers using the following mapping:</p>
+<p>A : 1</p>
+<p>B : 2</p>
+<p>. . .</p>
+<p>Z : 26</p>
+<p>Given an encoded message containing digits, determine the total number of ways to decode it.</p>
+<p>For example, given encoded message “12”, it could be decoded as “AB” (1 2) or “L” (12). The number of ways decoding “12” is 2.</p>
+<h3><a data-uk-modal="{target:'#category-id'}">solution</a></h3>
+
+<p>the optimal structure is: \</p>
+<p>if N[i-1]=1, N[i-1]=2 and N[i] is 0~6</p>
+<p>$$ OPT(i) = OPT(i-2) + OPT(i-1) $$</p>
+<p>if N[i-1]=2 and N[i] is 7~9,  N[i-1] is 0,3~9</p>
+<p>$$ OPT(i) = OPT(i-1) $$</p>
+<p>the OPT(i) denotes the decoding numbers of the i prior numbers</p>
+<h3><a data-uk-modal="{target:'#category-id'}">correctness</a></h3>
+
+<p>if i==1, return 1 \</p>
+<p>if i==2, two situation, if S[1] and S[2] can be combined, or not \</p>
+<p>if i=1 to n-1 is correct, then when i==n, it can be represented as problem i-1 and i-2, so it is correct</p>
+<p>to traverse the array for 1 time, we can get the result, so \(T(n) = T(n-2) + T(n-1)\), so the complexity is \(O(n)\)</p>
+<h2><a data-uk-modal="{target:'#category-id'}">5 Longest Consecutive Subsequence</a></h2>
+
+<p>You are given a sequence L and an integer k, your task is to find the longest consecutive subsequence the sum of which is the multiple of k.</p>
+<h3><a data-uk-modal="{target:'#category-id'}">solution</a></h3>
+
+<p>the optimal structure is: \</p>
+<p>lengthk denotes the length of sequence that satisfy condition and contain the k value \</p>
+<p>OPT(i) denotes the prior i values optimal solution, so:</p>
+<p>$$ OPT(i) = max<lengthk, OPT(i-1)> $$</p>
+<pre class="brush: python;">
+function subsequence(L,i,k)
+    if i == 0 return 0
+    subsequence = //find the subsequce included L[i] and satisfy condition
+    lengthk = len(subsequence)
+    return max{subsequence(L,i-1,k), lengthk}
+end function
+</pre>
+<h3><a data-uk-modal="{target:'#category-id'}">correctness</a></h3>
+
+<p>every time to work on the L[i] we choose the bigger result between OPT(i-1) and the result with L[i], so we always get the longest array</p>
+<p>every value will be visited, and have to search the prior values to get a condition-satisfied subsequence, so the complexity is \(O(n^2)\)</p>
+
+        </div>
+
+        <footer class="article-footer">
+        </footer>
+
+    </div>
+
+    <nav id="article-nav">
+        <a href="/blogs/2018/algorithm-max-network-flow.html" id="article-nav-newer" class="article-nav-link-wrap">
+            <div class="article-nav-title"><span>&lt;</span>&nbsp; algorithm-max-network-flow
+            </div>
+        </a>
+        <a href="/blogs/2018/algorithm-divide-and-conquer.html" id="article-nav-older" class="article-nav-link-wrap">
+            <div class="article-nav-title">algorithm-divide-and-conquer &nbsp;<span>&gt;</span>
+            </div>
+        </a>
+
+
+    </nav>
+
+
+</article>
+
+
+        </section>
+        <footer id="footer">
+
+            <div class="outer">
+                <div id="footer-info" class="inner">
+                    &copy; 2017 ~ now Wang Xingang.&nbsp;, theme by <a href="http://github.com/ppoffice">PPOffice</a>
+                </div>
+            </div>
+        </footer>
+
+
+    </div>
+</body>
+
+</html>

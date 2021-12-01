@@ -1,0 +1,157 @@
+<p>Linux早期版本变化主要体现在启动及初始化的过程中，这一部分在后面则基本不会改动，前面提到linux-0.01版本的启动过程中包含多次内存移动过程，既有引导扇区将自己移动到0x90000，也有引导扇区将系统加载到0x10000后又移动到0x0000。这样做的目的主要是为了避免在加载的过程中覆盖bios的中断处理程序。这样的特点在后面的linux版本中也得以保留，以linux-0.11为例，主要变化就是将启动过程中的一部分代码抽取出来作为setup.s文件，这是因为引导扇区的大小固定为512B。</p>
+<img src="/blogs/2019/img/linux-0.x-boot.png" alt="">
+<p>到linux-0.99版本的变化主要是在如上setup.s代码获取到显卡数据之后立即进行显示模式的切换，当然这一切仍然在实模式下，因为显示模式的切换是需要调用bios中断的。</p>
+<h2><a data-uk-modal="{target:'#category-id'}">1 linux-0.99 初始化</a></h2>
+
+<p>前面setup.s跳转的32位入口是32位汇编程序head.s，head.s需要再次重建gdt、idt等分段和中断机制，之后执行初始化代码也就是start_kernel，相对于0.01版本而言，这里初始化的内容多了硬件中断初始化、软盘初始化、socket初始化、以及进程间通信ipc初始化，并且这里使用idle函数替代了0.01中的pause函数。</p>
+<pre class="brush: c++;">
+extern "C" void start_kernel(void) {
+	trap_init();
+	init_IRQ(); //硬件中断初始化
+	sched_init();
+	parse_options(command_line);
+	//内存初始化
+	mem_init(low_memory_start,memory_start,memory_end);
+	buffer_init();
+	time_init();
+	floppy_init(); //软盘初始化
+	sock_init(); //初始化socket
+	ipc_init(); //sysv ipc
+	sti();
+	calibrate_delay(); //延迟校准
+	move_to_user_mode();
+	if (!fork())		
+		init();
+	for(;;)
+		idle(); //idle函数替换之前的pause
+}
+</pre>
+<h2><a data-uk-modal="{target:'#category-id'}">2 linux-0.99 进程</a></h2>
+
+<p>linux-0.99进程控制块中主要变化就是使用链表来进行控制块的管理，并且增加了一个等待子进程退出队列。用链表来管理进程的好处就是方便进行删除和插入。当然，之前的大小为64的数组结构仍然保留，其中保存真正的task_struct的内容，链表只是将其地址链接起来了。进程链表实则为双向循环链表，其头部为进程0，所以在调度遍历链表时经常是从进程0沿双向循环链表遍历到进程0。进程链表的组织在fork时进行，也就是一个新的进程被fork时就会设置其prev和next指针。</p>
+<pre class="brush: c++;">
+struct task_struct {
+	long state;	/* -1 unrunnable, 0 runnable, >0 stopped */
+	long counter, priority, signal;
+	//信号处理函数指针、alarm及运行时间等
+	//exit_code及pid、父进程id等
+	int tty;	/* -1 if no tty, so it must be signed */
+	struct m_inode * pwd, * root;
+	struct file * filp[NR_OPEN];
+	struct desc_struct ldt[3];	/* 1 - cs 2 - ds& ss */
+	struct tss_struct tss;
+	/* 0.99 增加的内容 */
+	unsigned long signal,blocked,flags;	int errno;
+	struct task_struct *next_task, *prev_task;	
+	//内核栈和页等，子进程及兄弟进程指针等
+	struct wait_queue *wait_chldexit;	//等待子进程退出队列
+}
+</pre>
+<p>前面提到linux中所有的进程都是用户态进程，即使是进程0也是在切换到用户态之后调用idle()函数不停的执行，idle实则为系统调用，会切换到内核执行sys_idle，也就是空闲函数。</p>
+<pre class="brush: c++;">
+extern "C" int sys_idle(void){
+	need_resched = 1;	
+	return 0;
+}
+</pre>
+<h2><a data-uk-modal="{target:'#category-id'}">3 调度</a></h2>
+
+<p>Linux-0.99的进程0不停的执行于sys_idle函数，这里的sys_idle函数与之前的sys_pause不同，sys_pause的特点是直接调用schedule函数进行调度过程，而这里的sys_idle并没有调用schedule，那进程0如何释放cpu呢。这里需要注意的地方有两个，其一是sys_idle将need_resched设置为1，也就是说schedule是会调用的，其二是sys_idle是idle通过系统调用执行过来的，所以可以看看系统调用的执行或退出过程是否有些操作。</p>
+<pre class="brush: c++;">
+	.align 4,0x90
+ret_from_sys_call:
+	cmpl $0,_intr_count
+	jne 2f
+	movl _bh_mask,%eax
+	andl _bh_active,%eax
+	jne handle_bottom_half
+9:	movl EFLAGS(%esp),%eax		# check VM86 flag: CS/SS are
+	testl $(VM_MASK),%eax		# different then
+	jne 1f
+	cmpw $(USER_CS),CS(%esp)	# was old code segment supervisor ?
+	jne 2f
+	cmpw $(USER_DS),OLDSS(%esp)	# was stack segment user segment ?
+	jne 2f
+1:	sti
+	orl $(IF_MASK),%eax		# these just try to make sure
+	andl $~NT_MASK,%eax		# the program doesn't do anything
+	movl %eax,EFLAGS(%esp)		# stupid
+	cmpl $0,_need_resched
+	jne reschedule
+	movl _current,%eax
+</pre>
+<p>从系统调用的退出过程可以看到，在系统调用退出也就是ret_from_sys_call时，会判断need_resched是否为1，是的话就会进行跳到reschedule然后调用schedule进行进程调度。</p>
+<p>就调度策略来说，linux-0.99相对于0.01版本则基本没有变化，只是将数组的遍历换成了双向循环链表的遍历而已</p>
+<pre class="brush: c++;">
+void schedule(void) {
+	struct task_struct * p,* next;	
+	sti();	need_resched = 0; p = & init_task;
+
+	//从0号进程开始遍历进程控制块双向链表
+	for(;;) { 将没有被阻塞的或者还没超时的进程设置为TASK_RUNNING }
+
+	//从0号进程开始遍历进程控制块双向链表
+	for(;;) { 找到状态为TASK_RUNNING并且counter最大的进程，
+		保存为next，c为其counter }
+
+	if (!c) 	
+		while ( //从0号进程开始遍历进程控制块双向链表 )			
+			 //更新counter=counter/2+priority 	
+	switch_to(next); 
+}
+</pre>
+<p>现在schedule何时调用可以分为两种情况，分别是函数直接调用schedule以及在系统调用时判断need_resched进行调度</p>
+<p>函数直接调用schedule：</p>
+<ul><li>sys_pause, sleep_on(p), interruptible_sleep_on(p), do_timer, tty_write, release(p) ,do_exit等</li>
+<li>文件系统操作如namei、truncate、select等</li>
+<li>进程间通信如msg、sem</li>
+</ul>
+<p>need_resched设置为1，在系统调用结束时会调用schedule</p>
+<ul><li>典型的如0号进程执行idle()->sys_idle()之后会被调度</li>
+</ul>
+<h2><a data-uk-modal="{target:'#category-id'}">4 进程的阻塞与唤醒</a></h2>
+
+<p>linux中进程执行过程中可能因为资源的访问而唤醒，以读写缓冲区struct buffer_head *bh为例，若进程A正在使用缓冲区来读取块设备，而其它进程B和C在使用缓冲区时会被阻塞，并挂在等待队列b_wait上面。</p>
+<pre class="brush: c;">
+struct buffer_head {	
+	char * b_data;	
+	... 
+	//0 - ok, 1 -locked 
+	unsigned char b_lock;	
+	struct wait_queue * b_wait;
+</pre>
+<p>这一过程首先表现为由进程A使用buffer来读块设备时会lock_buffer，直到用完才会unlock_buffer。</p>
+<pre class="brush: c;">
+extern inline void lock_buffer(struct buffer_head * bh)
+{
+	if (bh->b_lock)
+		__wait_on_buffer(bh);
+	bh->b_lock = 1;
+}
+
+extern inline void unlock_buffer(struct buffer_head * bh)
+{
+	bh->b_lock = 0;
+	wake_up(& bh->b_wait);
+}
+</pre>
+<p>这时进程B和C想要使用buffer就会进入其等待队列b_wait中，并且状态为TASK_UNINTERRUPTIBLE，并调用schedule进行调度，只有缓冲区资源可用时才会被唤醒</p>
+<pre class="brush: c;">
+void __wait_on_buffer(struct buffer_head * bh)
+{
+	struct wait_queue wait = { current, NULL };
+
+	bh->b_count++;
+	add_wait_queue(& bh->b_wait, & wait);
+repeat:
+	current->state = TASK_UNINTERRUPTIBLE;
+	if (bh->b_lock) {
+		schedule();
+		goto repeat;
+	}
+	remove_wait_queue(& bh->b_wait, & wait);
+	bh->b_count--;
+	current->state = TASK_RUNNING;
+}
+</pre>
+<p>当进程A用完缓冲区之后会使用wakeup来唤醒因缓冲区资源而阻塞的B和C进程，但是它们在使用时仍然会进行资源的lock和unlock，仍然会有一个进程因没有拿到资源而阻塞，这就是schedule需要判断那个进程应该先执行了。</p>

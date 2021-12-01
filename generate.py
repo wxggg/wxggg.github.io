@@ -67,10 +67,10 @@ def sort_paths(paths):
 
 
 def replace_article_info(a, path):
-    blogs, year, month, title = path.split('/')
+    blogs, year, title = path.split('/')
     a = a.replace('{article-title}', title.replace('-', ' '), -1)
     a = a.replace('{article-link}', '/'+path+'.html', -1)
-    a = a.replace('{article-date}', year+'年'+month+'月')
+    a = a.replace('{article-date}', year+'年')
     return a
 
 

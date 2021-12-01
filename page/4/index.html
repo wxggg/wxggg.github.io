@@ -13,7 +13,8 @@
     <link rel="stylesheet" href="/webfonts/ptserif/main.css">
     <script src="/js/jquery.min.js"></script>
     <script src="/js/script.js"></script>
-    <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=default"></script>
+    <!-- <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=default"></script> -->
+	<script src="//cdn.bootcss.com/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <script type="text/javascript" src="/syntaxhighlighter/scripts/shCore.js"></script>
     <script type="text/javascript" src="/syntaxhighlighter/scripts/shBrushCpp.js"></script>
     <script type="text/javascript" src="/syntaxhighlighter/scripts/shBrushPython.js"></script>
@@ -42,18 +43,18 @@
 
         <header class="article-header">
             <h3>
-		<a class="article-title" href="/blogs/2018/00-algorithm/algorithm-dynamic-programing.html" style="font-size:1.6em">algorithm dynamic programing</a>
+		<a class="article-title" href="/blogs/2018/C标准库-1-之输入输出IO.html" style="font-size:1.6em">C标准库 1 之输入输出IO</a>
             </h3>
         </header>
 
         <!-- <div class="article-meta"> -->
-        <!--     <a href="/blogs/2018/00-algorithm/algorithm-dynamic-programing.html" class="article-date"> -->
-        <!--         <time itemprop="datePublished">2018年00-algorithm月</time> -->
+        <!--     <a href="/blogs/2018/C标准库-1-之输入输出IO.html" class="article-date"> -->
+        <!--         <time itemprop="datePublished">2018年</time> -->
         <!--     </a> -->
         <!-- </div> -->
 
         <div class="article-entry" itemprop="articleBody">
-            <p>Given a set of distinct positive integers, find the largest subset such that every pair \((Si, Sj)\) of elements in this subset satisfies:Si%Sj = 0 or Sj%Si = 0.</p>
+            <p>在对文件进行读写之前需要与该文件建立一个通道，也就是打开一个文件。而打开文件的连接过程可以是一个流或者一个文件描述符。有些处理文件的函数需要流，而其它的可能会对文件描述符进行操作，在结束读写的时候需要关闭文件。文件描述符一般是 <code>int</code> 类型，而流则一般是 <code>FILE *</code> 对象。</p>
 
         </div>
 
@@ -65,18 +66,18 @@
 
         <header class="article-header">
             <h3>
-		<a class="article-title" href="/blogs/2018/00-algorithm/algorithm-divide-and-conquer.html" style="font-size:1.6em">algorithm divide and conquer</a>
+		<a class="article-title" href="/blogs/2018/Computer-Performance-Microscopy-with-SHIM.html" style="font-size:1.6em">Computer Performance Microscopy with SHIM</a>
             </h3>
         </header>
 
         <!-- <div class="article-meta"> -->
-        <!--     <a href="/blogs/2018/00-algorithm/algorithm-divide-and-conquer.html" class="article-date"> -->
-        <!--         <time itemprop="datePublished">2018年00-algorithm月</time> -->
+        <!--     <a href="/blogs/2018/Computer-Performance-Microscopy-with-SHIM.html" class="article-date"> -->
+        <!--         <time itemprop="datePublished">2018年</time> -->
         <!--     </a> -->
         <!-- </div> -->
 
         <div class="article-entry" itemprop="articleBody">
-            <p>You are interested in analyzing some hard-to-obtain data from two separate databases. Each database contains n numerical values, so there are \(2n\) values total and you may assume that no two values are the same. You’d like to determine the median of this set of \(2n\) values, which we will define here to be the nth smallest value.</p>
+            <p>文章主要是关于细粒度高频率观测程序性能，作者yangxi，<a href="https://github.com/yangxi/SHIM">文章和实验代码</a>均可以在github上找到 。一般的程序性能观测采样是采用的linux的perf模块，但是perf只能观测较为宏观的程序性能参数，如果进行高频度的观测，观测程序就会对被观测程序进行影响，而这篇文章中的shim正是为解决这个问题而存在的。而shim之所以能在elfen论文中被使用也正是因为其高频度的准确观测程序数据，这一点使得其能够高频度观测到cpu空闲的区间，进而被elfen所用。</p>
 
         </div>
 
